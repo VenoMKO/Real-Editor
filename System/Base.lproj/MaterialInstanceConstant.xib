@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2657" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11542"/>
+        <plugIn identifier="com.apple.SceneKitIBPlugin" version="11542"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="MaterialInstanceConstantEditor">
+            <connections>
+                <outlet property="previewModel" destination="b6Z-Ap-vJp" id="AIh-yg-QNe"/>
+                <outlet property="sceneView" destination="9yL-Xr-z41" id="tFx-C3-inF"/>
+                <outlet property="toolBarView" destination="WSN-MC-QqW" id="NFm-7m-wyp"/>
+                <outlet property="view" destination="c22-O7-iKe" id="c6O-ep-6oP"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="c22-O7-iKe">
+            <rect key="frame" x="0.0" y="0.0" width="454" height="410"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <sceneView autoenablesDefaultLighting="YES" allowsCameraControl="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9yL-Xr-z41" customClass="ModelView">
+                    <rect key="frame" x="0.0" y="0.0" width="454" height="410"/>
+                    <color key="backgroundColor" white="0.85814282720000001" alpha="1" colorSpace="calibratedWhite"/>
+                </sceneView>
+            </subviews>
+            <constraints>
+                <constraint firstItem="9yL-Xr-z41" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="2s3-cA-kXD"/>
+                <constraint firstItem="9yL-Xr-z41" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="Qcs-YU-eKx"/>
+                <constraint firstAttribute="trailing" secondItem="9yL-Xr-z41" secondAttribute="trailing" id="XLi-KI-3Ho"/>
+                <constraint firstAttribute="bottom" secondItem="9yL-Xr-z41" secondAttribute="bottom" id="gg3-xw-8RU"/>
+            </constraints>
+            <point key="canvasLocation" x="126" y="238"/>
+        </customView>
+        <customView id="WSN-MC-QqW">
+            <rect key="frame" x="0.0" y="0.0" width="454" height="39"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="HtP-0e-CP1">
+                    <rect key="frame" x="-1" y="18" width="69" height="23"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="Xcn-FE-Syu"/>
+                    </constraints>
+                    <buttonCell key="cell" type="smallSquare" title="Export RAW" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="C0C-IY-XgB">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="smallSystem"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="exportRaw:" target="-2" id="GXf-5o-hn7"/>
+                    </connections>
+                </button>
+                <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="b6Z-Ap-vJp">
+                    <rect key="frame" x="369" y="8" width="77" height="22"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="71" id="RIo-U8-oPD"/>
+                    </constraints>
+                    <popUpButtonCell key="cell" type="push" title="Cube" bezelStyle="rounded" alignment="left" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="LW1-6C-BTa" id="8uZ-u0-KOV">
+                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="smallSystem"/>
+                        <menu key="menu" id="mgC-tb-CaK">
+                            <items>
+                                <menuItem title="Cube" state="on" id="LW1-6C-BTa"/>
+                                <menuItem title="Sphere" tag="1" id="GAb-hV-dzJ"/>
+                            </items>
+                        </menu>
+                    </popUpButtonCell>
+                    <connections>
+                        <action selector="changedModel:" target="-2" id="CTn-Ga-TKr"/>
+                    </connections>
+                </popUpButton>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="BW5-xL-Kit">
+                    <rect key="frame" x="315" y="13" width="49" height="14"/>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Preview:" id="by0-xh-4lT">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+            </subviews>
+            <constraints>
+                <constraint firstItem="b6Z-Ap-vJp" firstAttribute="leading" secondItem="BW5-xL-Kit" secondAttribute="trailing" constant="10" id="Fd5-Nb-N3Q"/>
+                <constraint firstItem="b6Z-Ap-vJp" firstAttribute="top" secondItem="WSN-MC-QqW" secondAttribute="top" constant="10" id="Fsj-ZW-uxN"/>
+                <constraint firstItem="HtP-0e-CP1" firstAttribute="leading" secondItem="WSN-MC-QqW" secondAttribute="leading" constant="-1" id="Ig2-ta-WN9"/>
+                <constraint firstItem="BW5-xL-Kit" firstAttribute="centerY" secondItem="b6Z-Ap-vJp" secondAttribute="centerY" id="iq9-4p-hgL"/>
+                <constraint firstItem="HtP-0e-CP1" firstAttribute="top" secondItem="WSN-MC-QqW" secondAttribute="top" constant="-1" id="leN-T7-V4H"/>
+                <constraint firstAttribute="trailing" secondItem="b6Z-Ap-vJp" secondAttribute="trailing" constant="11" id="s8v-nc-y9Z"/>
+            </constraints>
+            <point key="canvasLocation" x="330" y="654.5"/>
+        </customView>
+    </objects>
+</document>

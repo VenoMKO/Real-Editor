@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10117" systemVersion="15G1004" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
+        <capability name="stacking Non-gravity area distributions on NSStackView" minToolsVersion="7.0" minSystemVersion="10.11"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="PropertyController">
+            <connections>
+                <outlet property="arrayStack" destination="YFM-e4-gTQ" id="0rM-PZ-NZN"/>
+                <outlet property="arrayVerticalOutline" destination="796-z8-3Fl" id="eIG-i0-3EN"/>
+                <outlet property="view" destination="J1y-2o-Zp0" id="obG-7v-M98"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="J1y-2o-Zp0" customClass="PropertyView">
+            <rect key="frame" x="0.0" y="0.0" width="297" height="38"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8yX-iu-Haa">
+                    <rect key="frame" x="23" y="15" width="265" height="14"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="14" id="4Tn-0v-m2D"/>
+                    </constraints>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Label" id="s9k-OR-6v5">
+                        <font key="font" metaFont="systemBold" size="10"/>
+                        <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="self.formattedName" id="Uti-YF-Xpf"/>
+                    </connections>
+                </textField>
+                <box verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="WBb-nd-4Pg">
+                    <rect key="frame" x="0.0" y="-2" width="297" height="5"/>
+                    <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
+                    <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <font key="titleFont" metaFont="system"/>
+                </box>
+                <button horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Kgh-eC-5st">
+                    <rect key="frame" x="11" y="16" width="13" height="13"/>
+                    <buttonCell key="cell" type="disclosureTriangle" bezelStyle="disclosure" imagePosition="above" alignment="left" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="dMI-9I-AXu">
+                        <behavior key="behavior" pushIn="YES" changeBackground="YES" changeGray="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="smallSystem"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="toggleArray:" target="-2" id="SGL-hd-SIB"/>
+                    </connections>
+                </button>
+                <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="1" verticalStackHuggingPriority="249.99998474121094" horizontalHuggingPriority="1" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YFM-e4-gTQ">
+                    <rect key="frame" x="18" y="5" width="279" height="0.0"/>
+                </stackView>
+                <box hidden="YES" horizontalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="796-z8-3Fl">
+                    <rect key="frame" x="15" y="8" width="5" height="15"/>
+                    <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
+                    <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <font key="titleFont" metaFont="system"/>
+                </box>
+                <button horizontalHuggingPriority="1" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Eop-3W-xzG">
+                    <rect key="frame" x="26" y="13" width="260" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="m9R-h3-fk0"/>
+                    </constraints>
+                    <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyDown" inset="2" id="R5m-MU-O5j">
+                        <behavior key="behavior" lightByContents="YES"/>
+                        <font key="font" metaFont="smallSystem"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="performClick:" target="Kgh-eC-5st" id="OK9-ir-D0F"/>
+                    </connections>
+                </button>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="YFM-e4-gTQ" secondAttribute="trailing" id="4lF-u3-vhD"/>
+                <constraint firstItem="WBb-nd-4Pg" firstAttribute="top" secondItem="YFM-e4-gTQ" secondAttribute="bottom" constant="4" id="5EV-LJ-7TZ"/>
+                <constraint firstItem="8yX-iu-Haa" firstAttribute="top" secondItem="J1y-2o-Zp0" secondAttribute="top" constant="9" id="62n-UB-c2w"/>
+                <constraint firstItem="YFM-e4-gTQ" firstAttribute="top" secondItem="8yX-iu-Haa" secondAttribute="bottom" constant="10" id="9UG-JV-tDS"/>
+                <constraint firstItem="Eop-3W-xzG" firstAttribute="leading" secondItem="Kgh-eC-5st" secondAttribute="trailing" constant="2" id="C6a-TG-yXu"/>
+                <constraint firstAttribute="bottom" secondItem="WBb-nd-4Pg" secondAttribute="bottom" id="EXh-ZT-6d2"/>
+                <constraint firstItem="796-z8-3Fl" firstAttribute="bottom" secondItem="YFM-e4-gTQ" secondAttribute="bottom" constant="-3" id="Hbb-l2-iL4"/>
+                <constraint firstItem="8yX-iu-Haa" firstAttribute="leading" secondItem="J1y-2o-Zp0" secondAttribute="leading" constant="25" id="JQ2-Nv-nzV"/>
+                <constraint firstAttribute="trailing" secondItem="WBb-nd-4Pg" secondAttribute="trailing" id="Mpz-Id-Im0"/>
+                <constraint firstItem="Eop-3W-xzG" firstAttribute="top" secondItem="J1y-2o-Zp0" secondAttribute="top" constant="4" id="Wbh-0k-50Z"/>
+                <constraint firstItem="WBb-nd-4Pg" firstAttribute="leading" secondItem="J1y-2o-Zp0" secondAttribute="leading" id="bqx-DU-ojI"/>
+                <constraint firstAttribute="trailing" secondItem="Eop-3W-xzG" secondAttribute="trailing" constant="11" id="c6b-6H-5uv"/>
+                <constraint firstItem="YFM-e4-gTQ" firstAttribute="leading" secondItem="796-z8-3Fl" secondAttribute="trailing" id="fIP-0v-PJ0"/>
+                <constraint firstItem="796-z8-3Fl" firstAttribute="leading" secondItem="J1y-2o-Zp0" secondAttribute="leading" constant="17" id="fvP-Rg-6qB"/>
+                <constraint firstItem="Kgh-eC-5st" firstAttribute="leading" secondItem="J1y-2o-Zp0" secondAttribute="leading" constant="11" id="gqd-zH-ITG"/>
+                <constraint firstItem="796-z8-3Fl" firstAttribute="top" secondItem="J1y-2o-Zp0" secondAttribute="top" constant="15" id="iFJ-oE-6wY"/>
+                <constraint firstAttribute="trailing" secondItem="8yX-iu-Haa" secondAttribute="trailing" constant="11" id="nNO-UG-Pbl"/>
+                <constraint firstItem="Kgh-eC-5st" firstAttribute="top" secondItem="J1y-2o-Zp0" secondAttribute="top" constant="9" id="pbY-fn-Rv8"/>
+            </constraints>
+            <point key="canvasLocation" x="324.5" y="448"/>
+        </customView>
+    </objects>
+</document>

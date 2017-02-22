@@ -1,0 +1,23 @@
+//
+//  prefix.pch
+//  GPK-Man
+//
+//  Created by Vladislav Skachkov on 14/08/16.
+//  Copyright © 2016 Vladislav Skachkov. All rights reserved.
+//
+
+#ifndef prefix_pch
+#define prefix_pch
+
+#define COMPRESSION_NONE            0
+#define COMPRESSION_ZLIB            1
+#define COMPRESSION_LZO             2
+
+#ifdef __OBJC__
+#import <Cocoa/Cocoa.h>
+#ifndef prefix_tools_h
+#import "prefix-tools.h"
+#endif
+#endif
+
+#endif /* prefix_pch */

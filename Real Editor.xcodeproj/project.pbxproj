@@ -1,0 +1,1184 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		F100B6091D8BBBE5001B15F1 /* Vector3Property.xib in Resources */ = {isa = PBXBuildFile; fileRef = F100B6081D8BBBE5001B15F1 /* Vector3Property.xib */; };
+		F1037F321D856F0E005F4EB2 /* RawExportOptions.xib in Resources */ = {isa = PBXBuildFile; fileRef = F1037F301D856F0E005F4EB2 /* RawExportOptions.xib */; };
+		F1037F371D85A45F005F4EB2 /* SkeletalMesh.m in Sources */ = {isa = PBXBuildFile; fileRef = F1037F361D85A45F005F4EB2 /* SkeletalMesh.m */; };
+		F1037F3A1D85A5AD005F4EB2 /* FBoxSphereBounds.m in Sources */ = {isa = PBXBuildFile; fileRef = F1037F391D85A5AD005F4EB2 /* FBoxSphereBounds.m */; };
+		F1037F3D1D85A791005F4EB2 /* FMesh.m in Sources */ = {isa = PBXBuildFile; fileRef = F1037F3C1D85A791005F4EB2 /* FMesh.m */; };
+		F1058B2D1E15399E0086BA52 /* ImportWizard.m in Sources */ = {isa = PBXBuildFile; fileRef = F1058B2C1E15399E0086BA52 /* ImportWizard.m */; };
+		F10943831D7ED85C00B9C12F /* Texture2D.m in Sources */ = {isa = PBXBuildFile; fileRef = F10943821D7ED85C00B9C12F /* Texture2D.m */; };
+		F10943861D7EED3800B9C12F /* FMipMap.m in Sources */ = {isa = PBXBuildFile; fileRef = F10943851D7EED3800B9C12F /* FMipMap.m */; };
+		F10943A81D80B7CB00B9C12F /* TextureUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = F10943A71D80B7CB00B9C12F /* TextureUtils.m */; };
+		F10943AA1D818CF100B9C12F /* Texture2D.xib in Resources */ = {isa = PBXBuildFile; fileRef = F10943A91D818CF100B9C12F /* Texture2D.xib */; };
+		F10943AD1D818D9400B9C12F /* Texture2DEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = F10943AC1D818D9400B9C12F /* Texture2DEditor.m */; };
+		F10943AF1D81E62100B9C12F /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F10943AE1D81E62100B9C12F /* Quartz.framework */; };
+		F10943B21D82DE7000B9C12F /* TextureView.m in Sources */ = {isa = PBXBuildFile; fileRef = F10943B11D82DE7000B9C12F /* TextureView.m */; };
+		F1170EC41D606A7800262974 /* FReadable.m in Sources */ = {isa = PBXBuildFile; fileRef = F1170EC31D606A7800262974 /* FReadable.m */; };
+		F1170EC71D606A8C00262974 /* FStream.m in Sources */ = {isa = PBXBuildFile; fileRef = F1170EC61D606A8C00262974 /* FStream.m */; };
+		F1170ECA1D6070A700262974 /* FString.m in Sources */ = {isa = PBXBuildFile; fileRef = F1170EC91D6070A700262974 /* FString.m */; };
+		F1170ECD1D6070E800262974 /* Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = F1170ECC1D6070E800262974 /* Extensions.m */; };
+		F1170ED51D6071E300262974 /* minilzo.c in Sources */ = {isa = PBXBuildFile; fileRef = F1170ED31D6071E300262974 /* minilzo.c */; };
+		F1170ED81D6075B800262974 /* FArray.m in Sources */ = {isa = PBXBuildFile; fileRef = F1170ED71D6075B800262974 /* FArray.m */; };
+		F1170EDB1D607DC000262974 /* UPackage.m in Sources */ = {isa = PBXBuildFile; fileRef = F1170EDA1D607DC000262974 /* UPackage.m */; };
+		F1170EDE1D607DF800262974 /* FGUID.m in Sources */ = {isa = PBXBuildFile; fileRef = F1170EDD1D607DF800262974 /* FGUID.m */; };
+		F1170EE11D60824900262974 /* FBulkData.m in Sources */ = {isa = PBXBuildFile; fileRef = F1170EE01D60824900262974 /* FBulkData.m */; };
+		F1170EE71D60D8EC00262974 /* PackageController.m in Sources */ = {isa = PBXBuildFile; fileRef = F1170EE61D60D8EC00262974 /* PackageController.m */; };
+		F117F0EB1E3523AA005A4950 /* UComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = F117F0EA1E3523AA005A4950 /* UComponent.m */; };
+		F117F0EF1E35F3AE005A4950 /* Brush.m in Sources */ = {isa = PBXBuildFile; fileRef = F117F0EE1E35F3AE005A4950 /* Brush.m */; };
+		F12695AB1D5FAA8C004A1B3B /* TextButton.m in Sources */ = {isa = PBXBuildFile; fileRef = F12695AA1D5FAA8C004A1B3B /* TextButton.m */; };
+		F12B17361DD730E000226E73 /* DDSUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = F12B17351DD730E000226E73 /* DDSUtils.mm */; };
+		F12B173B1DDA3C6D00226E73 /* libfbxsdk.dylib in Copy Files */ = {isa = PBXBuildFile; fileRef = F1A2088B1D9000F9005DCE79 /* libfbxsdk.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		F132E17C1E0FB6DC001CDB47 /* TextureCubeEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = F132E17B1E0FB6DC001CDB47 /* TextureCubeEditor.m */; };
+		F132E17F1E0FBCFB001CDB47 /* TextureCube.xib in Resources */ = {isa = PBXBuildFile; fileRef = F132E17E1E0FBCFB001CDB47 /* TextureCube.xib */; };
+		F132E1831E0FCB37001CDB47 /* TextureCube.m in Sources */ = {isa = PBXBuildFile; fileRef = F132E1821E0FCB37001CDB47 /* TextureCube.m */; };
+		F132E1861E0FDAE2001CDB47 /* ColorProperty.xib in Resources */ = {isa = PBXBuildFile; fileRef = F132E1851E0FDAE2001CDB47 /* ColorProperty.xib */; };
+		F13585E01D76CF9E00E7EEA3 /* ObjectProperty.xib in Resources */ = {isa = PBXBuildFile; fileRef = F13585DF1D76CF9E00E7EEA3 /* ObjectProperty.xib */; };
+		F13585E31D76EDC600E7EEA3 /* ContextedOutlineView.m in Sources */ = {isa = PBXBuildFile; fileRef = F13585E21D76EDC600E7EEA3 /* ContextedOutlineView.m */; };
+		F13DD2291E09325600632F07 /* libz.1.2.8.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F13DD2271E09324700632F07 /* libz.1.2.8.tbd */; };
+		F13F0BF41DC718A9008B3D4C /* MaterialInstanceConstantEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = F13F0BF31DC718A9008B3D4C /* MaterialInstanceConstantEditor.m */; };
+		F13F0BF61DC72ED1008B3D4C /* prefix-tools.m in Sources */ = {isa = PBXBuildFile; fileRef = F13F0BF51DC72ED1008B3D4C /* prefix-tools.m */; };
+		F13F0BFA1DC73B1D008B3D4C /* NewMaterialInstanceConstant.xib in Resources */ = {isa = PBXBuildFile; fileRef = F13F0BF81DC73B1D008B3D4C /* NewMaterialInstanceConstant.xib */; };
+		F14388301DBDED0D000CC39E /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = F143882E1DBDED0D000CC39E /* Preferences.xib */; };
+		F14388331DBDF1C3000CC39E /* PreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = F14388321DBDF1C3000CC39E /* PreferencesController.m */; };
+		F15372141DCCAE7D0044F3DE /* UIExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = F15372131DCCAE7D0044F3DE /* UIExtensions.m */; };
+		F15372161DCDC6630044F3DE /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F15372151DCDC6630044F3DE /* GLUT.framework */; };
+		F15372191DCDCAB70044F3DE /* NewTexture2D.xib in Resources */ = {isa = PBXBuildFile; fileRef = F15372171DCDCAB70044F3DE /* NewTexture2D.xib */; };
+		F153721D1DCDDB280044F3DE /* MaterialInstanceConstantWizard.m in Sources */ = {isa = PBXBuildFile; fileRef = F153721C1DCDDB280044F3DE /* MaterialInstanceConstantWizard.m */; };
+		F15372201DCDDCC30044F3DE /* Texture2DWizard.m in Sources */ = {isa = PBXBuildFile; fileRef = F153721F1DCDDCC30044F3DE /* Texture2DWizard.m */; };
+		F157799D1DDAF1ED009ECCA8 /* libfbxsdk.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F1A2088D1D900118005DCE79 /* libfbxsdk.dylib */; };
+		F1585DDD1DC397BA005462B4 /* MaterialInstanceConstant.xib in Resources */ = {isa = PBXBuildFile; fileRef = F1585DDB1DC397BA005462B4 /* MaterialInstanceConstant.xib */; };
+		F15AB1631E2F6E0600BBD34F /* TextBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = F15AB1621E2F6E0600BBD34F /* TextBuffer.m */; };
+		F15AB1671E2F6F4A00BBD34F /* UClass.m in Sources */ = {isa = PBXBuildFile; fileRef = F15AB1661E2F6F4A00BBD34F /* UClass.m */; };
+		F16093831E41F3BD00E358B0 /* gpk.icns in Resources */ = {isa = PBXBuildFile; fileRef = F16093811E41F3BD00E358B0 /* gpk.icns */; };
+		F1629A731E26722E004C9871 /* Model.m in Sources */ = {isa = PBXBuildFile; fileRef = F1629A721E26722E004C9871 /* Model.m */; };
+		F162CEED1E1901550089F953 /* Level.m in Sources */ = {isa = PBXBuildFile; fileRef = F162CEEC1E1901550089F953 /* Level.m */; };
+		F162CEF11E1915440089F953 /* FStreamableTextureInstance.m in Sources */ = {isa = PBXBuildFile; fileRef = F162CEF01E1915440089F953 /* FStreamableTextureInstance.m */; };
+		F162CEF51E19169A0089F953 /* FMap.m in Sources */ = {isa = PBXBuildFile; fileRef = F162CEF41E19169A0089F953 /* FMap.m */; };
+		F162CEF91E1935F60089F953 /* LevelEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = F162CEF81E1935F60089F953 /* LevelEditor.m */; };
+		F162CEFC1E1936190089F953 /* Level.xib in Resources */ = {isa = PBXBuildFile; fileRef = F162CEFB1E1936190089F953 /* Level.xib */; };
+		F16AE41B1E0C476F009C3897 /* Polys.m in Sources */ = {isa = PBXBuildFile; fileRef = F16AE41A1E0C476F009C3897 /* Polys.m */; };
+		F16AE41F1E0C5137009C3897 /* StaticMesh.m in Sources */ = {isa = PBXBuildFile; fileRef = F16AE41E1E0C5137009C3897 /* StaticMesh.m */; };
+		F16AE4231E0CEC5F009C3897 /* FStaticMesh.m in Sources */ = {isa = PBXBuildFile; fileRef = F16AE4221E0CEC5F009C3897 /* FStaticMesh.m */; };
+		F16AE4271E0D10E1009C3897 /* StaticMeshEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = F16AE4261E0D10E1009C3897 /* StaticMeshEditor.m */; };
+		F16AE42A1E0D15F3009C3897 /* StaticMesh.xib in Resources */ = {isa = PBXBuildFile; fileRef = F16AE4291E0D15F3009C3897 /* StaticMesh.xib */; };
+		F172072D1E16D51400391BED /* NewImport.xib in Resources */ = {isa = PBXBuildFile; fileRef = F172072B1E16D51400391BED /* NewImport.xib */; };
+		F17A4B5B1D7C337100341598 /* ObjectRedirector.m in Sources */ = {isa = PBXBuildFile; fileRef = F17A4B5A1D7C337100341598 /* ObjectRedirector.m */; };
+		F17A4B5E1D7C374000341598 /* ObjectRedirectorEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = F17A4B5D1D7C374000341598 /* ObjectRedirectorEditor.m */; };
+		F17A4B611D7C387400341598 /* ObjectRedirector.xib in Resources */ = {isa = PBXBuildFile; fileRef = F17A4B5F1D7C387400341598 /* ObjectRedirector.xib */; };
+		F186180E1D881946004B3F4F /* SkeletalMesh.xib in Resources */ = {isa = PBXBuildFile; fileRef = F186180D1D881946004B3F4F /* SkeletalMesh.xib */; };
+		F18618111D882D61004B3F4F /* SkeletalMeshEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = F18618101D882D61004B3F4F /* SkeletalMeshEditor.m */; };
+		F18618141D886EC9004B3F4F /* SceneView.m in Sources */ = {isa = PBXBuildFile; fileRef = F18618131D886EC9004B3F4F /* SceneView.m */; };
+		F18618161D8913E1004B3F4F /* SceneKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F18618151D8913E1004B3F4F /* SceneKit.framework */; };
+		F18618191D893DA9004B3F4F /* Material.m in Sources */ = {isa = PBXBuildFile; fileRef = F18618181D893DA9004B3F4F /* Material.m */; };
+		F186181B1D895DCA004B3F4F /* tex0.png in Resources */ = {isa = PBXBuildFile; fileRef = F186181A1D895DCA004B3F4F /* tex0.png */; };
+		F18650E31E38A9C700BD8E34 /* MeshComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = F18650E21E38A9C700BD8E34 /* MeshComponent.m */; };
+		F191BFF81E274FDC00EC5600 /* FTerrain.m in Sources */ = {isa = PBXBuildFile; fileRef = F191BFF71E274FDC00EC5600 /* FTerrain.m */; };
+		F191BFFC1E2750A900EC5600 /* Terrain.m in Sources */ = {isa = PBXBuildFile; fileRef = F191BFFB1E2750A900EC5600 /* Terrain.m */; };
+		F191C0001E277B0F00EC5600 /* FMaterial.m in Sources */ = {isa = PBXBuildFile; fileRef = F191BFFF1E277B0F00EC5600 /* FMaterial.m */; };
+		F191C0041E27874300EC5600 /* FMaterialUniformExpression.m in Sources */ = {isa = PBXBuildFile; fileRef = F191C0031E27874300EC5600 /* FMaterialUniformExpression.m */; };
+		F1B0081D1D5FBA0D00B40C2D /* Resources.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F1B0081C1D5FBA0D00B40C2D /* Resources.xcassets */; };
+		F1B31FE31D731D7C00C0DDD6 /* UObject.xib in Resources */ = {isa = PBXBuildFile; fileRef = F1B31FE11D731D7C00C0DDD6 /* UObject.xib */; };
+		F1B31FE61D7587B900C0DDD6 /* BoolProperty.xib in Resources */ = {isa = PBXBuildFile; fileRef = F1B31FE51D7587B900C0DDD6 /* BoolProperty.xib */; };
+		F1B31FEA1D7589C200C0DDD6 /* PropertyController.m in Sources */ = {isa = PBXBuildFile; fileRef = F1B31FE81D7589C200C0DDD6 /* PropertyController.m */; };
+		F1B31FEE1D75AB8800C0DDD6 /* FlippedView.m in Sources */ = {isa = PBXBuildFile; fileRef = F1B31FED1D75AB8800C0DDD6 /* FlippedView.m */; };
+		F1B31FF21D75B03900C0DDD6 /* NoneProperty.xib in Resources */ = {isa = PBXBuildFile; fileRef = F1B31FF11D75B03900C0DDD6 /* NoneProperty.xib */; };
+		F1B31FF81D75B9E200C0DDD6 /* GeneralProperty.xib in Resources */ = {isa = PBXBuildFile; fileRef = F1B31FF71D75B9E200C0DDD6 /* GeneralProperty.xib */; };
+		F1B31FFA1D75BA8100C0DDD6 /* ArrayProperty.xib in Resources */ = {isa = PBXBuildFile; fileRef = F1B31FF91D75BA8100C0DDD6 /* ArrayProperty.xib */; };
+		F1B440641E2365A000FADFAD /* Actor.m in Sources */ = {isa = PBXBuildFile; fileRef = F1B440631E2365A000FADFAD /* Actor.m */; };
+		F1B999F41D69944300AFAC80 /* FColor.m in Sources */ = {isa = PBXBuildFile; fileRef = F1B999F31D69944300AFAC80 /* FColor.m */; };
+		F1B999F71D699DD400AFAC80 /* FRotator.m in Sources */ = {isa = PBXBuildFile; fileRef = F1B999F61D699DD400AFAC80 /* FRotator.m */; };
+		F1B999FA1D69C09E00AFAC80 /* FMatrix.m in Sources */ = {isa = PBXBuildFile; fileRef = F1B999F91D69C09E00AFAC80 /* FMatrix.m */; };
+		F1B999FD1D6AEFBF00AFAC80 /* Properties.plist in Resources */ = {isa = PBXBuildFile; fileRef = F1B999FC1D6AEFBF00AFAC80 /* Properties.plist */; };
+		F1BAB8B21D703FB10035ED58 /* ObjectController.m in Sources */ = {isa = PBXBuildFile; fileRef = F1BAB8B11D703FB10035ED58 /* ObjectController.m */; };
+		F1BAB8B61D70BD450035ED58 /* UObjectEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = F1BAB8B51D70BD450035ED58 /* UObjectEditor.m */; };
+		F1BAB8BF1D70BF240035ED58 /* ObjectController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F1BAB8BD1D70BF240035ED58 /* ObjectController.xib */; };
+		F1BE35EE1D65F5B2009940F1 /* UObject.m in Sources */ = {isa = PBXBuildFile; fileRef = F1BE35ED1D65F5B2009940F1 /* UObject.m */; };
+		F1CA74D01E12AB6D00D1A507 /* Structs.plist in Resources */ = {isa = PBXBuildFile; fileRef = F1CA74CF1E12AB6D00D1A507 /* Structs.plist */; };
+		F1D96B0F1D5FA02900071E45 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F1D96B091D5FA02900071E45 /* AppDelegate.m */; };
+		F1D96B111D5FA02900071E45 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = F1D96B0B1D5FA02900071E45 /* MainMenu.xib */; };
+		F1D96B131D5FA02900071E45 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F1D96B0E1D5FA02900071E45 /* main.m */; };
+		F1D96B161D5FA0DC00071E45 /* Package.xib in Resources */ = {isa = PBXBuildFile; fileRef = F1D96B141D5FA0DC00071E45 /* Package.xib */; };
+		F1DDAAC21E31DF6700D46A35 /* TextBuffer.xib in Resources */ = {isa = PBXBuildFile; fileRef = F1DDAAC11E31DF6700D46A35 /* TextBuffer.xib */; };
+		F1DDAAC61E31DFD100D46A35 /* TextBufferEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = F1DDAAC51E31DFD100D46A35 /* TextBufferEditor.m */; };
+		F1EB8CA41E39C5D5004F7EB3 /* FLightMap.m in Sources */ = {isa = PBXBuildFile; fileRef = F1EB8CA31E39C5D5004F7EB3 /* FLightMap.m */; };
+		F1EB8CA81E3B46EF004F7EB3 /* TerrainComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = F1EB8CA71E3B46EF004F7EB3 /* TerrainComponent.m */; };
+		F1F80CB41E432DF60045A4C7 /* RawProperty.xib in Resources */ = {isa = PBXBuildFile; fileRef = F1F80CB31E432DF60045A4C7 /* RawProperty.xib */; };
+		F1FB1AC31D698C42005E7DF0 /* FPropertyTag.m in Sources */ = {isa = PBXBuildFile; fileRef = F1FB1AC21D698C42005E7DF0 /* FPropertyTag.m */; };
+		F1FB1AC61D698FFB005E7DF0 /* FVector.m in Sources */ = {isa = PBXBuildFile; fileRef = F1FB1AC51D698FFB005E7DF0 /* FVector.m */; };
+		F1FCB61B1D91190C0063FB54 /* MeshUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = F1FCB61A1D91190C0063FB54 /* MeshUtils.m */; };
+		F1FCB6211D91196B0063FB54 /* Common.cxx in Sources */ = {isa = PBXBuildFile; fileRef = F1FCB61D1D91196B0063FB54 /* Common.cxx */; };
+		F1FCB6221D91196B0063FB54 /* RawImportData.m in Sources */ = {isa = PBXBuildFile; fileRef = F1FCB6201D91196B0063FB54 /* RawImportData.m */; };
+		F1FCB6251D9122550063FB54 /* FBXUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = F1FCB6241D9122550063FB54 /* FBXUtils.mm */; };
+		F1FFBD171E0BFDDA00DAEB18 /* Classes.plist in Resources */ = {isa = PBXBuildFile; fileRef = F1FFBD161E0BFDDA00DAEB18 /* Classes.plist */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		F1A208851D8FF4A9005DCE79 /* Copy Files */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				F12B173B1DDA3C6D00226E73 /* libfbxsdk.dylib in Copy Files */,
+			);
+			name = "Copy Files";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		F100B6081D8BBBE5001B15F1 /* Vector3Property.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Vector3Property.xib; sourceTree = "<group>"; };
+		F1037F311D856F0E005F4EB2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = System/Base.lproj/RawExportOptions.xib; sourceTree = SOURCE_ROOT; };
+		F1037F351D85A45F005F4EB2 /* SkeletalMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkeletalMesh.h; sourceTree = "<group>"; };
+		F1037F361D85A45F005F4EB2 /* SkeletalMesh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SkeletalMesh.m; sourceTree = "<group>"; };
+		F1037F381D85A5AD005F4EB2 /* FBoxSphereBounds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBoxSphereBounds.h; sourceTree = "<group>"; };
+		F1037F391D85A5AD005F4EB2 /* FBoxSphereBounds.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBoxSphereBounds.m; sourceTree = "<group>"; };
+		F1037F3B1D85A791005F4EB2 /* FMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMesh.h; sourceTree = "<group>"; };
+		F1037F3C1D85A791005F4EB2 /* FMesh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMesh.m; sourceTree = "<group>"; };
+		F1058B2B1E15399E0086BA52 /* ImportWizard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImportWizard.h; sourceTree = "<group>"; };
+		F1058B2C1E15399E0086BA52 /* ImportWizard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImportWizard.m; sourceTree = "<group>"; };
+		F10943811D7ED85C00B9C12F /* Texture2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Texture2D.h; sourceTree = "<group>"; };
+		F10943821D7ED85C00B9C12F /* Texture2D.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Texture2D.m; sourceTree = "<group>"; };
+		F10943841D7EED3800B9C12F /* FMipMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMipMap.h; sourceTree = "<group>"; };
+		F10943851D7EED3800B9C12F /* FMipMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMipMap.m; sourceTree = "<group>"; };
+		F10943A51D8079A000B9C12F /* DDSType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DDSType.h; sourceTree = "<group>"; };
+		F10943A61D80B7CB00B9C12F /* TextureUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureUtils.h; sourceTree = "<group>"; };
+		F10943A71D80B7CB00B9C12F /* TextureUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextureUtils.m; sourceTree = "<group>"; };
+		F10943A91D818CF100B9C12F /* Texture2D.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Texture2D.xib; sourceTree = "<group>"; };
+		F10943AB1D818D9400B9C12F /* Texture2DEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Texture2DEditor.h; sourceTree = "<group>"; };
+		F10943AC1D818D9400B9C12F /* Texture2DEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Texture2DEditor.m; sourceTree = "<group>"; };
+		F10943AE1D81E62100B9C12F /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
+		F10943B01D82DE7000B9C12F /* TextureView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureView.h; sourceTree = "<group>"; };
+		F10943B11D82DE7000B9C12F /* TextureView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextureView.m; sourceTree = "<group>"; };
+		F1170EC21D606A7800262974 /* FReadable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FReadable.h; sourceTree = "<group>"; };
+		F1170EC31D606A7800262974 /* FReadable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FReadable.m; sourceTree = "<group>"; };
+		F1170EC51D606A8C00262974 /* FStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FStream.h; sourceTree = "<group>"; };
+		F1170EC61D606A8C00262974 /* FStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FStream.m; sourceTree = "<group>"; };
+		F1170EC81D6070A700262974 /* FString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FString.h; sourceTree = "<group>"; };
+		F1170EC91D6070A700262974 /* FString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FString.m; sourceTree = "<group>"; };
+		F1170ECB1D6070E800262974 /* Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Extensions.h; sourceTree = "<group>"; };
+		F1170ECC1D6070E800262974 /* Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Extensions.m; sourceTree = "<group>"; };
+		F1170ECF1D60715800262974 /* libz.1.2.5.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.1.2.5.tbd; path = usr/lib/libz.1.2.5.tbd; sourceTree = SDKROOT; };
+		F1170ED11D6071E300262974 /* lzoconf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lzoconf.h; sourceTree = "<group>"; };
+		F1170ED21D6071E300262974 /* lzodefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lzodefs.h; sourceTree = "<group>"; };
+		F1170ED31D6071E300262974 /* minilzo.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = minilzo.c; sourceTree = "<group>"; };
+		F1170ED41D6071E300262974 /* minilzo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = minilzo.h; sourceTree = "<group>"; };
+		F1170ED61D6075B800262974 /* FArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FArray.h; sourceTree = "<group>"; };
+		F1170ED71D6075B800262974 /* FArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FArray.m; sourceTree = "<group>"; };
+		F1170ED91D607DC000262974 /* UPackage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UPackage.h; sourceTree = "<group>"; };
+		F1170EDA1D607DC000262974 /* UPackage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UPackage.m; sourceTree = "<group>"; };
+		F1170EDC1D607DF800262974 /* FGUID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FGUID.h; sourceTree = "<group>"; };
+		F1170EDD1D607DF800262974 /* FGUID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FGUID.m; sourceTree = "<group>"; };
+		F1170EDF1D60824900262974 /* FBulkData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBulkData.h; sourceTree = "<group>"; };
+		F1170EE01D60824900262974 /* FBulkData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBulkData.m; sourceTree = "<group>"; };
+		F1170EE21D60D03E00262974 /* prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = prefix.pch; sourceTree = "<group>"; };
+		F1170EE31D60D17E00262974 /* prefix-tools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "prefix-tools.h"; sourceTree = "<group>"; };
+		F1170EE51D60D8EC00262974 /* PackageController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PackageController.h; sourceTree = "<group>"; };
+		F1170EE61D60D8EC00262974 /* PackageController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PackageController.m; sourceTree = "<group>"; };
+		F117F0E91E3523AA005A4950 /* UComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UComponent.h; sourceTree = "<group>"; };
+		F117F0EA1E3523AA005A4950 /* UComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UComponent.m; sourceTree = "<group>"; };
+		F117F0ED1E35F3AE005A4950 /* Brush.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Brush.h; sourceTree = "<group>"; };
+		F117F0EE1E35F3AE005A4950 /* Brush.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Brush.m; sourceTree = "<group>"; };
+		F12695A91D5FAA8C004A1B3B /* TextButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextButton.h; sourceTree = "<group>"; };
+		F12695AA1D5FAA8C004A1B3B /* TextButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextButton.m; sourceTree = "<group>"; };
+		F12B17341DD730E000226E73 /* DDSUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DDSUtils.h; path = System/Utils/DDSUtils.h; sourceTree = SOURCE_ROOT; };
+		F12B17351DD730E000226E73 /* DDSUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = DDSUtils.mm; path = System/Utils/DDSUtils.mm; sourceTree = SOURCE_ROOT; };
+		F12B17371DD75A2300226E73 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		F132E17A1E0FB6DC001CDB47 /* TextureCubeEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureCubeEditor.h; sourceTree = "<group>"; };
+		F132E17B1E0FB6DC001CDB47 /* TextureCubeEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextureCubeEditor.m; sourceTree = "<group>"; };
+		F132E17E1E0FBCFB001CDB47 /* TextureCube.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TextureCube.xib; sourceTree = "<group>"; };
+		F132E1811E0FCB37001CDB47 /* TextureCube.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureCube.h; sourceTree = "<group>"; };
+		F132E1821E0FCB37001CDB47 /* TextureCube.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextureCube.m; sourceTree = "<group>"; };
+		F132E1851E0FDAE2001CDB47 /* ColorProperty.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ColorProperty.xib; sourceTree = "<group>"; };
+		F13585DF1D76CF9E00E7EEA3 /* ObjectProperty.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ObjectProperty.xib; sourceTree = "<group>"; };
+		F13585E11D76EDC600E7EEA3 /* ContextedOutlineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContextedOutlineView.h; sourceTree = "<group>"; };
+		F13585E21D76EDC600E7EEA3 /* ContextedOutlineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContextedOutlineView.m; sourceTree = "<group>"; };
+		F13DD2271E09324700632F07 /* libz.1.2.8.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.1.2.8.tbd; path = usr/lib/libz.1.2.8.tbd; sourceTree = SDKROOT; };
+		F13F0BF21DC718A9008B3D4C /* MaterialInstanceConstantEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MaterialInstanceConstantEditor.h; sourceTree = "<group>"; };
+		F13F0BF31DC718A9008B3D4C /* MaterialInstanceConstantEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MaterialInstanceConstantEditor.m; sourceTree = "<group>"; };
+		F13F0BF51DC72ED1008B3D4C /* prefix-tools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "prefix-tools.m"; sourceTree = "<group>"; };
+		F13F0BF91DC73B1D008B3D4C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = NewMaterialInstanceConstant.xib; sourceTree = "<group>"; };
+		F143882F1DBDED0D000CC39E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Preferences.xib; sourceTree = "<group>"; };
+		F14388311DBDF1C3000CC39E /* PreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesController.h; sourceTree = "<group>"; };
+		F14388321DBDF1C3000CC39E /* PreferencesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesController.m; sourceTree = "<group>"; };
+		F15372121DCCAE7D0044F3DE /* UIExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIExtensions.h; sourceTree = "<group>"; };
+		F15372131DCCAE7D0044F3DE /* UIExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIExtensions.m; sourceTree = "<group>"; };
+		F15372151DCDC6630044F3DE /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		F15372181DCDCAB70044F3DE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = NewTexture2D.xib; sourceTree = "<group>"; };
+		F153721B1DCDDB280044F3DE /* MaterialInstanceConstantWizard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MaterialInstanceConstantWizard.h; sourceTree = "<group>"; };
+		F153721C1DCDDB280044F3DE /* MaterialInstanceConstantWizard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MaterialInstanceConstantWizard.m; sourceTree = "<group>"; };
+		F153721E1DCDDCC30044F3DE /* Texture2DWizard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Texture2DWizard.h; sourceTree = "<group>"; };
+		F153721F1DCDDCC30044F3DE /* Texture2DWizard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Texture2DWizard.m; sourceTree = "<group>"; };
+		F1585DDC1DC397BA005462B4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = System/Base.lproj/MaterialInstanceConstant.xib; sourceTree = SOURCE_ROOT; };
+		F15AB1611E2F6E0600BBD34F /* TextBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextBuffer.h; sourceTree = "<group>"; };
+		F15AB1621E2F6E0600BBD34F /* TextBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextBuffer.m; sourceTree = "<group>"; };
+		F15AB1651E2F6F4A00BBD34F /* UClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UClass.h; sourceTree = "<group>"; };
+		F15AB1661E2F6F4A00BBD34F /* UClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UClass.m; sourceTree = "<group>"; };
+		F16093811E41F3BD00E358B0 /* gpk.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = gpk.icns; sourceTree = "<group>"; };
+		F1629A711E26722E004C9871 /* Model.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Model.h; sourceTree = "<group>"; };
+		F1629A721E26722E004C9871 /* Model.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Model.m; sourceTree = "<group>"; };
+		F162CEEB1E1901550089F953 /* Level.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Level.h; sourceTree = "<group>"; };
+		F162CEEC1E1901550089F953 /* Level.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Level.m; sourceTree = "<group>"; };
+		F162CEEF1E1915440089F953 /* FStreamableTextureInstance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FStreamableTextureInstance.h; sourceTree = "<group>"; };
+		F162CEF01E1915440089F953 /* FStreamableTextureInstance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FStreamableTextureInstance.m; sourceTree = "<group>"; };
+		F162CEF31E19169A0089F953 /* FMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMap.h; sourceTree = "<group>"; };
+		F162CEF41E19169A0089F953 /* FMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMap.m; sourceTree = "<group>"; };
+		F162CEF71E1935F60089F953 /* LevelEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LevelEditor.h; sourceTree = "<group>"; };
+		F162CEF81E1935F60089F953 /* LevelEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LevelEditor.m; sourceTree = "<group>"; };
+		F162CEFB1E1936190089F953 /* Level.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Level.xib; sourceTree = "<group>"; };
+		F16AE4191E0C476F009C3897 /* Polys.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Polys.h; sourceTree = "<group>"; };
+		F16AE41A1E0C476F009C3897 /* Polys.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Polys.m; sourceTree = "<group>"; };
+		F16AE41D1E0C5137009C3897 /* StaticMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StaticMesh.h; sourceTree = "<group>"; };
+		F16AE41E1E0C5137009C3897 /* StaticMesh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StaticMesh.m; sourceTree = "<group>"; };
+		F16AE4211E0CEC5F009C3897 /* FStaticMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FStaticMesh.h; sourceTree = "<group>"; };
+		F16AE4221E0CEC5F009C3897 /* FStaticMesh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FStaticMesh.m; sourceTree = "<group>"; };
+		F16AE4251E0D10E1009C3897 /* StaticMeshEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StaticMeshEditor.h; sourceTree = "<group>"; };
+		F16AE4261E0D10E1009C3897 /* StaticMeshEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StaticMeshEditor.m; sourceTree = "<group>"; };
+		F16AE4291E0D15F3009C3897 /* StaticMesh.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StaticMesh.xib; sourceTree = "<group>"; };
+		F172072C1E16D51400391BED /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = NewImport.xib; sourceTree = "<group>"; };
+		F17A4B591D7C337100341598 /* ObjectRedirector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectRedirector.h; sourceTree = "<group>"; };
+		F17A4B5A1D7C337100341598 /* ObjectRedirector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjectRedirector.m; sourceTree = "<group>"; };
+		F17A4B5C1D7C374000341598 /* ObjectRedirectorEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectRedirectorEditor.h; sourceTree = "<group>"; };
+		F17A4B5D1D7C374000341598 /* ObjectRedirectorEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjectRedirectorEditor.m; sourceTree = "<group>"; };
+		F17A4B601D7C387400341598 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = ObjectRedirector.xib; sourceTree = "<group>"; };
+		F186180D1D881946004B3F4F /* SkeletalMesh.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SkeletalMesh.xib; sourceTree = "<group>"; };
+		F186180F1D882D61004B3F4F /* SkeletalMeshEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkeletalMeshEditor.h; sourceTree = "<group>"; };
+		F18618101D882D61004B3F4F /* SkeletalMeshEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SkeletalMeshEditor.m; sourceTree = "<group>"; };
+		F18618121D886EC9004B3F4F /* SceneView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneView.h; sourceTree = "<group>"; };
+		F18618131D886EC9004B3F4F /* SceneView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SceneView.m; sourceTree = "<group>"; };
+		F18618151D8913E1004B3F4F /* SceneKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SceneKit.framework; path = System/Library/Frameworks/SceneKit.framework; sourceTree = SDKROOT; };
+		F18618171D893DA9004B3F4F /* Material.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Material.h; sourceTree = "<group>"; };
+		F18618181D893DA9004B3F4F /* Material.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Material.m; sourceTree = "<group>"; };
+		F186181A1D895DCA004B3F4F /* tex0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tex0.png; sourceTree = "<group>"; };
+		F18650E11E38A9C700BD8E34 /* MeshComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeshComponent.h; sourceTree = "<group>"; };
+		F18650E21E38A9C700BD8E34 /* MeshComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeshComponent.m; sourceTree = "<group>"; };
+		F191BFF61E274FDC00EC5600 /* FTerrain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTerrain.h; sourceTree = "<group>"; };
+		F191BFF71E274FDC00EC5600 /* FTerrain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTerrain.m; sourceTree = "<group>"; };
+		F191BFFA1E2750A900EC5600 /* Terrain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Terrain.h; sourceTree = "<group>"; };
+		F191BFFB1E2750A900EC5600 /* Terrain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Terrain.m; sourceTree = "<group>"; };
+		F191BFFE1E277B0F00EC5600 /* FMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMaterial.h; sourceTree = "<group>"; };
+		F191BFFF1E277B0F00EC5600 /* FMaterial.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMaterial.m; sourceTree = "<group>"; };
+		F191C0021E27874300EC5600 /* FMaterialUniformExpression.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMaterialUniformExpression.h; sourceTree = "<group>"; };
+		F191C0031E27874300EC5600 /* FMaterialUniformExpression.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMaterialUniformExpression.m; sourceTree = "<group>"; };
+		F1A208831D8FF4A1005DCE79 /* libfbxsdk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfbxsdk.a; path = "../../../../../Applications/Autodesk/FBX SDK/2017.0.1/lib/clang/release/libfbxsdk.a"; sourceTree = "<group>"; };
+		F1A2088B1D9000F9005DCE79 /* libfbxsdk.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfbxsdk.dylib; path = "../../../../../Applications/Autodesk/FBX SDK/2017.0.1/lib/clang/libstdcpp/release/libfbxsdk.dylib"; sourceTree = "<group>"; };
+		F1A2088D1D900118005DCE79 /* libfbxsdk.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfbxsdk.dylib; path = "../../../../../Applications/Autodesk/FBX SDK/2017.0.1/lib/clang/debug/libfbxsdk.dylib"; sourceTree = "<group>"; };
+		F1B0081C1D5FBA0D00B40C2D /* Resources.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Resources.xcassets; sourceTree = "<group>"; };
+		F1B31FE21D731D7C00C0DDD6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = UObject.xib; sourceTree = "<group>"; };
+		F1B31FE51D7587B900C0DDD6 /* BoolProperty.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BoolProperty.xib; sourceTree = "<group>"; };
+		F1B31FE71D7589C200C0DDD6 /* PropertyController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PropertyController.h; sourceTree = "<group>"; };
+		F1B31FE81D7589C200C0DDD6 /* PropertyController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PropertyController.m; sourceTree = "<group>"; };
+		F1B31FEC1D75AB8800C0DDD6 /* FlippedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlippedView.h; sourceTree = "<group>"; };
+		F1B31FED1D75AB8800C0DDD6 /* FlippedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlippedView.m; sourceTree = "<group>"; };
+		F1B31FF11D75B03900C0DDD6 /* NoneProperty.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoneProperty.xib; sourceTree = "<group>"; };
+		F1B31FF71D75B9E200C0DDD6 /* GeneralProperty.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GeneralProperty.xib; sourceTree = "<group>"; };
+		F1B31FF91D75BA8100C0DDD6 /* ArrayProperty.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ArrayProperty.xib; sourceTree = "<group>"; };
+		F1B440621E2365A000FADFAD /* Actor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Actor.h; sourceTree = "<group>"; };
+		F1B440631E2365A000FADFAD /* Actor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Actor.m; sourceTree = "<group>"; };
+		F1B999F21D69944300AFAC80 /* FColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FColor.h; sourceTree = "<group>"; };
+		F1B999F31D69944300AFAC80 /* FColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FColor.m; sourceTree = "<group>"; };
+		F1B999F51D699DD400AFAC80 /* FRotator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FRotator.h; sourceTree = "<group>"; };
+		F1B999F61D699DD400AFAC80 /* FRotator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FRotator.m; sourceTree = "<group>"; };
+		F1B999F81D69C09E00AFAC80 /* FMatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMatrix.h; sourceTree = "<group>"; };
+		F1B999F91D69C09E00AFAC80 /* FMatrix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMatrix.m; sourceTree = "<group>"; };
+		F1B999FC1D6AEFBF00AFAC80 /* Properties.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Properties.plist; sourceTree = "<group>"; };
+		F1BAB8B01D703FB10035ED58 /* ObjectController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectController.h; sourceTree = "<group>"; };
+		F1BAB8B11D703FB10035ED58 /* ObjectController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjectController.m; sourceTree = "<group>"; };
+		F1BAB8B41D70BD450035ED58 /* UObjectEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UObjectEditor.h; sourceTree = "<group>"; };
+		F1BAB8B51D70BD450035ED58 /* UObjectEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UObjectEditor.m; sourceTree = "<group>"; };
+		F1BAB8BE1D70BF240035ED58 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = ObjectController.xib; sourceTree = "<group>"; };
+		F1BE35EC1D65F5B2009940F1 /* UObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UObject.h; sourceTree = "<group>"; };
+		F1BE35ED1D65F5B2009940F1 /* UObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UObject.m; sourceTree = "<group>"; };
+		F1CA74CF1E12AB6D00D1A507 /* Structs.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Structs.plist; sourceTree = "<group>"; };
+		F1D96AF21D5F9F7100071E45 /* Real Editor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Real Editor.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F1D96B081D5FA02900071E45 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		F1D96B091D5FA02900071E45 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		F1D96B0C1D5FA02900071E45 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		F1D96B0D1D5FA02900071E45 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F1D96B0E1D5FA02900071E45 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		F1D96B151D5FA0DC00071E45 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/Package.xib; sourceTree = "<group>"; };
+		F1DDAAC11E31DF6700D46A35 /* TextBuffer.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TextBuffer.xib; sourceTree = "<group>"; };
+		F1DDAAC41E31DFD100D46A35 /* TextBufferEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextBufferEditor.h; sourceTree = "<group>"; };
+		F1DDAAC51E31DFD100D46A35 /* TextBufferEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextBufferEditor.m; sourceTree = "<group>"; };
+		F1EB8CA21E39C5D5004F7EB3 /* FLightMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLightMap.h; sourceTree = "<group>"; };
+		F1EB8CA31E39C5D5004F7EB3 /* FLightMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLightMap.m; sourceTree = "<group>"; };
+		F1EB8CA61E3B46EF004F7EB3 /* TerrainComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TerrainComponent.h; sourceTree = "<group>"; };
+		F1EB8CA71E3B46EF004F7EB3 /* TerrainComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TerrainComponent.m; sourceTree = "<group>"; };
+		F1F80CB31E432DF60045A4C7 /* RawProperty.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RawProperty.xib; sourceTree = "<group>"; };
+		F1FB1AC11D698C42005E7DF0 /* FPropertyTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FPropertyTag.h; sourceTree = "<group>"; };
+		F1FB1AC21D698C42005E7DF0 /* FPropertyTag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FPropertyTag.m; sourceTree = "<group>"; };
+		F1FB1AC41D698FFB005E7DF0 /* FVector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FVector.h; sourceTree = "<group>"; };
+		F1FB1AC51D698FFB005E7DF0 /* FVector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FVector.m; sourceTree = "<group>"; };
+		F1FCB6191D91190C0063FB54 /* MeshUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeshUtils.h; sourceTree = "<group>"; };
+		F1FCB61A1D91190C0063FB54 /* MeshUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeshUtils.m; sourceTree = "<group>"; };
+		F1FCB61D1D91196B0063FB54 /* Common.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Common.cxx; sourceTree = "<group>"; };
+		F1FCB61E1D91196B0063FB54 /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
+		F1FCB61F1D91196B0063FB54 /* RawImportData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RawImportData.h; sourceTree = "<group>"; };
+		F1FCB6201D91196B0063FB54 /* RawImportData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RawImportData.m; sourceTree = "<group>"; };
+		F1FCB6231D9122550063FB54 /* FBXUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBXUtils.h; sourceTree = "<group>"; };
+		F1FCB6241D9122550063FB54 /* FBXUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBXUtils.mm; sourceTree = "<group>"; };
+		F1FFBD161E0BFDDA00DAEB18 /* Classes.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Classes.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F1D96AEF1D5F9F7100071E45 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F13DD2291E09325600632F07 /* libz.1.2.8.tbd in Frameworks */,
+				F15372161DCDC6630044F3DE /* GLUT.framework in Frameworks */,
+				F18618161D8913E1004B3F4F /* SceneKit.framework in Frameworks */,
+				F10943AF1D81E62100B9C12F /* Quartz.framework in Frameworks */,
+				F157799D1DDAF1ED009ECCA8 /* libfbxsdk.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		F10943A41D80798600B9C12F /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				F12B17111DD6FB4400226E73 /* DDS */,
+				F1FCB61C1D91196B0063FB54 /* FBX */,
+				F10943A51D8079A000B9C12F /* DDSType.h */,
+				F10943A61D80B7CB00B9C12F /* TextureUtils.h */,
+				F10943A71D80B7CB00B9C12F /* TextureUtils.m */,
+				F1FCB6191D91190C0063FB54 /* MeshUtils.h */,
+				F1FCB61A1D91190C0063FB54 /* MeshUtils.m */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		F1170ECE1D60714100262974 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F13DD2271E09324700632F07 /* libz.1.2.8.tbd */,
+				F12B17371DD75A2300226E73 /* libz.tbd */,
+				F15372151DCDC6630044F3DE /* GLUT.framework */,
+				F1A2088D1D900118005DCE79 /* libfbxsdk.dylib */,
+				F1A2088B1D9000F9005DCE79 /* libfbxsdk.dylib */,
+				F1A208831D8FF4A1005DCE79 /* libfbxsdk.a */,
+				F18618151D8913E1004B3F4F /* SceneKit.framework */,
+				F10943AE1D81E62100B9C12F /* Quartz.framework */,
+				F1170ED11D6071E300262974 /* lzoconf.h */,
+				F1170ED21D6071E300262974 /* lzodefs.h */,
+				F1170ED31D6071E300262974 /* minilzo.c */,
+				F1170ED41D6071E300262974 /* minilzo.h */,
+				F1170ECF1D60715800262974 /* libz.1.2.5.tbd */,
+			);
+			path = Frameworks;
+			sourceTree = "<group>";
+		};
+		F1170EE41D60D8DB00262974 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				F1170EE51D60D8EC00262974 /* PackageController.h */,
+				F1170EE61D60D8EC00262974 /* PackageController.m */,
+				F1BAB8B01D703FB10035ED58 /* ObjectController.h */,
+				F1BAB8B11D703FB10035ED58 /* ObjectController.m */,
+				F1B31FE71D7589C200C0DDD6 /* PropertyController.h */,
+				F1B31FE81D7589C200C0DDD6 /* PropertyController.m */,
+				F14388311DBDF1C3000CC39E /* PreferencesController.h */,
+				F14388321DBDF1C3000CC39E /* PreferencesController.m */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		F12B17111DD6FB4400226E73 /* DDS */ = {
+			isa = PBXGroup;
+			children = (
+				F12B17341DD730E000226E73 /* DDSUtils.h */,
+				F12B17351DD730E000226E73 /* DDSUtils.mm */,
+			);
+			name = DDS;
+			path = FBX;
+			sourceTree = "<group>";
+		};
+		F13DD22E1E09374F00632F07 /* Real Editor */ = {
+			isa = PBXGroup;
+			children = (
+				F1D96B061D5FA02900071E45 /* Unreal */,
+				F1D96B071D5FA02900071E45 /* System */,
+			);
+			name = "Real Editor";
+			sourceTree = "<group>";
+		};
+		F13F0BF71DC73B03008B3D4C /* Wizards */ = {
+			isa = PBXGroup;
+			children = (
+				F13F0BF81DC73B1D008B3D4C /* NewMaterialInstanceConstant.xib */,
+				F15372171DCDCAB70044F3DE /* NewTexture2D.xib */,
+				F172072B1E16D51400391BED /* NewImport.xib */,
+			);
+			name = Wizards;
+			sourceTree = "<group>";
+		};
+		F153721A1DCDDAEF0044F3DE /* Wizards */ = {
+			isa = PBXGroup;
+			children = (
+				F153721B1DCDDB280044F3DE /* MaterialInstanceConstantWizard.h */,
+				F153721C1DCDDB280044F3DE /* MaterialInstanceConstantWizard.m */,
+				F153721E1DCDDCC30044F3DE /* Texture2DWizard.h */,
+				F153721F1DCDDCC30044F3DE /* Texture2DWizard.m */,
+				F1058B2B1E15399E0086BA52 /* ImportWizard.h */,
+				F1058B2C1E15399E0086BA52 /* ImportWizard.m */,
+			);
+			path = Wizards;
+			sourceTree = "<group>";
+		};
+		F15AB1601E2F6DF100BBD34F /* U */ = {
+			isa = PBXGroup;
+			children = (
+				F15AB1611E2F6E0600BBD34F /* TextBuffer.h */,
+				F15AB1621E2F6E0600BBD34F /* TextBuffer.m */,
+				F15AB1651E2F6F4A00BBD34F /* UClass.h */,
+				F15AB1661E2F6F4A00BBD34F /* UClass.m */,
+			);
+			name = U;
+			sourceTree = "<group>";
+		};
+		F16AE4181E0C4753009C3897 /* GMP */ = {
+			isa = PBXGroup;
+			children = (
+				F16AE4191E0C476F009C3897 /* Polys.h */,
+				F16AE41A1E0C476F009C3897 /* Polys.m */,
+				F162CEEB1E1901550089F953 /* Level.h */,
+				F162CEEC1E1901550089F953 /* Level.m */,
+				F1629A711E26722E004C9871 /* Model.h */,
+				F1629A721E26722E004C9871 /* Model.m */,
+				F191BFFA1E2750A900EC5600 /* Terrain.h */,
+				F191BFFB1E2750A900EC5600 /* Terrain.m */,
+				F1B440621E2365A000FADFAD /* Actor.h */,
+				F1B440631E2365A000FADFAD /* Actor.m */,
+				F117F0E91E3523AA005A4950 /* UComponent.h */,
+				F117F0EA1E3523AA005A4950 /* UComponent.m */,
+				F117F0ED1E35F3AE005A4950 /* Brush.h */,
+				F117F0EE1E35F3AE005A4950 /* Brush.m */,
+				F18650E11E38A9C700BD8E34 /* MeshComponent.h */,
+				F18650E21E38A9C700BD8E34 /* MeshComponent.m */,
+				F1EB8CA61E3B46EF004F7EB3 /* TerrainComponent.h */,
+				F1EB8CA71E3B46EF004F7EB3 /* TerrainComponent.m */,
+			);
+			name = GMP;
+			sourceTree = "<group>";
+		};
+		F17A4B621D7C3E3900341598 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				F162CEFB1E1936190089F953 /* Level.xib */,
+				F132E17E1E0FBCFB001CDB47 /* TextureCube.xib */,
+				F16AE4291E0D15F3009C3897 /* StaticMesh.xib */,
+				F186180D1D881946004B3F4F /* SkeletalMesh.xib */,
+				F10943A91D818CF100B9C12F /* Texture2D.xib */,
+				F1B31FE11D731D7C00C0DDD6 /* UObject.xib */,
+				F17A4B5F1D7C387400341598 /* ObjectRedirector.xib */,
+				F1037F301D856F0E005F4EB2 /* RawExportOptions.xib */,
+				F1585DDB1DC397BA005462B4 /* MaterialInstanceConstant.xib */,
+				F1DDAAC11E31DF6700D46A35 /* TextBuffer.xib */,
+			);
+			name = Classes;
+			path = Properties;
+			sourceTree = "<group>";
+		};
+		F1B0081F1D5FBB1B00B40C2D /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				F1170EC21D606A7800262974 /* FReadable.h */,
+				F1170EC31D606A7800262974 /* FReadable.m */,
+				F1170EC51D606A8C00262974 /* FStream.h */,
+				F1170EC61D606A8C00262974 /* FStream.m */,
+				F1170EC81D6070A700262974 /* FString.h */,
+				F1170EC91D6070A700262974 /* FString.m */,
+				F1170ED61D6075B800262974 /* FArray.h */,
+				F1170ED71D6075B800262974 /* FArray.m */,
+				F1170EDC1D607DF800262974 /* FGUID.h */,
+				F1170EDD1D607DF800262974 /* FGUID.m */,
+				F1170EDF1D60824900262974 /* FBulkData.h */,
+				F1170EE01D60824900262974 /* FBulkData.m */,
+				F1FB1AC11D698C42005E7DF0 /* FPropertyTag.h */,
+				F1FB1AC21D698C42005E7DF0 /* FPropertyTag.m */,
+				F1FB1AC41D698FFB005E7DF0 /* FVector.h */,
+				F1FB1AC51D698FFB005E7DF0 /* FVector.m */,
+				F1B999F21D69944300AFAC80 /* FColor.h */,
+				F1B999F31D69944300AFAC80 /* FColor.m */,
+				F1B999F51D699DD400AFAC80 /* FRotator.h */,
+				F1B999F61D699DD400AFAC80 /* FRotator.m */,
+				F1B999F81D69C09E00AFAC80 /* FMatrix.h */,
+				F1B999F91D69C09E00AFAC80 /* FMatrix.m */,
+				F10943841D7EED3800B9C12F /* FMipMap.h */,
+				F10943851D7EED3800B9C12F /* FMipMap.m */,
+				F1037F381D85A5AD005F4EB2 /* FBoxSphereBounds.h */,
+				F1037F391D85A5AD005F4EB2 /* FBoxSphereBounds.m */,
+				F1037F3B1D85A791005F4EB2 /* FMesh.h */,
+				F1037F3C1D85A791005F4EB2 /* FMesh.m */,
+				F16AE4211E0CEC5F009C3897 /* FStaticMesh.h */,
+				F16AE4221E0CEC5F009C3897 /* FStaticMesh.m */,
+				F162CEEF1E1915440089F953 /* FStreamableTextureInstance.h */,
+				F162CEF01E1915440089F953 /* FStreamableTextureInstance.m */,
+				F162CEF31E19169A0089F953 /* FMap.h */,
+				F162CEF41E19169A0089F953 /* FMap.m */,
+				F191BFF61E274FDC00EC5600 /* FTerrain.h */,
+				F191BFF71E274FDC00EC5600 /* FTerrain.m */,
+				F191BFFE1E277B0F00EC5600 /* FMaterial.h */,
+				F191BFFF1E277B0F00EC5600 /* FMaterial.m */,
+				F191C0021E27874300EC5600 /* FMaterialUniformExpression.h */,
+				F191C0031E27874300EC5600 /* FMaterialUniformExpression.m */,
+				F1EB8CA21E39C5D5004F7EB3 /* FLightMap.h */,
+				F1EB8CA31E39C5D5004F7EB3 /* FLightMap.m */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		F1B008201D5FBB1B00B40C2D /* Engine */ = {
+			isa = PBXGroup;
+			children = (
+				F15AB1601E2F6DF100BBD34F /* U */,
+				F16AE4181E0C4753009C3897 /* GMP */,
+				F1170ED91D607DC000262974 /* UPackage.h */,
+				F1170EDA1D607DC000262974 /* UPackage.m */,
+				F1BE35EC1D65F5B2009940F1 /* UObject.h */,
+				F1BE35ED1D65F5B2009940F1 /* UObject.m */,
+				F17A4B591D7C337100341598 /* ObjectRedirector.h */,
+				F17A4B5A1D7C337100341598 /* ObjectRedirector.m */,
+				F10943811D7ED85C00B9C12F /* Texture2D.h */,
+				F10943821D7ED85C00B9C12F /* Texture2D.m */,
+				F1037F351D85A45F005F4EB2 /* SkeletalMesh.h */,
+				F1037F361D85A45F005F4EB2 /* SkeletalMesh.m */,
+				F16AE41D1E0C5137009C3897 /* StaticMesh.h */,
+				F16AE41E1E0C5137009C3897 /* StaticMesh.m */,
+				F18618171D893DA9004B3F4F /* Material.h */,
+				F18618181D893DA9004B3F4F /* Material.m */,
+				F132E1811E0FCB37001CDB47 /* TextureCube.h */,
+				F132E1821E0FCB37001CDB47 /* TextureCube.m */,
+			);
+			path = Engine;
+			sourceTree = "<group>";
+		};
+		F1B31FE41D745A1E00C0DDD6 /* Properties */ = {
+			isa = PBXGroup;
+			children = (
+				F1B31FF91D75BA8100C0DDD6 /* ArrayProperty.xib */,
+				F1B31FF71D75B9E200C0DDD6 /* GeneralProperty.xib */,
+				F1B31FF11D75B03900C0DDD6 /* NoneProperty.xib */,
+				F1B31FE51D7587B900C0DDD6 /* BoolProperty.xib */,
+				F13585DF1D76CF9E00E7EEA3 /* ObjectProperty.xib */,
+				F100B6081D8BBBE5001B15F1 /* Vector3Property.xib */,
+				F132E1851E0FDAE2001CDB47 /* ColorProperty.xib */,
+				F1F80CB31E432DF60045A4C7 /* RawProperty.xib */,
+			);
+			path = Properties;
+			sourceTree = "<group>";
+		};
+		F1B999FB1D6ADE7700AFAC80 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F16093811E41F3BD00E358B0 /* gpk.icns */,
+				F186181A1D895DCA004B3F4F /* tex0.png */,
+				F1B999FC1D6AEFBF00AFAC80 /* Properties.plist */,
+				F1FFBD161E0BFDDA00DAEB18 /* Classes.plist */,
+				F1CA74CF1E12AB6D00D1A507 /* Structs.plist */,
+			);
+			name = Resources;
+			path = System/Resources;
+			sourceTree = SOURCE_ROOT;
+		};
+		F1BAB8B31D70BCB30035ED58 /* Editors */ = {
+			isa = PBXGroup;
+			children = (
+				F186180F1D882D61004B3F4F /* SkeletalMeshEditor.h */,
+				F18618101D882D61004B3F4F /* SkeletalMeshEditor.m */,
+				F10943AB1D818D9400B9C12F /* Texture2DEditor.h */,
+				F10943AC1D818D9400B9C12F /* Texture2DEditor.m */,
+				F1BAB8B41D70BD450035ED58 /* UObjectEditor.h */,
+				F1BAB8B51D70BD450035ED58 /* UObjectEditor.m */,
+				F17A4B5C1D7C374000341598 /* ObjectRedirectorEditor.h */,
+				F17A4B5D1D7C374000341598 /* ObjectRedirectorEditor.m */,
+				F13F0BF21DC718A9008B3D4C /* MaterialInstanceConstantEditor.h */,
+				F13F0BF31DC718A9008B3D4C /* MaterialInstanceConstantEditor.m */,
+				F16AE4251E0D10E1009C3897 /* StaticMeshEditor.h */,
+				F16AE4261E0D10E1009C3897 /* StaticMeshEditor.m */,
+				F132E17A1E0FB6DC001CDB47 /* TextureCubeEditor.h */,
+				F132E17B1E0FB6DC001CDB47 /* TextureCubeEditor.m */,
+				F162CEF71E1935F60089F953 /* LevelEditor.h */,
+				F162CEF81E1935F60089F953 /* LevelEditor.m */,
+				F1DDAAC41E31DFD100D46A35 /* TextBufferEditor.h */,
+				F1DDAAC51E31DFD100D46A35 /* TextBufferEditor.m */,
+			);
+			path = Editors;
+			sourceTree = "<group>";
+		};
+		F1D96AE91D5F9F7100071E45 = {
+			isa = PBXGroup;
+			children = (
+				F13DD22E1E09374F00632F07 /* Real Editor */,
+				F1D96AF31D5F9F7100071E45 /* Products */,
+				F1170ECE1D60714100262974 /* Frameworks */,
+				F1B0081C1D5FBA0D00B40C2D /* Resources.xcassets */,
+			);
+			sourceTree = "<group>";
+		};
+		F1D96AF31D5F9F7100071E45 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F1D96AF21D5F9F7100071E45 /* Real Editor.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F1D96B061D5FA02900071E45 /* Unreal */ = {
+			isa = PBXGroup;
+			children = (
+				F1B0081F1D5FBB1B00B40C2D /* Core */,
+				F1B008201D5FBB1B00B40C2D /* Engine */,
+			);
+			path = Unreal;
+			sourceTree = "<group>";
+		};
+		F1D96B071D5FA02900071E45 /* System */ = {
+			isa = PBXGroup;
+			children = (
+				F153721A1DCDDAEF0044F3DE /* Wizards */,
+				F1BAB8B31D70BCB30035ED58 /* Editors */,
+				F1D96B171D5FA8E300071E45 /* Views */,
+				F1170EE41D60D8DB00262974 /* Controllers */,
+				F10943A41D80798600B9C12F /* Utils */,
+				F1D96B081D5FA02900071E45 /* AppDelegate.h */,
+				F1D96B091D5FA02900071E45 /* AppDelegate.m */,
+				F15372121DCCAE7D0044F3DE /* UIExtensions.h */,
+				F15372131DCCAE7D0044F3DE /* UIExtensions.m */,
+				F1170ECB1D6070E800262974 /* Extensions.h */,
+				F1170ECC1D6070E800262974 /* Extensions.m */,
+				F1D96B0D1D5FA02900071E45 /* Info.plist */,
+				F1D96B0E1D5FA02900071E45 /* main.m */,
+				F1170EE21D60D03E00262974 /* prefix.pch */,
+				F1170EE31D60D17E00262974 /* prefix-tools.h */,
+				F13F0BF51DC72ED1008B3D4C /* prefix-tools.m */,
+				F1D96B181D5FA8F000071E45 /* UI */,
+				F1B999FB1D6ADE7700AFAC80 /* Resources */,
+			);
+			path = System;
+			sourceTree = "<group>";
+		};
+		F1D96B171D5FA8E300071E45 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F12695A91D5FAA8C004A1B3B /* TextButton.h */,
+				F12695AA1D5FAA8C004A1B3B /* TextButton.m */,
+				F1B31FEC1D75AB8800C0DDD6 /* FlippedView.h */,
+				F1B31FED1D75AB8800C0DDD6 /* FlippedView.m */,
+				F13585E11D76EDC600E7EEA3 /* ContextedOutlineView.h */,
+				F13585E21D76EDC600E7EEA3 /* ContextedOutlineView.m */,
+				F10943B01D82DE7000B9C12F /* TextureView.h */,
+				F10943B11D82DE7000B9C12F /* TextureView.m */,
+				F18618121D886EC9004B3F4F /* SceneView.h */,
+				F18618131D886EC9004B3F4F /* SceneView.m */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		F1D96B181D5FA8F000071E45 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				F13F0BF71DC73B03008B3D4C /* Wizards */,
+				F17A4B621D7C3E3900341598 /* Classes */,
+				F1B31FE41D745A1E00C0DDD6 /* Properties */,
+				F1D96B0B1D5FA02900071E45 /* MainMenu.xib */,
+				F1D96B141D5FA0DC00071E45 /* Package.xib */,
+				F1BAB8BD1D70BF240035ED58 /* ObjectController.xib */,
+				F143882E1DBDED0D000CC39E /* Preferences.xib */,
+			);
+			name = UI;
+			path = Base.lproj;
+			sourceTree = "<group>";
+		};
+		F1FCB61C1D91196B0063FB54 /* FBX */ = {
+			isa = PBXGroup;
+			children = (
+				F1FCB61D1D91196B0063FB54 /* Common.cxx */,
+				F1FCB61E1D91196B0063FB54 /* Common.h */,
+				F1FCB61F1D91196B0063FB54 /* RawImportData.h */,
+				F1FCB6201D91196B0063FB54 /* RawImportData.m */,
+				F1FCB6231D9122550063FB54 /* FBXUtils.h */,
+				F1FCB6241D9122550063FB54 /* FBXUtils.mm */,
+			);
+			path = FBX;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F1D96AF11D5F9F7100071E45 /* Real Editor */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F1D96B031D5F9F7100071E45 /* Build configuration list for PBXNativeTarget "Real Editor" */;
+			buildPhases = (
+				F1D96AEE1D5F9F7100071E45 /* Sources */,
+				F1D96AEF1D5F9F7100071E45 /* Frameworks */,
+				F1D96AF01D5F9F7100071E45 /* Resources */,
+				F1A208851D8FF4A9005DCE79 /* Copy Files */,
+				F12B17101DD46DC100226E73 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Real Editor";
+			productName = "GPK-Man";
+			productReference = F1D96AF21D5F9F7100071E45 /* Real Editor.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F1D96AEA1D5F9F7100071E45 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0800;
+				ORGANIZATIONNAME = VenoMKO;
+				TargetAttributes = {
+					F1D96AF11D5F9F7100071E45 = {
+						CreatedOnToolsVersion = 7.3.1;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = F1D96AED1D5F9F7100071E45 /* Build configuration list for PBXProject "Real Editor" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = F1D96AE91D5F9F7100071E45;
+			productRefGroup = F1D96AF31D5F9F7100071E45 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F1D96AF11D5F9F7100071E45 /* Real Editor */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F1D96AF01D5F9F7100071E45 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F1FFBD171E0BFDDA00DAEB18 /* Classes.plist in Resources */,
+				F16AE42A1E0D15F3009C3897 /* StaticMesh.xib in Resources */,
+				F1DDAAC21E31DF6700D46A35 /* TextBuffer.xib in Resources */,
+				F1D96B161D5FA0DC00071E45 /* Package.xib in Resources */,
+				F1B31FF21D75B03900C0DDD6 /* NoneProperty.xib in Resources */,
+				F1B31FF81D75B9E200C0DDD6 /* GeneralProperty.xib in Resources */,
+				F132E1861E0FDAE2001CDB47 /* ColorProperty.xib in Resources */,
+				F13F0BFA1DC73B1D008B3D4C /* NewMaterialInstanceConstant.xib in Resources */,
+				F1B0081D1D5FBA0D00B40C2D /* Resources.xcassets in Resources */,
+				F1B31FE31D731D7C00C0DDD6 /* UObject.xib in Resources */,
+				F13585E01D76CF9E00E7EEA3 /* ObjectProperty.xib in Resources */,
+				F186180E1D881946004B3F4F /* SkeletalMesh.xib in Resources */,
+				F186181B1D895DCA004B3F4F /* tex0.png in Resources */,
+				F1B31FE61D7587B900C0DDD6 /* BoolProperty.xib in Resources */,
+				F17A4B611D7C387400341598 /* ObjectRedirector.xib in Resources */,
+				F15372191DCDCAB70044F3DE /* NewTexture2D.xib in Resources */,
+				F100B6091D8BBBE5001B15F1 /* Vector3Property.xib in Resources */,
+				F16093831E41F3BD00E358B0 /* gpk.icns in Resources */,
+				F1D96B111D5FA02900071E45 /* MainMenu.xib in Resources */,
+				F10943AA1D818CF100B9C12F /* Texture2D.xib in Resources */,
+				F162CEFC1E1936190089F953 /* Level.xib in Resources */,
+				F1B999FD1D6AEFBF00AFAC80 /* Properties.plist in Resources */,
+				F1585DDD1DC397BA005462B4 /* MaterialInstanceConstant.xib in Resources */,
+				F14388301DBDED0D000CC39E /* Preferences.xib in Resources */,
+				F1B31FFA1D75BA8100C0DDD6 /* ArrayProperty.xib in Resources */,
+				F1BAB8BF1D70BF240035ED58 /* ObjectController.xib in Resources */,
+				F172072D1E16D51400391BED /* NewImport.xib in Resources */,
+				F1F80CB41E432DF60045A4C7 /* RawProperty.xib in Resources */,
+				F132E17F1E0FBCFB001CDB47 /* TextureCube.xib in Resources */,
+				F1037F321D856F0E005F4EB2 /* RawExportOptions.xib in Resources */,
+				F1CA74D01E12AB6D00D1A507 /* Structs.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		F12B17101DD46DC100226E73 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd \"$BUILT_PRODUCTS_DIR\"\ninstall_name_tool -change \"@executable_path/libfbxsdk.dylib\" \"@executable_path/../Frameworks/libfbxsdk.dylib\" \"$EXECUTABLE_PATH\"";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F1D96AEE1D5F9F7100071E45 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F1FCB6251D9122550063FB54 /* FBXUtils.mm in Sources */,
+				F1B31FEE1D75AB8800C0DDD6 /* FlippedView.m in Sources */,
+				F1BAB8B21D703FB10035ED58 /* ObjectController.m in Sources */,
+				F1B999F41D69944300AFAC80 /* FColor.m in Sources */,
+				F191C0041E27874300EC5600 /* FMaterialUniformExpression.m in Sources */,
+				F15372141DCCAE7D0044F3DE /* UIExtensions.m in Sources */,
+				F1EB8CA81E3B46EF004F7EB3 /* TerrainComponent.m in Sources */,
+				F132E17C1E0FB6DC001CDB47 /* TextureCubeEditor.m in Sources */,
+				F1037F3A1D85A5AD005F4EB2 /* FBoxSphereBounds.m in Sources */,
+				F1170EC41D606A7800262974 /* FReadable.m in Sources */,
+				F1B999F71D699DD400AFAC80 /* FRotator.m in Sources */,
+				F153721D1DCDDB280044F3DE /* MaterialInstanceConstantWizard.m in Sources */,
+				F16AE4271E0D10E1009C3897 /* StaticMeshEditor.m in Sources */,
+				F1FCB61B1D91190C0063FB54 /* MeshUtils.m in Sources */,
+				F1170EDE1D607DF800262974 /* FGUID.m in Sources */,
+				F1BE35EE1D65F5B2009940F1 /* UObject.m in Sources */,
+				F15AB1671E2F6F4A00BBD34F /* UClass.m in Sources */,
+				F1170ECA1D6070A700262974 /* FString.m in Sources */,
+				F162CEF91E1935F60089F953 /* LevelEditor.m in Sources */,
+				F1037F3D1D85A791005F4EB2 /* FMesh.m in Sources */,
+				F1DDAAC61E31DFD100D46A35 /* TextBufferEditor.m in Sources */,
+				F117F0EB1E3523AA005A4950 /* UComponent.m in Sources */,
+				F16AE41F1E0C5137009C3897 /* StaticMesh.m in Sources */,
+				F14388331DBDF1C3000CC39E /* PreferencesController.m in Sources */,
+				F18650E31E38A9C700BD8E34 /* MeshComponent.m in Sources */,
+				F10943B21D82DE7000B9C12F /* TextureView.m in Sources */,
+				F117F0EF1E35F3AE005A4950 /* Brush.m in Sources */,
+				F10943AD1D818D9400B9C12F /* Texture2DEditor.m in Sources */,
+				F16AE4231E0CEC5F009C3897 /* FStaticMesh.m in Sources */,
+				F12B17361DD730E000226E73 /* DDSUtils.mm in Sources */,
+				F15372201DCDDCC30044F3DE /* Texture2DWizard.m in Sources */,
+				F191BFF81E274FDC00EC5600 /* FTerrain.m in Sources */,
+				F1170ED81D6075B800262974 /* FArray.m in Sources */,
+				F1037F371D85A45F005F4EB2 /* SkeletalMesh.m in Sources */,
+				F191C0001E277B0F00EC5600 /* FMaterial.m in Sources */,
+				F10943A81D80B7CB00B9C12F /* TextureUtils.m in Sources */,
+				F162CEED1E1901550089F953 /* Level.m in Sources */,
+				F10943831D7ED85C00B9C12F /* Texture2D.m in Sources */,
+				F1FCB6221D91196B0063FB54 /* RawImportData.m in Sources */,
+				F1B999FA1D69C09E00AFAC80 /* FMatrix.m in Sources */,
+				F18618111D882D61004B3F4F /* SkeletalMeshEditor.m in Sources */,
+				F191BFFC1E2750A900EC5600 /* Terrain.m in Sources */,
+				F1170EE71D60D8EC00262974 /* PackageController.m in Sources */,
+				F1D96B131D5FA02900071E45 /* main.m in Sources */,
+				F1629A731E26722E004C9871 /* Model.m in Sources */,
+				F17A4B5E1D7C374000341598 /* ObjectRedirectorEditor.m in Sources */,
+				F16AE41B1E0C476F009C3897 /* Polys.m in Sources */,
+				F1170ECD1D6070E800262974 /* Extensions.m in Sources */,
+				F1170ED51D6071E300262974 /* minilzo.c in Sources */,
+				F18618141D886EC9004B3F4F /* SceneView.m in Sources */,
+				F1170EDB1D607DC000262974 /* UPackage.m in Sources */,
+				F162CEF51E19169A0089F953 /* FMap.m in Sources */,
+				F13F0BF41DC718A9008B3D4C /* MaterialInstanceConstantEditor.m in Sources */,
+				F1170EE11D60824900262974 /* FBulkData.m in Sources */,
+				F132E1831E0FCB37001CDB47 /* TextureCube.m in Sources */,
+				F10943861D7EED3800B9C12F /* FMipMap.m in Sources */,
+				F1FB1AC31D698C42005E7DF0 /* FPropertyTag.m in Sources */,
+				F1B31FEA1D7589C200C0DDD6 /* PropertyController.m in Sources */,
+				F13585E31D76EDC600E7EEA3 /* ContextedOutlineView.m in Sources */,
+				F1EB8CA41E39C5D5004F7EB3 /* FLightMap.m in Sources */,
+				F17A4B5B1D7C337100341598 /* ObjectRedirector.m in Sources */,
+				F15AB1631E2F6E0600BBD34F /* TextBuffer.m in Sources */,
+				F1BAB8B61D70BD450035ED58 /* UObjectEditor.m in Sources */,
+				F13F0BF61DC72ED1008B3D4C /* prefix-tools.m in Sources */,
+				F1B440641E2365A000FADFAD /* Actor.m in Sources */,
+				F162CEF11E1915440089F953 /* FStreamableTextureInstance.m in Sources */,
+				F1D96B0F1D5FA02900071E45 /* AppDelegate.m in Sources */,
+				F18618191D893DA9004B3F4F /* Material.m in Sources */,
+				F1FCB6211D91196B0063FB54 /* Common.cxx in Sources */,
+				F1FB1AC61D698FFB005E7DF0 /* FVector.m in Sources */,
+				F1170EC71D606A8C00262974 /* FStream.m in Sources */,
+				F12695AB1D5FAA8C004A1B3B /* TextButton.m in Sources */,
+				F1058B2D1E15399E0086BA52 /* ImportWizard.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		F1037F301D856F0E005F4EB2 /* RawExportOptions.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F1037F311D856F0E005F4EB2 /* Base */,
+			);
+			name = RawExportOptions.xib;
+			sourceTree = "<group>";
+		};
+		F13F0BF81DC73B1D008B3D4C /* NewMaterialInstanceConstant.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F13F0BF91DC73B1D008B3D4C /* Base */,
+			);
+			name = NewMaterialInstanceConstant.xib;
+			sourceTree = "<group>";
+		};
+		F143882E1DBDED0D000CC39E /* Preferences.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F143882F1DBDED0D000CC39E /* Base */,
+			);
+			name = Preferences.xib;
+			sourceTree = "<group>";
+		};
+		F15372171DCDCAB70044F3DE /* NewTexture2D.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F15372181DCDCAB70044F3DE /* Base */,
+			);
+			name = NewTexture2D.xib;
+			sourceTree = "<group>";
+		};
+		F1585DDB1DC397BA005462B4 /* MaterialInstanceConstant.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F1585DDC1DC397BA005462B4 /* Base */,
+			);
+			name = MaterialInstanceConstant.xib;
+			sourceTree = "<group>";
+		};
+		F172072B1E16D51400391BED /* NewImport.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F172072C1E16D51400391BED /* Base */,
+			);
+			name = NewImport.xib;
+			sourceTree = "<group>";
+		};
+		F17A4B5F1D7C387400341598 /* ObjectRedirector.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F17A4B601D7C387400341598 /* Base */,
+			);
+			name = ObjectRedirector.xib;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		F1B31FE11D731D7C00C0DDD6 /* UObject.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F1B31FE21D731D7C00C0DDD6 /* Base */,
+			);
+			name = UObject.xib;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		F1BAB8BD1D70BF240035ED58 /* ObjectController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F1BAB8BE1D70BF240035ED58 /* Base */,
+			);
+			name = ObjectController.xib;
+			sourceTree = "<group>";
+		};
+		F1D96B0B1D5FA02900071E45 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F1D96B0C1D5FA02900071E45 /* Base */,
+			);
+			name = MainMenu.xib;
+			path = System;
+			sourceTree = SOURCE_ROOT;
+		};
+		F1D96B141D5FA0DC00071E45 /* Package.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F1D96B151D5FA0DC00071E45 /* Base */,
+			);
+			name = Package.xib;
+			path = ..;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		F1D96B011D5F9F7100071E45 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		F1D96B021D5F9F7100071E45 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		F1D96B041D5F9F7100071E45 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LIBRARY = "compiler-default";
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PREFIX_HEADER = System/prefix.pch;
+				HEADER_SEARCH_PATHS = (
+					"\"/Applications/Autodesk/FBX SDK/2017.0.1/include\"/**",
+					/usr/local/include,
+				);
+				INFOPLIST_FILE = System/Info.plist;
+				LIBRARY_SEARCH_PATHS = (
+					"\"/Applications/Autodesk/FBX SDK/2017.0.1/lib/clang/debug\"",
+					"$(PROJECT_DIR)",
+					/usr/local/lib/static,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				OTHER_LDFLAGS = (
+					"-lnvtt_d",
+					"-lnvmath_d",
+					"-lnvcore_d",
+					"-lnvthread_d",
+					"-lnvimage_d",
+					"-lbc6h_d",
+					"-lbc7_d",
+					"-lsquish_d",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.VenoMKO.Real-Editor";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		F1D96B051D5F9F7100071E45 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LIBRARY = "compiler-default";
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = YES;
+				GCC_PREFIX_HEADER = System/prefix.pch;
+				HEADER_SEARCH_PATHS = (
+					"\"/Applications/Autodesk/FBX SDK/2017.0.1/include\"/**",
+					/usr/local/include,
+				);
+				INFOPLIST_FILE = System/Info.plist;
+				LIBRARY_SEARCH_PATHS = (
+					"\"/Applications/Autodesk/FBX SDK/2017.0.1/lib/clang/release\"",
+					"$(PROJECT_DIR)",
+					/usr/local/lib/static,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				OTHER_LDFLAGS = (
+					"-lnvtt_d",
+					"-lnvmath_d",
+					"-lnvcore_d",
+					"-lnvthread_d",
+					"-lnvimage_d",
+					"-lbc6h_d",
+					"-lbc7_d",
+					"-lsquish_d",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.VenoMKO.Real-Editor";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F1D96AED1D5F9F7100071E45 /* Build configuration list for PBXProject "Real Editor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F1D96B011D5F9F7100071E45 /* Debug */,
+				F1D96B021D5F9F7100071E45 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F1D96B031D5F9F7100071E45 /* Build configuration list for PBXNativeTarget "Real Editor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F1D96B041D5F9F7100071E45 /* Debug */,
+				F1D96B051D5F9F7100071E45 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F1D96AEA1D5F9F7100071E45 /* Project object */;
+}

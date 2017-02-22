@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11762"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="TextureCubeEditor">
+            <connections>
+                <outlet property="toolBarView" destination="Xiv-vM-MhN" id="y1D-T6-Qfh"/>
+                <outlet property="v" destination="gtV-ha-OAr" id="mqk-tZ-J1m"/>
+                <outlet property="view" destination="c22-O7-iKe" id="IfR-vY-vpF"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="c22-O7-iKe">
+            <rect key="frame" x="0.0" y="0.0" width="454" height="410"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gtV-ha-OAr">
+                    <rect key="frame" x="0.0" y="0.0" width="454" height="410"/>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="LmN-EQ-oay"/>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="self.render" id="Mac-LN-IEL"/>
+                    </connections>
+                </imageView>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="gtV-ha-OAr" secondAttribute="trailing" id="1RU-By-Uii"/>
+                <constraint firstAttribute="bottom" secondItem="gtV-ha-OAr" secondAttribute="bottom" id="bNE-h0-KVv"/>
+                <constraint firstItem="gtV-ha-OAr" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="e7F-WI-EvG"/>
+                <constraint firstItem="gtV-ha-OAr" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="iqH-Oc-JRv"/>
+            </constraints>
+            <point key="canvasLocation" x="330" y="360"/>
+        </customView>
+        <customView id="Xiv-vM-MhN">
+            <rect key="frame" x="0.0" y="0.0" width="454" height="39"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="aSQ-id-pgN">
+                    <rect key="frame" x="-1" y="18" width="69" height="23"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="KPa-aw-xZX"/>
+                    </constraints>
+                    <buttonCell key="cell" type="smallSquare" title="Export RAW" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="yAb-WI-Jj9">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="smallSystem"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="exportRaw:" target="-2" id="HrD-v1-WLU"/>
+                    </connections>
+                </button>
+            </subviews>
+            <constraints>
+                <constraint firstItem="aSQ-id-pgN" firstAttribute="top" secondItem="Xiv-vM-MhN" secondAttribute="top" constant="-1" id="RAb-jj-jsi"/>
+                <constraint firstItem="aSQ-id-pgN" firstAttribute="leading" secondItem="Xiv-vM-MhN" secondAttribute="leading" constant="-1" id="ozg-EY-nTh"/>
+            </constraints>
+            <point key="canvasLocation" x="330" y="655"/>
+        </customView>
+    </objects>
+</document>

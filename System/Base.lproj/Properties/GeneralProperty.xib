@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11762"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="PropertyController">
+            <connections>
+                <outlet property="view" destination="c22-O7-iKe" id="HvR-XJ-kAG"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView translatesAutoresizingMaskIntoConstraints="NO" id="c22-O7-iKe" customClass="PropertyView">
+            <rect key="frame" x="0.0" y="0.0" width="297" height="53"/>
+            <subviews>
+                <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="oZC-FH-jOR">
+                    <rect key="frame" x="9" y="30" width="32" height="14"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="14" id="jdY-CY-L4H"/>
+                    </constraints>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" title="Label" id="KA5-Tn-89m">
+                        <font key="font" metaFont="systemBold" size="10"/>
+                        <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="self.formattedName" id="YWK-Ky-DaA"/>
+                    </connections>
+                </textField>
+                <textField horizontalHuggingPriority="1" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="sSn-L6-yGd" customClass="CancelableTextField">
+                    <rect key="frame" x="11" y="10" width="275" height="16"/>
+                    <textFieldCell key="cell" controlSize="mini" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="Lmv-FA-7de">
+                        <font key="font" metaFont="miniSystem"/>
+                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="self.formattedValue" id="zL7-Ls-uPG"/>
+                    </connections>
+                </textField>
+                <box verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="qXc-lZ-Jrb">
+                    <rect key="frame" x="0.0" y="-2" width="297" height="5"/>
+                </box>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="WzO-dG-U9x">
+                    <rect key="frame" x="45" y="30" width="34" height="13"/>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Value:" id="I9E-jE-N4c">
+                        <font key="font" metaFont="system" size="10"/>
+                        <color key="textColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="self.formattedType" id="JmP-Ot-pEk"/>
+                    </connections>
+                </textField>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="qXc-lZ-Jrb" secondAttribute="bottom" id="55z-IL-Jix"/>
+                <constraint firstItem="WzO-dG-U9x" firstAttribute="centerY" secondItem="oZC-FH-jOR" secondAttribute="centerY" id="6YN-lA-3iT"/>
+                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="WzO-dG-U9x" secondAttribute="trailing" constant="11" id="CWU-c3-fTM"/>
+                <constraint firstAttribute="bottom" secondItem="sSn-L6-yGd" secondAttribute="bottom" constant="10" id="GJh-5E-XAv"/>
+                <constraint firstItem="sSn-L6-yGd" firstAttribute="top" secondItem="oZC-FH-jOR" secondAttribute="bottom" constant="4" id="OTI-lS-2Na"/>
+                <constraint firstItem="qXc-lZ-Jrb" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="PnE-e8-sZU"/>
+                <constraint firstAttribute="trailing" secondItem="qXc-lZ-Jrb" secondAttribute="trailing" id="Yp5-q6-WeM"/>
+                <constraint firstItem="oZC-FH-jOR" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="9" id="gZ1-7v-Khe"/>
+                <constraint firstItem="sSn-L6-yGd" firstAttribute="leading" secondItem="oZC-FH-jOR" secondAttribute="leading" id="iy3-Z5-tk3"/>
+                <constraint firstItem="oZC-FH-jOR" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="11" id="kXr-iM-eZv"/>
+                <constraint firstAttribute="trailing" secondItem="sSn-L6-yGd" secondAttribute="trailing" constant="11" id="naM-ay-3iT"/>
+                <constraint firstItem="WzO-dG-U9x" firstAttribute="leading" secondItem="oZC-FH-jOR" secondAttribute="trailing" constant="8" id="p1L-kd-DSL"/>
+            </constraints>
+            <point key="canvasLocation" x="324.5" y="448"/>
+        </customView>
+    </objects>
+</document>

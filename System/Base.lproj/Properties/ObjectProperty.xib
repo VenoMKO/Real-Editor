@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10117" systemVersion="15G1004" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="PropertyController">
+            <connections>
+                <outlet property="editHeight" destination="l9b-P3-iWV" id="qka-7Z-JPd"/>
+                <outlet property="editTrailing" destination="c0i-w4-2l8" id="TN8-Lc-owc"/>
+                <outlet property="objectBox" destination="fd0-FS-ZCu" id="7rH-EI-cDq"/>
+                <outlet property="textField" destination="sSn-L6-yGd" id="ejC-4Z-LfE"/>
+                <outlet property="view" destination="c22-O7-iKe" id="HvR-XJ-kAG"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView translatesAutoresizingMaskIntoConstraints="NO" id="c22-O7-iKe" customClass="PropertyView">
+            <rect key="frame" x="0.0" y="0.0" width="297" height="53"/>
+            <subviews>
+                <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="oZC-FH-jOR">
+                    <rect key="frame" x="9" y="30" width="32" height="14"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="14" id="jdY-CY-L4H"/>
+                    </constraints>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Label" id="KA5-Tn-89m">
+                        <font key="font" metaFont="systemBold" size="10"/>
+                        <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="self.formattedName" id="iDR-u5-5Ti"/>
+                    </connections>
+                </textField>
+                <textField horizontalHuggingPriority="1" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="sSn-L6-yGd" customClass="TextFieldWithGoButton">
+                    <rect key="frame" x="11" y="7" width="239" height="19"/>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="Lmv-FA-7de" customClass="TextFieldWithGoButtonCell">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="margin">
+                                <real key="value" value="18"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </textFieldCell>
+                    <connections>
+                        <binding destination="-2" name="hidden" keyPath="self.editMode" previousBinding="jsm-CP-KrZ" id="9S9-0h-QRC"/>
+                        <binding destination="-2" name="enabled" keyPath="self.editMode" id="jsm-CP-KrZ"/>
+                        <binding destination="-2" name="value" keyPath="self.formattedValue" id="zL7-Ls-uPG"/>
+                    </connections>
+                </textField>
+                <box verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="qXc-lZ-Jrb">
+                    <rect key="frame" x="0.0" y="-2" width="297" height="5"/>
+                    <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
+                    <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <font key="titleFont" metaFont="system"/>
+                </box>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="WzO-dG-U9x">
+                    <rect key="frame" x="45" y="30" width="34" height="13"/>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Value:" id="I9E-jE-N4c">
+                        <font key="font" metaFont="system" size="10"/>
+                        <color key="textColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="self.formattedType" id="Nn9-qs-zgB"/>
+                    </connections>
+                </textField>
+                <comboBox hidden="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fd0-FS-ZCu">
+                    <rect key="frame" x="11" y="4" width="242" height="22"/>
+                    <comboBoxCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" drawsBackground="YES" numberOfVisibleItems="5" id="x4E-us-2GX">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </comboBoxCell>
+                    <connections>
+                        <action selector="performClick:" target="LWS-sw-xTO" id="dXX-ic-YvM"/>
+                        <binding destination="-2" name="hidden" keyPath="self.editMode" id="ScH-Ha-8lA">
+                            <dictionary key="options">
+                                <string key="NSValueTransformerName">NSNegateBoolean</string>
+                            </dictionary>
+                        </binding>
+                    </connections>
+                </comboBox>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="LWS-sw-xTO">
+                    <rect key="frame" x="241" y="-26" width="56" height="28"/>
+                    <buttonCell key="cell" type="push" title="Apply" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="xpj-Ni-k0L">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="smallSystem"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="applyEdit:" target="-2" id="f12-bC-SPe"/>
+                        <binding destination="-2" name="enabled" keyPath="self.editMode" id="BgC-eh-hj9"/>
+                    </connections>
+                </button>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Q9Y-17-jAO">
+                    <rect key="frame" x="184" y="-26" width="62" height="28"/>
+                    <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="9uD-SP-bzM">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="smallSystem"/>
+                        <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
+                    </buttonCell>
+                    <connections>
+                        <action selector="toggleEdit:" target="-2" id="pxW-pX-XFM"/>
+                        <binding destination="-2" name="enabled" keyPath="self.editMode" id="Zub-la-3aH"/>
+                    </connections>
+                </button>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="kbH-X2-vst">
+                    <rect key="frame" x="250" y="2" width="47" height="28"/>
+                    <buttonCell key="cell" type="push" title="Edit" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="VMS-O4-REJ">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="smallSystem"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="toggleEdit:" target="-2" id="fUE-YI-kXZ"/>
+                        <binding destination="-2" name="enabled" keyPath="self.editMode" id="5yD-aK-VbI">
+                            <dictionary key="options">
+                                <string key="NSValueTransformerName">NSNegateBoolean</string>
+                            </dictionary>
+                        </binding>
+                    </connections>
+                </button>
+            </subviews>
+            <constraints>
+                <constraint firstItem="fd0-FS-ZCu" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="11" id="3a5-Jh-g6m"/>
+                <constraint firstAttribute="bottom" secondItem="qXc-lZ-Jrb" secondAttribute="bottom" id="55z-IL-Jix"/>
+                <constraint firstItem="LWS-sw-xTO" firstAttribute="leading" secondItem="Q9Y-17-jAO" secondAttribute="trailing" constant="5" id="6D4-P0-6EK"/>
+                <constraint firstItem="WzO-dG-U9x" firstAttribute="centerY" secondItem="oZC-FH-jOR" secondAttribute="centerY" id="6YN-lA-3iT"/>
+                <constraint firstItem="fd0-FS-ZCu" firstAttribute="top" secondItem="WzO-dG-U9x" secondAttribute="bottom" constant="5" id="B4L-Qq-lOn"/>
+                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="WzO-dG-U9x" secondAttribute="trailing" constant="11" id="CWU-c3-fTM"/>
+                <constraint firstItem="sSn-L6-yGd" firstAttribute="top" secondItem="oZC-FH-jOR" secondAttribute="bottom" constant="4" id="OTI-lS-2Na"/>
+                <constraint firstItem="qXc-lZ-Jrb" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="PnE-e8-sZU"/>
+                <constraint firstItem="LWS-sw-xTO" firstAttribute="top" secondItem="kbH-X2-vst" secondAttribute="bottom" constant="10" id="SG9-cr-KfV"/>
+                <constraint firstItem="kbH-X2-vst" firstAttribute="leading" secondItem="sSn-L6-yGd" secondAttribute="trailing" constant="5" id="SXQ-rS-cbu"/>
+                <constraint firstItem="kbH-X2-vst" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="27" id="Tfw-bD-sQ2"/>
+                <constraint firstItem="kbH-X2-vst" firstAttribute="leading" secondItem="fd0-FS-ZCu" secondAttribute="trailing" constant="5" id="U2S-nF-clt"/>
+                <constraint firstAttribute="trailing" secondItem="qXc-lZ-Jrb" secondAttribute="trailing" id="Yp5-q6-WeM"/>
+                <constraint firstAttribute="trailing" secondItem="kbH-X2-vst" secondAttribute="trailing" constant="5" id="c0i-w4-2l8"/>
+                <constraint firstItem="oZC-FH-jOR" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="9" id="gZ1-7v-Khe"/>
+                <constraint firstAttribute="trailing" secondItem="LWS-sw-xTO" secondAttribute="trailing" constant="5" id="gsU-lS-9gd"/>
+                <constraint firstItem="sSn-L6-yGd" firstAttribute="leading" secondItem="oZC-FH-jOR" secondAttribute="leading" id="iy3-Z5-tk3"/>
+                <constraint firstItem="oZC-FH-jOR" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="11" id="kXr-iM-eZv"/>
+                <constraint firstAttribute="height" constant="53" id="l9b-P3-iWV"/>
+                <constraint firstItem="WzO-dG-U9x" firstAttribute="leading" secondItem="oZC-FH-jOR" secondAttribute="trailing" constant="8" id="p1L-kd-DSL"/>
+                <constraint firstItem="Q9Y-17-jAO" firstAttribute="centerY" secondItem="LWS-sw-xTO" secondAttribute="centerY" id="tYC-dS-RRV"/>
+            </constraints>
+            <point key="canvasLocation" x="324.5" y="447.5"/>
+        </customView>
+    </objects>
+</document>

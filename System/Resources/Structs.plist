@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>RawDistributionFloat</key>
+	<string>Property</string>
+	<key>RawDistributionVector</key>
+	<string>Property</string>
+	<key>ExpressionInput</key>
+	<string>Property</string>
+	<key>VectorMaterialInput</key>
+	<string>Property</string>
+	<key>ScalarMaterialInput</key>
+	<string>Property</string>
+	<key>LightingChannelContainer</key>
+	<string>Property</string>
+	<key>KAggregateGeom</key>
+	<string>Property</string>
+	<key>CloudMesh</key>
+	<string>Property</string>
+	<key>SkyBackdrop</key>
+	<string>Property</string>
+	<key>SkySystem</key>
+	<string>Property</string>
+	<key>PostProcessSettings</key>
+	<string>Property</string>
+	<key>DirectionalLightSetting</key>
+	<string>Property</string>
+	<key>SkyLightSetting</key>
+	<string>Property</string>
+	<key>S1EnvironmentMapSetting</key>
+	<string>Property</string>
+	<key>S1DefaultPostProcessing</key>
+	<string>Property</string>
+	<key>S1LightProbeSetting</key>
+	<string>Property</string>
+	<key>S1PostProcessing</key>
+	<string>Property</string>
+	<key>S1WindSetting</key>
+	<string>Property</string>
+	<key>ColorMaterialInput</key>
+	<string>Property</string>
+	<key>ClimateSetting</key>
+	<string>Property</string>
+</dict>
+</plist>

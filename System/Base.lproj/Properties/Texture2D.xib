@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11762"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="Texture2DEditor">
+            <connections>
+                <outlet property="a" destination="WJb-iG-wQf" id="aac-Bl-eX7"/>
+                <outlet property="b" destination="j9Z-dr-NH4" id="j2B-Ax-S4i"/>
+                <outlet property="exportOptionsView" destination="dmB-dO-HFP" id="EbJ-wK-pTe"/>
+                <outlet property="exportType" destination="qOR-7D-BYD" id="Cdf-P5-dj8"/>
+                <outlet property="g" destination="hZH-Mu-eMW" id="0Oj-eC-sfy"/>
+                <outlet property="imageView" destination="Re0-Nt-OUa" id="MJe-o9-Jvr"/>
+                <outlet property="importOptionsView" destination="eFO-J8-2WQ" id="QIB-a6-q7H"/>
+                <outlet property="r" destination="Edg-x7-Gcn" id="7qX-n8-xKj"/>
+                <outlet property="toolBarView" destination="Xiv-vM-MhN" id="y1D-T6-Qfh"/>
+                <outlet property="view" destination="OEU-YH-pbN" id="0fp-sm-WXO"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="Xiv-vM-MhN">
+            <rect key="frame" x="0.0" y="0.0" width="454" height="39"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8t1-b8-KBn">
+                    <rect key="frame" x="-1" y="18" width="69" height="23"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="iuM-mR-cDF"/>
+                    </constraints>
+                    <buttonCell key="cell" type="smallSquare" title="Export RAW" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="f8Q-KE-eTN">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="smallSystem"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="exportRaw:" target="-2" id="PMd-VF-gbw"/>
+                    </connections>
+                </button>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xGv-Ho-vwi">
+                    <rect key="frame" x="67" y="-2" width="69" height="23"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="tpq-Ch-XHK"/>
+                    </constraints>
+                    <buttonCell key="cell" type="smallSquare" title="Import" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="fz7-CX-rVQ">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="smallSystem"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="importData:" target="-2" id="K4p-DK-fmZ"/>
+                    </connections>
+                </button>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2mL-O6-MW4">
+                    <rect key="frame" x="-1" y="-2" width="69" height="23"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="WDi-Nf-GTX"/>
+                    </constraints>
+                    <buttonCell key="cell" type="smallSquare" title="Import RAW" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Rwu-zJ-1dj">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="smallSystem"/>
+                    </buttonCell>
+                </button>
+                <button translatesAutoresizingMaskIntoConstraints="NO" id="Edg-x7-Gcn">
+                    <rect key="frame" x="142" y="20" width="31" height="18"/>
+                    <buttonCell key="cell" type="check" title="R" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="kQA-sT-i5G">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="setChannel:" target="-2" id="Orl-Y6-HEp"/>
+                    </connections>
+                </button>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="MY0-LG-gBy">
+                    <rect key="frame" x="143" y="3" width="135" height="16"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="133" id="KY9-Aw-oe0"/>
+                    </constraints>
+                    <buttonCell key="cell" type="push" title="Invert channels" bezelStyle="rounded" alignment="center" controlSize="mini" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="FvN-kz-Peb">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="miniSystem"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="invertChannels:" target="-2" id="J9L-4G-LNU"/>
+                    </connections>
+                </button>
+                <button translatesAutoresizingMaskIntoConstraints="NO" id="hZH-Mu-eMW">
+                    <rect key="frame" x="177" y="20" width="32" height="18"/>
+                    <buttonCell key="cell" type="check" title="G" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="KT4-7d-SQF">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="setChannel:" target="-2" id="D9V-zo-oek"/>
+                    </connections>
+                </button>
+                <button translatesAutoresizingMaskIntoConstraints="NO" id="j9Z-dr-NH4">
+                    <rect key="frame" x="213" y="20" width="31" height="18"/>
+                    <buttonCell key="cell" type="check" title="B" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="4AT-0y-6Yd">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="setChannel:" target="-2" id="ZYl-tz-65Q"/>
+                    </connections>
+                </button>
+                <button translatesAutoresizingMaskIntoConstraints="NO" id="WJb-iG-wQf">
+                    <rect key="frame" x="248" y="20" width="31" height="18"/>
+                    <buttonCell key="cell" type="check" title="A" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="7IE-FD-b4x">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="setChannel:" target="-2" id="g1v-2Q-uhO"/>
+                    </connections>
+                </button>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6rM-07-MW0">
+                    <rect key="frame" x="67" y="18" width="69" height="23"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="8dF-jQ-lgF"/>
+                    </constraints>
+                    <buttonCell key="cell" type="smallSquare" title="Export" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="kRU-1o-fxv">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="smallSystem"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="exportData:" target="-2" id="HHX-aa-IlB"/>
+                    </connections>
+                </button>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="2mL-O6-MW4" secondAttribute="bottom" constant="-1" id="1fF-Gl-y1U"/>
+                <constraint firstItem="hZH-Mu-eMW" firstAttribute="centerY" secondItem="Edg-x7-Gcn" secondAttribute="centerY" id="210-V4-vfY"/>
+                <constraint firstItem="j9Z-dr-NH4" firstAttribute="centerY" secondItem="Edg-x7-Gcn" secondAttribute="centerY" id="2ES-vV-CSO"/>
+                <constraint firstItem="8t1-b8-KBn" firstAttribute="top" secondItem="Xiv-vM-MhN" secondAttribute="top" constant="-1" id="2c2-xg-hKK"/>
+                <constraint firstItem="6rM-07-MW0" firstAttribute="width" secondItem="8t1-b8-KBn" secondAttribute="width" id="9dZ-BX-k75"/>
+                <constraint firstItem="2mL-O6-MW4" firstAttribute="leading" secondItem="Xiv-vM-MhN" secondAttribute="leading" constant="-1" id="JzB-6z-0at"/>
+                <constraint firstItem="6rM-07-MW0" firstAttribute="leading" secondItem="8t1-b8-KBn" secondAttribute="trailing" constant="-1" id="KOr-Cj-Ebh"/>
+                <constraint firstItem="Edg-x7-Gcn" firstAttribute="top" secondItem="Xiv-vM-MhN" secondAttribute="top" constant="3" id="KVF-eb-mSA"/>
+                <constraint firstItem="MY0-LG-gBy" firstAttribute="leading" secondItem="xGv-Ho-vwi" secondAttribute="trailing" constant="8" id="OIf-mb-AYn"/>
+                <constraint firstItem="hZH-Mu-eMW" firstAttribute="leading" secondItem="Edg-x7-Gcn" secondAttribute="trailing" constant="8" id="YtE-sP-gmB"/>
+                <constraint firstItem="MY0-LG-gBy" firstAttribute="top" secondItem="WJb-iG-wQf" secondAttribute="bottom" constant="3" id="YuO-7O-2ol"/>
+                <constraint firstItem="8t1-b8-KBn" firstAttribute="leading" secondItem="Xiv-vM-MhN" secondAttribute="leading" constant="-1" id="ZnY-te-dfY"/>
+                <constraint firstItem="xGv-Ho-vwi" firstAttribute="leading" secondItem="2mL-O6-MW4" secondAttribute="trailing" constant="-1" id="a4r-ML-jwo"/>
+                <constraint firstItem="6rM-07-MW0" firstAttribute="top" secondItem="Xiv-vM-MhN" secondAttribute="top" constant="-1" id="bsI-9Z-up3"/>
+                <constraint firstItem="Edg-x7-Gcn" firstAttribute="leading" secondItem="6rM-07-MW0" secondAttribute="trailing" constant="8" id="cFR-mF-4lz"/>
+                <constraint firstItem="WJb-iG-wQf" firstAttribute="leading" secondItem="j9Z-dr-NH4" secondAttribute="trailing" constant="8" id="dLb-8m-0Xr"/>
+                <constraint firstItem="WJb-iG-wQf" firstAttribute="centerY" secondItem="Edg-x7-Gcn" secondAttribute="centerY" id="dac-qC-Zti"/>
+                <constraint firstItem="2mL-O6-MW4" firstAttribute="width" secondItem="8t1-b8-KBn" secondAttribute="width" id="dwi-WB-qDu"/>
+                <constraint firstAttribute="bottom" secondItem="xGv-Ho-vwi" secondAttribute="bottom" constant="-1" id="j1Q-gP-MUn"/>
+                <constraint firstItem="j9Z-dr-NH4" firstAttribute="leading" secondItem="hZH-Mu-eMW" secondAttribute="trailing" constant="8" id="smQ-da-iN3"/>
+                <constraint firstItem="xGv-Ho-vwi" firstAttribute="width" secondItem="8t1-b8-KBn" secondAttribute="width" id="uDR-EX-ORZ"/>
+            </constraints>
+            <point key="canvasLocation" x="321" y="665.5"/>
+        </customView>
+        <customView id="dmB-dO-HFP">
+            <rect key="frame" x="0.0" y="0.0" width="426" height="69"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qOR-7D-BYD">
+                    <rect key="frame" x="103" y="34" width="266" height="26"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <popUpButtonCell key="cell" type="push" title="TrueVision Targa (TGA)" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" tag="1" imageScaling="proportionallyDown" inset="2" selectedItem="Ton-dp-8DQ" id="9bV-fM-7Kx">
+                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="menu"/>
+                        <menu key="menu" id="qPP-zT-2EK">
+                            <items>
+                                <menuItem title="DirectDrawSurface (DDS)" id="WdF-Md-Pji"/>
+                                <menuItem title="TrueVision Targa (TGA)" state="on" tag="1" id="Ton-dp-8DQ">
+                                    <modifierMask key="keyEquivalentModifierMask"/>
+                                </menuItem>
+                            </items>
+                        </menu>
+                    </popUpButtonCell>
+                    <connections>
+                        <action selector="switchExportType:" target="-2" id="Yay-BL-Wh4"/>
+                    </connections>
+                </popUpButton>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="boi-J7-WB6">
+                    <rect key="frame" x="61" y="39" width="38" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Type:" id="XgW-6Z-8Vl">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tKG-vA-sAI">
+                    <rect key="frame" x="103" y="11" width="145" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="check" title="Swizzle Coordinates" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="Kv4-Lh-s6w">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="-2" name="enabled" keyPath="self.exportType.selectedTag" id="PZq-VK-DvI"/>
+                        <binding destination="-2" name="value" keyPath="self.exportSwizzleY" id="xTu-Gm-EA5"/>
+                    </connections>
+                </button>
+            </subviews>
+            <point key="canvasLocation" x="340" y="819.5"/>
+        </customView>
+        <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" allowsMagnification="YES" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="allowed" verticalScrollElasticity="allowed" id="OEU-YH-pbN">
+            <rect key="frame" x="0.0" y="0.0" width="379" height="354"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <clipView key="contentView" wantsLayer="YES" id="KqU-R9-ZcX" customClass="CenteredClipView">
+                <rect key="frame" x="0.0" y="0.0" width="379" height="354"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view translatesAutoresizingMaskIntoConstraints="NO" id="Re0-Nt-OUa" customClass="TextureView">
+                        <rect key="frame" x="0.0" y="0.0" width="379" height="354"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="379" placeholder="YES" id="Y5l-VK-LQf"/>
+                            <constraint firstAttribute="height" constant="354" placeholder="YES" id="vTA-ah-wbz"/>
+                        </constraints>
+                        <connections>
+                            <outlet property="scroll" destination="OEU-YH-pbN" id="5fR-0m-IqQ"/>
+                        </connections>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="Re0-Nt-OUa" firstAttribute="leading" secondItem="KqU-R9-ZcX" secondAttribute="leading" id="5ow-48-adz"/>
+                    <constraint firstAttribute="bottom" relation="lessThanOrEqual" secondItem="Re0-Nt-OUa" secondAttribute="bottom" id="6G3-Dm-zCk"/>
+                    <constraint firstItem="Re0-Nt-OUa" firstAttribute="top" secondItem="KqU-R9-ZcX" secondAttribute="top" id="jtC-rQ-ZmA"/>
+                    <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="Re0-Nt-OUa" secondAttribute="trailing" id="yQW-8i-45z"/>
+                </constraints>
+                <color key="backgroundColor" name="windowBackgroundColor" catalog="System" colorSpace="catalog"/>
+                <userDefinedRuntimeAttributes>
+                    <userDefinedRuntimeAttribute type="boolean" keyPath="centersDocumentView" value="YES"/>
+                </userDefinedRuntimeAttributes>
+            </clipView>
+            <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="dOv-vc-yzj">
+                <rect key="frame" x="0.0" y="338" width="379" height="16"/>
+                <autoresizingMask key="autoresizingMask"/>
+            </scroller>
+            <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="QxB-R1-zvO">
+                <rect key="frame" x="363" y="0.0" width="16" height="354"/>
+                <autoresizingMask key="autoresizingMask"/>
+            </scroller>
+            <point key="canvasLocation" x="589.5" y="283"/>
+        </scrollView>
+        <customView id="eFO-J8-2WQ">
+            <rect key="frame" x="0.0" y="0.0" width="426" height="74"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8Bl-eS-0AE">
+                    <rect key="frame" x="94" y="43" width="106" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="check" title="Is NormalMap" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="6mI-hP-Spm">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="self.importIsNormal" id="4S9-LZ-U2M"/>
+                        <binding destination="-2" name="enabled" keyPath="self.importIsNormalEnabled" id="yro-mo-7Xh"/>
+                    </connections>
+                </button>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sJw-cC-rk5">
+                    <rect key="frame" x="225" y="43" width="137" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="check" title="Generate Mipmaps" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="5Z0-cX-GXk">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="self.importGenMips" id="5Cj-KQ-jcC"/>
+                        <binding destination="-2" name="enabled" keyPath="self.importGenMipsEnabled" id="rdn-eH-XJu"/>
+                    </connections>
+                </button>
+                <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="W81-JY-i5x">
+                    <rect key="frame" x="124" y="6" width="266" height="26"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <popUpButtonCell key="cell" type="push" title="Auto" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="gsw-fC-ub1" id="uil-Ew-t88">
+                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="menu"/>
+                        <menu key="menu" id="iOv-z5-6nM">
+                            <items>
+                                <menuItem title="Auto" state="on" id="gsw-fC-ub1">
+                                    <modifierMask key="keyEquivalentModifierMask"/>
+                                </menuItem>
+                                <menuItem title="DXT1" tag="1" id="0IP-MZ-BKO"/>
+                                <menuItem title="DXT3" tag="2" id="uvN-hd-doM"/>
+                                <menuItem title="DXT5" tag="3" id="pPe-Pz-M4q">
+                                    <modifierMask key="keyEquivalentModifierMask"/>
+                                </menuItem>
+                                <menuItem title="A8R8G8B8" tag="4" id="Tvc-MN-AYE">
+                                    <modifierMask key="keyEquivalentModifierMask"/>
+                                </menuItem>
+                                <menuItem title="G8" tag="5" id="sjX-ou-kq5">
+                                    <modifierMask key="keyEquivalentModifierMask"/>
+                                </menuItem>
+                            </items>
+                        </menu>
+                    </popUpButtonCell>
+                    <connections>
+                        <binding destination="-2" name="selectedTag" keyPath="self.importFormat" id="bRA-P6-Z3K"/>
+                        <binding destination="-2" name="enabled" keyPath="self.importFormatEnabled" id="Mfa-Ah-IYq"/>
+                    </connections>
+                </popUpButton>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ii4-i9-2Ik">
+                    <rect key="frame" x="69" y="12" width="51" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Format:" id="l1g-ea-NEh">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+            </subviews>
+            <point key="canvasLocation" x="321" y="1018"/>
+        </customView>
+    </objects>
+</document>

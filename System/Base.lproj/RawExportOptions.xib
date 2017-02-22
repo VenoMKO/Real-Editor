@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10117" systemVersion="15G1004" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="RawExportOptions">
+            <connections>
+                <outlet property="exportAllModeButton" destination="iyl-Sh-qNh" id="tGf-CJ-q1i"/>
+                <outlet property="exportDataModeButton" destination="bqc-nK-bbv" id="FJa-Uc-UJe"/>
+                <outlet property="exportPropertiesModeButton" destination="5c0-ch-T9S" id="Aj6-nE-DEH"/>
+                <outlet property="view" destination="nNs-80-pJJ" id="Cja-hw-SWq"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="nNs-80-pJJ">
+            <rect key="frame" x="0.0" y="0.0" width="348" height="96"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <button translatesAutoresizingMaskIntoConstraints="NO" id="bqc-nK-bbv">
+                    <rect key="frame" x="89" y="59" width="93" height="18"/>
+                    <buttonCell key="cell" type="radio" title="Object data" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="VdF-Il-ab5">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="switchSaveMode:" target="-2" id="giI-vT-mK1"/>
+                    </connections>
+                </button>
+                <button tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="iyl-Sh-qNh">
+                    <rect key="frame" x="89" y="37" width="172" height="18"/>
+                    <buttonCell key="cell" type="radio" title="Object data &amp; properties" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="KBU-2i-uaF">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="switchSaveMode:" target="-2" id="Iw4-X9-vuI"/>
+                    </connections>
+                </button>
+                <button tag="2" translatesAutoresizingMaskIntoConstraints="NO" id="5c0-ch-T9S">
+                    <rect key="frame" x="89" y="15" width="114" height="18"/>
+                    <buttonCell key="cell" type="radio" title="Properties only" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="VrL-9o-xV6">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="switchSaveMode:" target="-2" id="ncN-jq-D2y"/>
+                    </connections>
+                </button>
+            </subviews>
+            <constraints>
+                <constraint firstItem="5c0-ch-T9S" firstAttribute="top" secondItem="iyl-Sh-qNh" secondAttribute="bottom" constant="6" id="1UJ-bG-LlK"/>
+                <constraint firstItem="iyl-Sh-qNh" firstAttribute="centerX" secondItem="nNs-80-pJJ" secondAttribute="centerX" id="508-iR-VCj"/>
+                <constraint firstItem="bqc-nK-bbv" firstAttribute="top" secondItem="nNs-80-pJJ" secondAttribute="top" constant="20" id="TBU-k9-LIV"/>
+                <constraint firstAttribute="bottom" secondItem="5c0-ch-T9S" secondAttribute="bottom" constant="16" id="jgg-Yb-lzR"/>
+                <constraint firstItem="iyl-Sh-qNh" firstAttribute="leading" secondItem="bqc-nK-bbv" secondAttribute="leading" id="lNx-ws-gX7"/>
+                <constraint firstItem="5c0-ch-T9S" firstAttribute="leading" secondItem="bqc-nK-bbv" secondAttribute="leading" id="ni0-m4-PAi"/>
+                <constraint firstItem="iyl-Sh-qNh" firstAttribute="top" secondItem="bqc-nK-bbv" secondAttribute="bottom" constant="6" id="u6V-Ig-HdQ"/>
+            </constraints>
+            <point key="canvasLocation" x="343" y="441"/>
+        </customView>
+    </objects>
+</document>
