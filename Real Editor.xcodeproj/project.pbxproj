@@ -242,6 +242,7 @@
 		F16AE4251E0D10E1009C3897 /* StaticMeshEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StaticMeshEditor.h; sourceTree = "<group>"; };
 		F16AE4261E0D10E1009C3897 /* StaticMeshEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StaticMeshEditor.m; sourceTree = "<group>"; };
 		F16AE4291E0D15F3009C3897 /* StaticMesh.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StaticMesh.xib; sourceTree = "<group>"; };
+		F16DED2F1E5D861700ED5F8D /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		F172072C1E16D51400391BED /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = NewImport.xib; sourceTree = "<group>"; };
 		F17A4B591D7C337100341598 /* ObjectRedirector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectRedirector.h; sourceTree = "<group>"; };
 		F17A4B5A1D7C337100341598 /* ObjectRedirector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjectRedirector.m; sourceTree = "<group>"; };
@@ -622,6 +623,7 @@
 				F1D96AF31D5F9F7100071E45 /* Products */,
 				F1170ECE1D60714100262974 /* Frameworks */,
 				F1B0081C1D5FBA0D00B40C2D /* Resources.xcassets */,
+				F16DED2F1E5D861700ED5F8D /* LICENSE */,
 			);
 			sourceTree = "<group>";
 		};
