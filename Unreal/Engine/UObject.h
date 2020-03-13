@@ -60,6 +60,7 @@ typedef NS_ENUM(int, UObjectExportOptions)
 - (NSString *)objectPath;
 
 - (FPropertyTag *)propertyForName:(NSString *)aName;
+- (id)propertyValue:(NSString *)name;
 
 - (void)cleanup;
 - (void)testCook;

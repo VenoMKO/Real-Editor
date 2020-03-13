@@ -88,6 +88,15 @@
   return @{@"x" : @(self.x), @"y" : @(self.y), @"z" : @(self.z), @"type" : @"3"};
 }
 
++ (instancetype)vectorX:(double)x y:(double)y z:(double)z
+{
+  FVector3 *v = [FVector3 new];
+  v.x = x;
+  v.y = y;
+  v.z = z;
+  return v;
+}
+
 - (GLKVector3)glkVector3
 {
   return GLKVector3Make(self.x, self.y, self.z);

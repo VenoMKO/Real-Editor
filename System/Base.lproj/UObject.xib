@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15705" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11762"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15705"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -18,29 +18,18 @@
             <rect key="frame" x="0.0" y="0.0" width="454" height="410"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <visualEffectView appearanceType="vibrantLight" blendingMode="behindWindow" material="appearanceBased" state="followsWindowActiveState" translatesAutoresizingMaskIntoConstraints="NO" id="BS6-Dw-Df6">
-                    <rect key="frame" x="0.0" y="0.0" width="454" height="410"/>
-                    <subviews>
-                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QZd-SS-kd2">
-                            <rect key="frame" x="125" y="190" width="205" height="29"/>
-                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="No Editor Available" id="nbO-Iq-U6W">
-                                <font key="font" metaFont="system" size="24"/>
-                                <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
-                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                            </textFieldCell>
-                        </textField>
-                    </subviews>
-                    <constraints>
-                        <constraint firstItem="QZd-SS-kd2" firstAttribute="centerY" secondItem="BS6-Dw-Df6" secondAttribute="centerY" id="Cx7-gI-IgH"/>
-                        <constraint firstItem="QZd-SS-kd2" firstAttribute="centerX" secondItem="BS6-Dw-Df6" secondAttribute="centerX" id="XmD-Jg-rQ8"/>
-                    </constraints>
-                </visualEffectView>
+                <textField wantsLayer="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" alphaValue="0.20000000000000001" translatesAutoresizingMaskIntoConstraints="NO" id="QZd-SS-kd2">
+                    <rect key="frame" x="128" y="191" width="199" height="28"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="No Editor Available" id="nbO-Iq-U6W">
+                        <font key="font" metaFont="system" size="24"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
             </subviews>
             <constraints>
-                <constraint firstItem="BS6-Dw-Df6" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="1Kp-MU-aG8"/>
-                <constraint firstAttribute="bottom" secondItem="BS6-Dw-Df6" secondAttribute="bottom" id="Yrf-bG-vyu"/>
-                <constraint firstAttribute="trailing" secondItem="BS6-Dw-Df6" secondAttribute="trailing" id="j4b-5C-GBT"/>
-                <constraint firstItem="BS6-Dw-Df6" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="qrZ-Om-jNj"/>
+                <constraint firstItem="QZd-SS-kd2" firstAttribute="centerY" secondItem="c22-O7-iKe" secondAttribute="centerY" id="aBL-vf-jZe"/>
+                <constraint firstItem="QZd-SS-kd2" firstAttribute="centerX" secondItem="c22-O7-iKe" secondAttribute="centerX" id="exc-wP-ozw"/>
             </constraints>
             <point key="canvasLocation" x="330" y="360"/>
         </customView>
@@ -55,7 +44,7 @@
                     </constraints>
                     <buttonCell key="cell" type="smallSquare" title="Export RAW" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="yAb-WI-Jj9">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="smallSystem"/>
+                        <font key="font" metaFont="controlContent" size="11"/>
                     </buttonCell>
                     <connections>
                         <action selector="exportRaw:" target="-2" id="HrD-v1-WLU"/>

@@ -10,14 +10,10 @@
 
 #define DEFAULT_RADIUS  50.f
 #define ZOOM_STEP       400.0f
+#define DEFAULT_ZFAR    100000.
 #define DEFAULT_CAM_X   -25.f
 #define DEFAULT_CAM_Y   35.f
 #define DEFAULT_CAM_Z   0.f
-
-static CGFloat FovToUE3Fov(CGFloat fov)
-{
-  return fov * .5f;
-}
 
 @implementation ModelView
 
@@ -62,11 +58,10 @@ static CGFloat FovToUE3Fov(CGFloat fov)
   if (!self.orbitNode) {
     SCNNode *cameraNode = [SCNNode node];
     cameraNode.camera = [SCNCamera camera];
-    cameraNode.camera.zNear = 1.0;
-    cameraNode.camera.zFar = 300.0;
+    cameraNode.camera.zNear = 1.;
+    cameraNode.camera.zFar = DEFAULT_ZFAR;
     CGFloat fov = [[NSUserDefaults standardUserDefaults] doubleForKey:kSettingsFov];
-    cameraNode.camera.xFov = FovToUE3Fov(fov);
-    cameraNode.camera.yFov = FovToUE3Fov(fov);
+    cameraNode.camera.focalLength = fov;
     self.cameraNode = cameraNode;
     SCNNode *orbitNode = [SCNNode node];
     [orbitNode addChildNode:cameraNode];
@@ -124,7 +119,7 @@ static CGFloat FovToUE3Fov(CGFloat fov)
 - (void)reset
 {
   radius = DEFAULT_RADIUS;
-  self.cameraNode.camera.zFar = DBL_MAX;
+  self.cameraNode.camera.zFar = DEFAULT_ZFAR;
   if (self.materialView)
   {
     radius = 60;
@@ -184,12 +179,6 @@ static CGFloat FovToUE3Fov(CGFloat fov)
         if (bck == DEFAULT_RADIUS)
           radius *= 2.75f;
         minRadius = radius * .01f;
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:kSettingsLoadFog])
-        {
-          self.scene.fogColor = self.backgroundColor;
-          self.scene.fogStartDistance = radius * (self.increaseFogDensity ?  .75 : 2.0);
-          self.scene.fogEndDistance = radius * (self.increaseFogDensity ?  4.0 : 7.0);
-        }
       }
     }
   }
@@ -210,79 +199,5 @@ static CGFloat FovToUE3Fov(CGFloat fov)
   }
   
 }
-/*
-- (void)rightMouseDragged:(NSEvent *)theEvent
-{
-  if (_locked || !self.allowsCameraControl)
-  {
-    [super rightMouseDragged:theEvent];
-    return;
-  }
-  SCNVector3 pos =  self.cameraNode.position;
-  
-  CGFloat baseRatio = radius / ZOOM_STEP * .005f;
-  
-  if (theEvent.modifierFlags & NSShiftKeyMask)
-    baseRatio *= 3.f;
-  
-  baseRatio *= self.cameraNode.position.z / minRadius;
-  
-  
-  pos.x += theEvent.deltaX * -baseRatio;
-  pos.y += theEvent.deltaY * baseRatio;
-  
-  GLKVector3 L = GLKVector3Make(pos.x, pos.y, pos.z);
-  GLKVector3 R = GLKVector3Make(self.cameraNode.position.x, self.cameraNode.position.y, self.cameraNode.position.z);
-  GLKVector3 t = GLKVector3Subtract(L, R);
-  SCNVector3 pos2 = SCNVector3Make(t.x, t.y, t.z);
-  
-  pos = self.orbitNode.position;
-  pos.x += pos2.x;
-  pos.y += pos2.y;
-  pos.z += pos2.z;
-  
-  self.orbitNode.position = pos;
-}
-- (void)mouseDragged:(NSEvent *)theEvent
-{
-  if (_locked || !self.allowsCameraControl)
-  {
-    [super mouseDragged:theEvent];
-    return;
-  }
-  
-  SCNVector3 euler = self.orbitNode.eulerAngles;
-  
-  CGPoint delta;
-  // Swap X & Y
-  delta.x = theEvent.deltaY;
-  delta.y = theEvent.deltaX;
-  
-  self.orbitNode.eulerAngles = SCNVector3Make(-M_2_PI * delta.x * .02f + euler.x,
-                                              -M_2_PI * delta.y * .02f + euler.y,
-                                              euler.z);
-}
-
-- (void)scrollWheel:(NSEvent *)theEvent
-{
-  if (_locked || !!self.allowsCameraControl)
-  {
-    [super scrollWheel:theEvent];
-    return;
-  }
-  CGFloat delta = 0.f;
-  if (theEvent.modifierFlags & NSShiftKeyMask)
-    delta = theEvent.deltaX;
-  else
-    delta = theEvent.deltaY;
-  
-  CGFloat baseRatio = radius / ZOOM_STEP;
-  CGFloat ratio = (theEvent.modifierFlags & NSShiftKeyMask) ? (baseRatio * 3.f) : baseRatio;
-  SCNVector3 pos = self.cameraNode.position;
-  pos.z += (delta * ratio);
-  if (pos.z < minRadius)
-    pos.z = minRadius;
-  self.cameraNode.position = pos;
-}*/
 
 @end

@@ -16,7 +16,6 @@ NSString *const kErrorUnexpectedEnd = @"Unexpected end of file!";
 NSString *const kSettingsSaveAsPath = @"com.VenoMKO.Real-Editor.SettingsSaveAsPath";
 NSString *const kSettingsLoadTextures = @"com.VenoMKO.Real-Editor.SettingsLoadTextures";
 NSString *const kSettingsLoadLights = @"com.VenoMKO.Real-Editor.SettingsLoadLights";
-NSString *const kSettingsLoadFog =  @"com.VenoMKO.Real-Editor.SettingsLoadFog";
 NSString *const kSettingsShowObjectInfo = @"com.VenoMKO.Real-Editor.SettingsShowObjectInfo";
 NSString *const kSettingsCacheSize = @"com.VenoMKO.Real-Editor.SettingsCacheSize";
 NSString *const kSettingsAAMode = @"com.VenoMKO.Real-Editor.AA-Mode";
@@ -85,8 +84,7 @@ NSDictionary *Defaults()
            kSettingsImportPath : NSHomeDirectory(),
            kSettingsCheckForUpdates : @(YES),
            kSettingsLogging : @(YES),
-           kSettingsRetention : @(7),
-           kSettingsLoadFog : @(YES)
+           kSettingsRetention : @(7)
            };
 }
 

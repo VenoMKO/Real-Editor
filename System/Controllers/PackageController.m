@@ -188,7 +188,6 @@
 
 - (void)windowDidLoad
 {
-  self.navigatorEffectView.appearance = self.package.allExports.count < 300 ? [NSAppearance appearanceNamed:NSAppearanceNameAqua] : [NSAppearance appearanceNamed:NSAppearanceNameAqua];
   [self.window setRepresentedURL:self.package.originalURL ? self.package.originalURL : self.package.stream.url];
   [[NSNotificationCenter defaultCenter]
    addObserver:self

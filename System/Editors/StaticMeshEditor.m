@@ -148,14 +148,3 @@
 }
 
 @end
-
-@implementation TerrainEditor
-
-- (void)viewDidLoad
-{
-  [self defaultMaterial];
-  [self.sceneView setup];
-  [self.sceneView.objectNode addChildNode:[self.object renderNode:0]];
-}
-
-@end

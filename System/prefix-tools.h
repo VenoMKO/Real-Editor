@@ -16,7 +16,6 @@ FOUNDATION_EXPORT NSString *const kErrorUnexpectedEnd;
 FOUNDATION_EXPORT NSString *const kSettingsSaveAsPath;
 FOUNDATION_EXPORT NSString *const kSettingsLoadTextures;
 FOUNDATION_EXPORT NSString *const kSettingsLoadLights;
-FOUNDATION_EXPORT NSString *const kSettingsLoadFog;
 FOUNDATION_EXPORT NSString *const kSettingsShowObjectInfo;
 FOUNDATION_EXPORT NSString *const kSettingsCacheSize;
 FOUNDATION_EXPORT NSString *const kSettingsAAMode;

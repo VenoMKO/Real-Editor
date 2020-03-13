@@ -34,7 +34,6 @@
 		F117F0EF1E35F3AE005A4950 /* Brush.m in Sources */ = {isa = PBXBuildFile; fileRef = F117F0EE1E35F3AE005A4950 /* Brush.m */; };
 		F12695AB1D5FAA8C004A1B3B /* TextButton.m in Sources */ = {isa = PBXBuildFile; fileRef = F12695AA1D5FAA8C004A1B3B /* TextButton.m */; };
 		F12B17361DD730E000226E73 /* DDSUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = F12B17351DD730E000226E73 /* DDSUtils.mm */; };
-		F12B173B1DDA3C6D00226E73 /* libfbxsdk.dylib in Copy Files */ = {isa = PBXBuildFile; fileRef = F1A2088B1D9000F9005DCE79 /* libfbxsdk.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		F132E17C1E0FB6DC001CDB47 /* TextureCubeEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = F132E17B1E0FB6DC001CDB47 /* TextureCubeEditor.m */; };
 		F132E17F1E0FBCFB001CDB47 /* TextureCube.xib in Resources */ = {isa = PBXBuildFile; fileRef = F132E17E1E0FBCFB001CDB47 /* TextureCube.xib */; };
 		F132E1831E0FCB37001CDB47 /* TextureCube.m in Sources */ = {isa = PBXBuildFile; fileRef = F132E1821E0FCB37001CDB47 /* TextureCube.m */; };
@@ -107,6 +106,9 @@
 		F1D96B161D5FA0DC00071E45 /* Package.xib in Resources */ = {isa = PBXBuildFile; fileRef = F1D96B141D5FA0DC00071E45 /* Package.xib */; };
 		F1DDAAC21E31DF6700D46A35 /* TextBuffer.xib in Resources */ = {isa = PBXBuildFile; fileRef = F1DDAAC11E31DF6700D46A35 /* TextBuffer.xib */; };
 		F1DDAAC61E31DFD100D46A35 /* TextBufferEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = F1DDAAC51E31DFD100D46A35 /* TextBufferEditor.m */; };
+		F1E5290E2418E39600B68DB3 /* libfbxsdk.dylib in Copy Files */ = {isa = PBXBuildFile; fileRef = F1E5290D2418E39600B68DB3 /* libfbxsdk.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		F1E52911241A068100B68DB3 /* TerrainEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = F1E52910241A068100B68DB3 /* TerrainEditor.m */; };
+		F1E52913241A087500B68DB3 /* Terrain.xib in Resources */ = {isa = PBXBuildFile; fileRef = F1E52912241A087500B68DB3 /* Terrain.xib */; };
 		F1EB8CA41E39C5D5004F7EB3 /* FLightMap.m in Sources */ = {isa = PBXBuildFile; fileRef = F1EB8CA31E39C5D5004F7EB3 /* FLightMap.m */; };
 		F1EB8CA81E3B46EF004F7EB3 /* TerrainComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = F1EB8CA71E3B46EF004F7EB3 /* TerrainComponent.m */; };
 		F1F80CB41E432DF60045A4C7 /* RawProperty.xib in Resources */ = {isa = PBXBuildFile; fileRef = F1F80CB31E432DF60045A4C7 /* RawProperty.xib */; };
@@ -126,7 +128,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				F12B173B1DDA3C6D00226E73 /* libfbxsdk.dylib in Copy Files */,
+				F1E5290E2418E39600B68DB3 /* libfbxsdk.dylib in Copy Files */,
 			);
 			name = "Copy Files";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -308,6 +310,10 @@
 		F1DDAAC11E31DF6700D46A35 /* TextBuffer.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TextBuffer.xib; sourceTree = "<group>"; };
 		F1DDAAC41E31DFD100D46A35 /* TextBufferEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextBufferEditor.h; sourceTree = "<group>"; };
 		F1DDAAC51E31DFD100D46A35 /* TextBufferEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextBufferEditor.m; sourceTree = "<group>"; };
+		F1E5290D2418E39600B68DB3 /* libfbxsdk.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfbxsdk.dylib; path = "../../../../Applications/Autodesk/FBX SDK/2020.0.1/lib/clang/debug/libfbxsdk.dylib"; sourceTree = "<group>"; };
+		F1E5290F241A068100B68DB3 /* TerrainEditor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TerrainEditor.h; sourceTree = "<group>"; };
+		F1E52910241A068100B68DB3 /* TerrainEditor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TerrainEditor.m; sourceTree = "<group>"; };
+		F1E52912241A087500B68DB3 /* Terrain.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Terrain.xib; sourceTree = "<group>"; };
 		F1EB8CA21E39C5D5004F7EB3 /* FLightMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLightMap.h; sourceTree = "<group>"; };
 		F1EB8CA31E39C5D5004F7EB3 /* FLightMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLightMap.m; sourceTree = "<group>"; };
 		F1EB8CA61E3B46EF004F7EB3 /* TerrainComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TerrainComponent.h; sourceTree = "<group>"; };
@@ -479,6 +485,7 @@
 				F16AE4291E0D15F3009C3897 /* StaticMesh.xib */,
 				F186180D1D881946004B3F4F /* SkeletalMesh.xib */,
 				F10943A91D818CF100B9C12F /* Texture2D.xib */,
+				F1E52912241A087500B68DB3 /* Terrain.xib */,
 				F1B31FE11D731D7C00C0DDD6 /* UObject.xib */,
 				F17A4B5F1D7C387400341598 /* ObjectRedirector.xib */,
 				F1037F301D856F0E005F4EB2 /* RawExportOptions.xib */,
@@ -612,6 +619,8 @@
 				F162CEF81E1935F60089F953 /* LevelEditor.m */,
 				F1DDAAC41E31DFD100D46A35 /* TextBufferEditor.h */,
 				F1DDAAC51E31DFD100D46A35 /* TextBufferEditor.m */,
+				F1E5290F241A068100B68DB3 /* TerrainEditor.h */,
+				F1E52910241A068100B68DB3 /* TerrainEditor.m */,
 			);
 			path = Editors;
 			sourceTree = "<group>";
@@ -619,6 +628,7 @@
 		F1D96AE91D5F9F7100071E45 = {
 			isa = PBXGroup;
 			children = (
+				F1E5290D2418E39600B68DB3 /* libfbxsdk.dylib */,
 				F13DD22E1E09374F00632F07 /* Real Editor */,
 				F1D96AF31D5F9F7100071E45 /* Products */,
 				F1170ECE1D60714100262974 /* Frameworks */,
@@ -756,6 +766,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -791,6 +802,7 @@
 				F17A4B611D7C387400341598 /* ObjectRedirector.xib in Resources */,
 				F15372191DCDCAB70044F3DE /* NewTexture2D.xib in Resources */,
 				F100B6091D8BBBE5001B15F1 /* Vector3Property.xib in Resources */,
+				F1E52913241A087500B68DB3 /* Terrain.xib in Resources */,
 				F16093831E41F3BD00E358B0 /* gpk.icns in Resources */,
 				F1D96B111D5FA02900071E45 /* MainMenu.xib in Resources */,
 				F10943AA1D818CF100B9C12F /* Texture2D.xib in Resources */,
@@ -822,7 +834,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd \"$BUILT_PRODUCTS_DIR\"\ninstall_name_tool -change \"@executable_path/libfbxsdk.dylib\" \"@executable_path/../Frameworks/libfbxsdk.dylib\" \"$EXECUTABLE_PATH\"";
+			shellScript = "cd \"$BUILT_PRODUCTS_DIR\"\ninstall_name_tool -change \"@executable_path/libfbxsdk.dylib\" \"@executable_path/../Frameworks/libfbxsdk.dylib\" \"$EXECUTABLE_PATH\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -857,6 +869,7 @@
 				F14388331DBDF1C3000CC39E /* PreferencesController.m in Sources */,
 				F18650E31E38A9C700BD8E34 /* MeshComponent.m in Sources */,
 				F10943B21D82DE7000B9C12F /* TextureView.m in Sources */,
+				F1E52911241A068100B68DB3 /* TerrainEditor.m in Sources */,
 				F117F0EF1E35F3AE005A4950 /* Brush.m in Sources */,
 				F10943AD1D818D9400B9C12F /* Texture2DEditor.m in Sources */,
 				F16AE4231E0CEC5F009C3897 /* FStaticMesh.m in Sources */,
@@ -1099,16 +1112,16 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PREFIX_HEADER = System/prefix.pch;
 				HEADER_SEARCH_PATHS = (
-					"\"/Applications/Autodesk/FBX SDK/2017.0.1/include\"/**",
+					"\"/Applications/Autodesk/FBX SDK/2020.0.1/include\"/**",
 					/usr/local/include,
 				);
 				INFOPLIST_FILE = System/Info.plist;
 				LIBRARY_SEARCH_PATHS = (
-					"\"/Applications/Autodesk/FBX SDK/2017.0.1/lib/clang/debug\"",
+					"\"/Applications/Autodesk/FBX SDK/2020.0.1/lib/clang/debug\"",
 					"$(PROJECT_DIR)",
 					/usr/local/lib/static,
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				OTHER_LDFLAGS = (
 					"-lnvtt_d",
 					"-lnvmath_d",
@@ -1118,6 +1131,7 @@
 					"-lbc6h_d",
 					"-lbc7_d",
 					"-lsquish_d",
+					"-lrg_etc1_d",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.VenoMKO.Real-Editor";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1134,16 +1148,16 @@
 				DEAD_CODE_STRIPPING = YES;
 				GCC_PREFIX_HEADER = System/prefix.pch;
 				HEADER_SEARCH_PATHS = (
-					"\"/Applications/Autodesk/FBX SDK/2017.0.1/include\"/**",
+					"\"/Applications/Autodesk/FBX SDK/2020.0.1/include\"/**",
 					/usr/local/include,
 				);
 				INFOPLIST_FILE = System/Info.plist;
 				LIBRARY_SEARCH_PATHS = (
-					"\"/Applications/Autodesk/FBX SDK/2017.0.1/lib/clang/release\"",
+					"\"/Applications/Autodesk/FBX SDK/2020.0.1/lib/clang/release\"",
 					"$(PROJECT_DIR)",
 					/usr/local/lib/static,
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				OTHER_LDFLAGS = (
 					"-lnvtt_d",
 					"-lnvmath_d",
@@ -1153,6 +1167,7 @@
 					"-lbc6h_d",
 					"-lbc7_d",
 					"-lsquish_d",
+					"-lrg_etc1_d",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.VenoMKO.Real-Editor";
 				PRODUCT_NAME = "$(TARGET_NAME)";

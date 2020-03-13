@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15705" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15705"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="TerrainEditor">
+            <connections>
+                <outlet property="imageView" destination="Re0-Nt-OUa" id="MJe-o9-Jvr"/>
+                <outlet property="toolBarView" destination="Xiv-vM-MhN" id="y1D-T6-Qfh"/>
+                <outlet property="view" destination="OEU-YH-pbN" id="0fp-sm-WXO"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="Xiv-vM-MhN">
+            <rect key="frame" x="0.0" y="0.0" width="454" height="39"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8t1-b8-KBn">
+                    <rect key="frame" x="-1" y="18" width="69" height="23"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="iuM-mR-cDF"/>
+                    </constraints>
+                    <buttonCell key="cell" type="smallSquare" title="Export RAW" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="f8Q-KE-eTN">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="label" size="11"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="exportRaw:" target="-2" id="PMd-VF-gbw"/>
+                    </connections>
+                </button>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xGv-Ho-vwi">
+                    <rect key="frame" x="67" y="-2" width="69" height="23"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="tpq-Ch-XHK"/>
+                    </constraints>
+                    <buttonCell key="cell" type="smallSquare" title="Import" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="fz7-CX-rVQ">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="label" size="11"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="importData:" target="-2" id="K4p-DK-fmZ"/>
+                    </connections>
+                </button>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2mL-O6-MW4">
+                    <rect key="frame" x="-1" y="-2" width="69" height="23"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="WDi-Nf-GTX"/>
+                    </constraints>
+                    <buttonCell key="cell" type="smallSquare" title="Import RAW" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Rwu-zJ-1dj">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="label" size="11"/>
+                    </buttonCell>
+                </button>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6rM-07-MW0">
+                    <rect key="frame" x="67" y="18" width="69" height="23"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="8dF-jQ-lgF"/>
+                    </constraints>
+                    <buttonCell key="cell" type="smallSquare" title="Export" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="kRU-1o-fxv">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="label" size="11"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="exportData:" target="-2" id="HHX-aa-IlB"/>
+                    </connections>
+                </button>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="2mL-O6-MW4" secondAttribute="bottom" constant="-1" id="1fF-Gl-y1U"/>
+                <constraint firstItem="8t1-b8-KBn" firstAttribute="top" secondItem="Xiv-vM-MhN" secondAttribute="top" constant="-1" id="2c2-xg-hKK"/>
+                <constraint firstItem="6rM-07-MW0" firstAttribute="width" secondItem="8t1-b8-KBn" secondAttribute="width" id="9dZ-BX-k75"/>
+                <constraint firstItem="2mL-O6-MW4" firstAttribute="leading" secondItem="Xiv-vM-MhN" secondAttribute="leading" constant="-1" id="JzB-6z-0at"/>
+                <constraint firstItem="6rM-07-MW0" firstAttribute="leading" secondItem="8t1-b8-KBn" secondAttribute="trailing" constant="-1" id="KOr-Cj-Ebh"/>
+                <constraint firstItem="8t1-b8-KBn" firstAttribute="leading" secondItem="Xiv-vM-MhN" secondAttribute="leading" constant="-1" id="ZnY-te-dfY"/>
+                <constraint firstItem="xGv-Ho-vwi" firstAttribute="leading" secondItem="2mL-O6-MW4" secondAttribute="trailing" constant="-1" id="a4r-ML-jwo"/>
+                <constraint firstItem="6rM-07-MW0" firstAttribute="top" secondItem="Xiv-vM-MhN" secondAttribute="top" constant="-1" id="bsI-9Z-up3"/>
+                <constraint firstItem="2mL-O6-MW4" firstAttribute="width" secondItem="8t1-b8-KBn" secondAttribute="width" id="dwi-WB-qDu"/>
+                <constraint firstAttribute="bottom" secondItem="xGv-Ho-vwi" secondAttribute="bottom" constant="-1" id="j1Q-gP-MUn"/>
+                <constraint firstItem="xGv-Ho-vwi" firstAttribute="width" secondItem="8t1-b8-KBn" secondAttribute="width" id="uDR-EX-ORZ"/>
+            </constraints>
+            <point key="canvasLocation" x="321" y="665.5"/>
+        </customView>
+        <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" allowsMagnification="YES" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="allowed" verticalScrollElasticity="allowed" id="OEU-YH-pbN">
+            <rect key="frame" x="0.0" y="0.0" width="379" height="354"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <clipView key="contentView" wantsLayer="YES" id="KqU-R9-ZcX" customClass="CenteredClipView">
+                <rect key="frame" x="0.0" y="0.0" width="379" height="354"/>
+                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                <subviews>
+                    <view translatesAutoresizingMaskIntoConstraints="NO" id="Re0-Nt-OUa" customClass="TextureView">
+                        <rect key="frame" x="0.0" y="0.0" width="379" height="354"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="379" placeholder="YES" id="Y5l-VK-LQf"/>
+                            <constraint firstAttribute="height" constant="354" placeholder="YES" id="vTA-ah-wbz"/>
+                        </constraints>
+                        <connections>
+                            <outlet property="scroll" destination="OEU-YH-pbN" id="5fR-0m-IqQ"/>
+                        </connections>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="Re0-Nt-OUa" firstAttribute="leading" secondItem="KqU-R9-ZcX" secondAttribute="leading" id="5ow-48-adz"/>
+                    <constraint firstAttribute="bottom" relation="lessThanOrEqual" secondItem="Re0-Nt-OUa" secondAttribute="bottom" id="6G3-Dm-zCk"/>
+                    <constraint firstItem="Re0-Nt-OUa" firstAttribute="top" secondItem="KqU-R9-ZcX" secondAttribute="top" id="jtC-rQ-ZmA"/>
+                    <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="Re0-Nt-OUa" secondAttribute="trailing" id="yQW-8i-45z"/>
+                </constraints>
+                <color key="backgroundColor" name="windowBackgroundColor" catalog="System" colorSpace="catalog"/>
+                <userDefinedRuntimeAttributes>
+                    <userDefinedRuntimeAttribute type="boolean" keyPath="centersDocumentView" value="YES"/>
+                </userDefinedRuntimeAttributes>
+            </clipView>
+            <scroller key="horizontalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="dOv-vc-yzj">
+                <rect key="frame" x="0.0" y="338" width="379" height="16"/>
+                <autoresizingMask key="autoresizingMask"/>
+            </scroller>
+            <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="QxB-R1-zvO">
+                <rect key="frame" x="363" y="0.0" width="16" height="354"/>
+                <autoresizingMask key="autoresizingMask"/>
+            </scroller>
+            <point key="canvasLocation" x="589.5" y="283"/>
+        </scrollView>
+    </objects>
+</document>

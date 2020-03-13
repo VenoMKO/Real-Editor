@@ -65,11 +65,11 @@
   
   NSArray *arg = [[NSProcessInfo processInfo] arguments];
   if (self.saveMode == UObjectExportOptionsData && self.object.dataSize)
-    self.rawExportOptions.exportDataModeButton.state = NSOnState;
+    self.rawExportOptions.exportDataModeButton.state = NSControlStateValueOn;
   else if (self.saveMode == UObjectExportOptionsAll && self.object.dataSize)
-    self.rawExportOptions.exportAllModeButton.state = NSOnState;
+    self.rawExportOptions.exportAllModeButton.state = NSControlStateValueOn;
   else
-    self.rawExportOptions.exportPropertiesModeButton.state = NSOnState;
+    self.rawExportOptions.exportPropertiesModeButton.state = NSControlStateValueOn;
   
   if ([arg indexOfObject:@"-noProps"] == NSNotFound)
   {
@@ -80,7 +80,7 @@
   {
     self.rawExportOptions.exportDataModeButton.enabled = NO;
     self.rawExportOptions.exportPropertiesModeButton.enabled = NO;
-    self.rawExportOptions.exportAllModeButton.state = NSOnState;
+    self.rawExportOptions.exportAllModeButton.state = NSControlStateValueOn;
   }
   
   [panel beginSheetModalForWindow:self.view.window completionHandler:^(NSInteger result) {

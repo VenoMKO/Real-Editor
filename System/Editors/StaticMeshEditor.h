@@ -16,6 +16,3 @@
 @property (weak) StaticMesh   *object;
 
 @end
-
-@interface TerrainEditor : StaticMeshEditor
-@end

@@ -22,6 +22,11 @@ short Height(int x, int y, int maxX, int maxY, short *height)
   return height[y * maxX + x];
 }
 
+id EnsureValue(id value, id def)
+{
+  return value ? value : def;
+}
+
 @interface Terrain()
 {
   short *rawHeights;
@@ -76,38 +81,88 @@ short Height(int x, int y, int maxX, int maxY, short *height)
   return s;
 }
 
-- (SCNNode *)renderNode:(NSUInteger)lod
+- (CGImageRef)heightMap
 {
-  [self properties];
-  SCNNode *n = [SCNNode new];
-  const CGFloat scale = 130;
-  for (int x = 0; x < _numVerticesX - 1; ++x)
+  if (!self.properties)
+    [self readProperties];
+  int width = _numVerticesX;
+  int height = _numVerticesY;
+  
+  CGDataProviderRef provider = CGDataProviderCreateWithData(NULL, (Byte*)rawHeights, width * height * 2, NULL);
+  CGColorSpaceRef colorSpaceRef = CGColorSpaceCreateDeviceGray();
+  CGBitmapInfo bitmapInfo = kCGBitmapByteOrder16Little | kCGImageAlphaNone;
+  CGColorRenderingIntent renderingIntent = kCGRenderingIntentDefault;
+  
+  CGImageRef imageRef = CGImageCreate(width,
+                                      height,
+                                      16 /*bitsPerComponent*/,
+                                      16 /*bitsPerPixel*/,
+                                      2 * width /*bytesPerRow*/,
+                                      colorSpaceRef,
+                                      bitmapInfo,
+                                      provider,
+                                      NULL /*decode*/,
+                                      NO /*shouldInterpolate*/,
+                                      renderingIntent);
+  CGDataProviderRelease(provider);
+  CGColorSpaceRelease(colorSpaceRef);
+  return imageRef;
+}
+
+- (NSDictionary *)exp
+{
+  NSMutableDictionary *d = [NSMutableDictionary new];
+  d[@"DrawScale"] = EnsureValue([self propertyValue:@"DrawScale"], @1);
+  d[@"NumSectionsX"] = EnsureValue([self propertyValue:@"NumSectionsX"], @1);
+  d[@"NumSectionsY"] = EnsureValue([self propertyValue:@"NumSectionsY"], @1);
+  d[@"Location"] = EnsureValue([self propertyValue:@"Location"], [FVector3 vectorX:0 y:0 z:0]);
+  d[@"DrawScale3D"] = EnsureValue([self propertyValue:@"DrawScale3D"], [FVector3 vectorX:1 y:1 z:1]);
+  
+  return d;
+}
+
+- (NSString *)info
+{
+  float drawScale = 1.;
+  int sectionsX = 1;
+  int sectionsY = 1;
+  int x = 0;
+  int y = 0;
+  int z = 0;
+  FPropertyTag *p = [self propertyForName:@"DrawScale"];
+  if (p)
   {
-    for (int y = 0; y < _numVerticesY - 1; ++y)
-    {
-      SCNNode *spn = [SCNNode new];
-      SCNVector3 pos = verts[x + y];
-      pos.x *= scale;
-      pos.y *= scale;
-      pos.z *= scale;
-      spn.position = pos;
-      SCNSphere *sp =[SCNSphere sphereWithRadius:scale];
-      spn.geometry = sp;
-      [n addChildNode:spn];
-    }
+    drawScale = [[p value] floatValue];
   }
-  return n;
-}
-
-- (NSArray *)materials
-{
-  return nil;
-}
-
-
-- (NSString *)xib
-{
-  return @"StaticMesh";
+  p = [self propertyForName:@"NumSectionsX"];
+  if (p)
+  {
+    sectionsX = [[p value] intValue];
+  }
+  p = [self propertyForName:@"NumSectionsY"];
+  if (p)
+  {
+    sectionsY = [[p value] intValue];
+  }
+  p = [self propertyForName:@"Location"];
+  if (p)
+  {
+    FVector3 *v = [p value];
+    x = (int)[v x];
+    y = (int)[v y];
+    z = (int)[v z];
+  }
+  
+  NSString *terrainInfo = [NSString stringWithFormat:@"Scale: %f Sections: %d x %d\n", drawScale, sectionsX, sectionsY];
+  terrainInfo = [terrainInfo stringByAppendingFormat:@"Position: %d %d %d", x, y, z];
+  
+  p = [self propertyForName:@"DrawScale3D"];
+  if (p)
+  {
+    FVector3 *v = [p value];
+    terrainInfo = [terrainInfo stringByAppendingFormat:@"\nScale3D: %f %f %f", v.x, v.y, v.z];
+  }
+  return terrainInfo;
 }
 
 @end

@@ -528,7 +528,7 @@ struct VMaterial
 - (void)exportLevel:(Level *)level options:(NSDictionary *)expOptions
 {
   BOOL __unused loadFExports = [expOptions[@"FExports"] boolValue];
-  BOOL __unused exportTextures = [expOptions[@"textures"] boolValue];
+  BOOL exportTextures = [expOptions[@"textures"] boolValue];
   BOOL __unused loadFExportTextures = [expOptions[@"FExportTextures"] boolValue];
   
   InitializeSdkObjects(pSdkManager, pScene);
@@ -622,12 +622,14 @@ struct VMaterial
   }
   
   NSString *p = expOptions[@"path"];
-  NSString *texPath = [p stringByDeletingLastPathComponent];
-  for (Texture2D *t in textures)
+  if (exportTextures)
   {
-    DLog(@"Exporting %@",[t objectName]);
-    NSImage *i = [t forceExportedRenderedImageR:YES G:YES B:YES A:YES invert:NO];
-    [[[i unscaledBitmapImageRep] representationUsingType:NSBitmapImageFileTypePNG properties:@{}] writeToFile:[texPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png",[t objectName]]] atomically:NO];
+    NSString *texPath = [p stringByDeletingLastPathComponent];
+    for (Texture2D *t in textures)
+    {
+      NSImage *i = [t forceExportedRenderedImageR:YES G:YES B:YES A:YES invert:NO];
+      [[[i unscaledBitmapImageRep] representationUsingType:NSBitmapImageFileTypePNG properties:@{}] writeToFile:[texPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png",[t objectName]]] atomically:NO];
+    }
   }
   
   for (NSString *k in _materials)
@@ -656,7 +658,6 @@ struct VMaterial
     lTexture->SetScale(1.0, 1.0);
     lTexture->SetRotation(0.0, 0.0);
     ((FbxSurfaceLambert *)lMaterial)->Diffuse.ConnectSrcObject(lTexture);
-    DLog(@"Mat: %@ Tex: %@",k,[t objectName]);
   }
   
   const char *path = (const char *)[p cStringUsingEncoding:NSASCIIStringEncoding];

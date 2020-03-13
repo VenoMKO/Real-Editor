@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15705" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11762"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15705"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -33,7 +33,7 @@
                     </constraints>
                     <buttonCell key="cell" type="smallSquare" title="Export RAW" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="f8Q-KE-eTN">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="smallSystem"/>
+                        <font key="font" metaFont="message" size="11"/>
                     </buttonCell>
                     <connections>
                         <action selector="exportRaw:" target="-2" id="PMd-VF-gbw"/>
@@ -46,7 +46,7 @@
                     </constraints>
                     <buttonCell key="cell" type="smallSquare" title="Import" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="fz7-CX-rVQ">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="smallSystem"/>
+                        <font key="font" metaFont="message" size="11"/>
                     </buttonCell>
                     <connections>
                         <action selector="importData:" target="-2" id="K4p-DK-fmZ"/>
@@ -59,7 +59,7 @@
                     </constraints>
                     <buttonCell key="cell" type="smallSquare" title="Import RAW" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Rwu-zJ-1dj">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="smallSystem"/>
+                        <font key="font" metaFont="message" size="11"/>
                     </buttonCell>
                 </button>
                 <button translatesAutoresizingMaskIntoConstraints="NO" id="Edg-x7-Gcn">
@@ -75,11 +75,11 @@
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="MY0-LG-gBy">
                     <rect key="frame" x="143" y="3" width="135" height="16"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="133" id="KY9-Aw-oe0"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="133" id="KY9-Aw-oe0"/>
                     </constraints>
                     <buttonCell key="cell" type="push" title="Invert channels" bezelStyle="rounded" alignment="center" controlSize="mini" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="FvN-kz-Peb">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="miniSystem"/>
+                        <font key="font" metaFont="label" size="9"/>
                     </buttonCell>
                     <connections>
                         <action selector="invertChannels:" target="-2" id="J9L-4G-LNU"/>
@@ -122,7 +122,7 @@
                     </constraints>
                     <buttonCell key="cell" type="smallSquare" title="Export" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="kRU-1o-fxv">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="smallSystem"/>
+                        <font key="font" metaFont="message" size="11"/>
                     </buttonCell>
                     <connections>
                         <action selector="exportData:" target="-2" id="HHX-aa-IlB"/>
@@ -141,6 +141,7 @@
                 <constraint firstItem="MY0-LG-gBy" firstAttribute="leading" secondItem="xGv-Ho-vwi" secondAttribute="trailing" constant="8" id="OIf-mb-AYn"/>
                 <constraint firstItem="hZH-Mu-eMW" firstAttribute="leading" secondItem="Edg-x7-Gcn" secondAttribute="trailing" constant="8" id="YtE-sP-gmB"/>
                 <constraint firstItem="MY0-LG-gBy" firstAttribute="top" secondItem="WJb-iG-wQf" secondAttribute="bottom" constant="3" id="YuO-7O-2ol"/>
+                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="MY0-LG-gBy" secondAttribute="trailing" constant="12" id="ZSQ-V0-O0n"/>
                 <constraint firstItem="8t1-b8-KBn" firstAttribute="leading" secondItem="Xiv-vM-MhN" secondAttribute="leading" constant="-1" id="ZnY-te-dfY"/>
                 <constraint firstItem="xGv-Ho-vwi" firstAttribute="leading" secondItem="2mL-O6-MW4" secondAttribute="trailing" constant="-1" id="a4r-ML-jwo"/>
                 <constraint firstItem="6rM-07-MW0" firstAttribute="top" secondItem="Xiv-vM-MhN" secondAttribute="top" constant="-1" id="bsI-9Z-up3"/>
@@ -163,7 +164,7 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <popUpButtonCell key="cell" type="push" title="TrueVision Targa (TGA)" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" tag="1" imageScaling="proportionallyDown" inset="2" selectedItem="Ton-dp-8DQ" id="9bV-fM-7Kx">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="menu"/>
+                        <font key="font" metaFont="system"/>
                         <menu key="menu" id="qPP-zT-2EK">
                             <items>
                                 <menuItem title="DirectDrawSurface (DDS)" id="WdF-Md-Pji"/>
@@ -177,7 +178,7 @@
                         <action selector="switchExportType:" target="-2" id="Yay-BL-Wh4"/>
                     </connections>
                 </popUpButton>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="boi-J7-WB6">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="boi-J7-WB6">
                     <rect key="frame" x="61" y="39" width="38" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Type:" id="XgW-6Z-8Vl">
@@ -194,8 +195,8 @@
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                     <connections>
-                        <binding destination="-2" name="enabled" keyPath="self.exportType.selectedTag" id="PZq-VK-DvI"/>
                         <binding destination="-2" name="value" keyPath="self.exportSwizzleY" id="xTu-Gm-EA5"/>
+                        <binding destination="-2" name="enabled" keyPath="self.exportType.selectedTag" id="PZq-VK-DvI"/>
                     </connections>
                 </button>
             </subviews>
@@ -230,11 +231,11 @@
                     <userDefinedRuntimeAttribute type="boolean" keyPath="centersDocumentView" value="YES"/>
                 </userDefinedRuntimeAttributes>
             </clipView>
-            <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="dOv-vc-yzj">
+            <scroller key="horizontalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="dOv-vc-yzj">
                 <rect key="frame" x="0.0" y="338" width="379" height="16"/>
                 <autoresizingMask key="autoresizingMask"/>
             </scroller>
-            <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="QxB-R1-zvO">
+            <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="QxB-R1-zvO">
                 <rect key="frame" x="363" y="0.0" width="16" height="354"/>
                 <autoresizingMask key="autoresizingMask"/>
             </scroller>
@@ -273,7 +274,7 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <popUpButtonCell key="cell" type="push" title="Auto" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="gsw-fC-ub1" id="uil-Ew-t88">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="menu"/>
+                        <font key="font" metaFont="system"/>
                         <menu key="menu" id="iOv-z5-6nM">
                             <items>
                                 <menuItem title="Auto" state="on" id="gsw-fC-ub1">
@@ -298,7 +299,7 @@
                         <binding destination="-2" name="enabled" keyPath="self.importFormatEnabled" id="Mfa-Ah-IYq"/>
                     </connections>
                 </popUpButton>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ii4-i9-2Ik">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ii4-i9-2Ik">
                     <rect key="frame" x="69" y="12" width="51" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Format:" id="l1g-ea-NEh">

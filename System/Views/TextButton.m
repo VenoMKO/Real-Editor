@@ -23,7 +23,7 @@
   NSRange titleRange = NSMakeRange(0, [coloredTitle length]);
   [coloredTitle addAttribute:NSForegroundColorAttributeName value:color range:titleRange];
   [self setAttributedTitle:coloredTitle];
-  [self setNeedsDisplay];
+  [self setNeedsDisplay:YES];
 }
 
 @end
@@ -34,11 +34,11 @@
 {
   if (backgroundStyle == NSBackgroundStyleDark)
   {
-    self.textField.textColor = [NSColor whiteColor];
+    self.textField.textColor = [NSColor selectedControlTextColor];
   }
   else
   {
-    self.textField.textColor = [NSColor blackColor];
+    self.textField.textColor = [NSColor controlTextColor];
   }
   [super setBackgroundStyle:backgroundStyle];
 }
@@ -102,8 +102,8 @@
 {
   NSButton *popoverButton = [NSButton new];
   popoverButton.translatesAutoresizingMaskIntoConstraints = NO;
-  popoverButton.buttonType = NSMomentaryChangeButton;
-  popoverButton.bezelStyle = NSInlineBezelStyle;
+  popoverButton.buttonType = NSButtonTypeMomentaryChange;
+  popoverButton.bezelStyle = NSBezelStyleInline;
   popoverButton.bordered = NO;
   popoverButton.imagePosition = NSImageOnly;
   [popoverButton setImage:[NSImage imageNamed:@"NSFollowLinkFreestandingTemplate"]];

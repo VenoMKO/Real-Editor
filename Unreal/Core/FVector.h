@@ -18,6 +18,7 @@
 @property (assign) double x;
 @property (assign) double y;
 @property (assign) double z;
++ (instancetype)vectorX:(double)x y:(double)y z:(double)z;
 - (GLKVector3)glkVector3;
 @end
 

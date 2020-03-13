@@ -335,6 +335,16 @@
   }
 }
 
+- (id)propertyValue:(NSString *)name
+{
+  FPropertyTag *p = [self propertyForName:name];
+  if (!p)
+  {
+    return nil;
+  }
+  return p.value;
+}
+
 - (NSString *)xib
 {
   if ([[NSBundle mainBundle] pathForResource:self.className ofType:@"nib"])

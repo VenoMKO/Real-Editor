@@ -22,4 +22,8 @@
 
 @property (assign) int numVerticesX;
 @property (assign) int numVerticesY;
+
+- (CGImageRef)heightMap;
+- (NSString *)info;
+
 @end

@@ -17,6 +17,7 @@
 #import "Texture2D.h"
 #import "Actor.h"
 #import "FBXUtils.h"
+#import "Terrain.h"
 
 const double ScaleFactor = 1.0;
 
@@ -26,6 +27,7 @@ const double ScaleFactor = 1.0;
   NSMutableArray *meshes;
 }
 
+@property (strong) NSMutableArray         *terrains;
 @property (weak) IBOutlet ModelView       *sceneView;
 @property (weak) IBOutlet NSTableView     *actorsTable;
 @property (strong) NSMutableArray         *nodes;
@@ -42,6 +44,7 @@ const double ScaleFactor = 1.0;
 {
   [super viewDidLoad];
   self.actors = [NSMutableArray new];
+  self.terrains = [NSMutableArray new];
   [self.sceneView setup];
   self.sceneView.increaseFogDensity = YES;
   self.nodes = [NSMutableArray new];
@@ -54,15 +57,33 @@ const double ScaleFactor = 1.0;
 
 - (void)setupLevel
 {
+  for (FObjectExport *child in self.object.children)
+  {
+    if ([[child objectClass] isEqualToString:@"Terrain"] && child.object)
+    {
+      [self.terrains addObject:child.object];
+    }
+  }
+  
   BOOL loadLights = [[NSUserDefaults standardUserDefaults] boolForKey:kSettingsLoadLights];
   meshes = [NSMutableArray new];
   SCNVector3 max = SCNVector3Make(CGFLOAT_MIN, CGFLOAT_MIN, CGFLOAT_MIN);
   SCNVector3 min = SCNVector3Make(CGFLOAT_MAX, CGFLOAT_MAX, CGFLOAT_MAX);
   BOOL loadedAero = NO;
+  NSMutableArray *actors = [NSMutableArray new];
   for (Actor *actor in self.object.actors)
+  {
+    [actors addObject:actor];
+  }
+  for (Actor *actor in self.object.crossLevelActors)
+  {
+    [actors addObject:actor];
+  }
+  for (Actor *actor in actors)
   {
     if (![actor isKindOfClass:[Actor class]])
     {
+      DLog(@"Skipping: %@[%d]", actor.objectName, [self.object.package indexForObject:actor]);
       continue;
     }
     
@@ -322,11 +343,44 @@ const double ScaleFactor = 1.0;
   }];
 }
 
-- (void)doExport:(Level *)sobj path:(NSString *)p
+- (void)doExport:(Level *)sobj path:(NSString *)path
 {
   FBXUtils *u = [FBXUtils new];
-  [u exportLevel:sobj options:@{@"path" : p,
+  [u exportLevel:sobj options:@{@"path" : path,
                                 @"type" : @(self.exportType.selectedTag)}];
+  for (Terrain *terrain in self.terrains)
+  {
+    [self exportTerrain:terrain path:path];
+  }
+}
+
+- (void)exportTerrain:(Terrain *)terrain path:(NSString *)path
+{
+  CGImageRef heightMap = [terrain heightMap];
+  CFURLRef url = (__bridge CFURLRef)[NSURL fileURLWithPath:[path stringByAppendingFormat:@"_Terrain_%d.png",[terrain.package indexForObject:terrain]]];
+  CGImageDestinationRef destination = CGImageDestinationCreateWithURL(url, kUTTypePNG, 1, NULL);
+  if (!destination)
+  {
+    CGImageRelease(heightMap);
+    return;
+  }
+
+  CGImageDestinationAddImage(destination, heightMap, nil);
+
+  if (!CGImageDestinationFinalize(destination))
+  {
+    CFRelease(destination);
+    CGImageRelease(heightMap);
+    return;
+  }
+
+  CFRelease(destination);
+  CGImageRelease(heightMap);
+  
+  [terrain.info writeToURL:[NSURL fileURLWithPath:[path stringByAppendingFormat:@"_Terrain_%d.txt",[terrain.package indexForObject:terrain]]]
+                atomically:YES
+                  encoding:NSUTF8StringEncoding
+                     error:NULL];
 }
 
 @end

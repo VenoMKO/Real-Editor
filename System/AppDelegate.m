@@ -120,17 +120,12 @@ const BOOL MenuItemDebugVisible = DEBUG;
   if (!self.controllers)
     self.controllers = [NSMutableArray array];
   
-  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-    PackageController *ctrl = [PackageController controllerForPackageAtPath:filename];
-    if (!ctrl)
-      return;
-    dispatch_async(dispatch_get_main_queue(), ^{
-      [self.controllers addObject:ctrl];
-      [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:[NSURL fileURLWithPath:filename]];
-      [ctrl.window makeKeyAndOrderFront:nil];
-    });
-  });
-  
+  PackageController *ctrl = [PackageController controllerForPackageAtPath:filename];
+  if (!ctrl)
+    return NO;
+  [self.controllers addObject:ctrl];
+  [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:[NSURL fileURLWithPath:filename]];
+  [ctrl.window makeKeyAndOrderFront:nil];
   return YES;
 }
 
