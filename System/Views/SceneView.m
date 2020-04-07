@@ -73,6 +73,10 @@
     [self.scene.rootNode addChildNode:objectNode];
     self.objectNode = objectNode;
   }
+  if (self.allowObjectSelection)
+  {
+    
+  }
 }
 
 - (void)dealloc
@@ -109,6 +113,19 @@
     [self dropNodes:n];
   }
   [node removeFromParentNode];
+}
+
+- (void)mouseUp:(NSEvent *)event
+{
+  [super mouseUp:event];
+  if (!self.package || !self.allowObjectSelection) return;
+  NSPoint relativeLocation = [self.window.contentView convertPoint:event.locationInWindow toView:self];
+  NSArray *items = [self hitTest:relativeLocation options:nil];
+  SCNHitTestResult *r = [items firstObject];
+  if (r.node)
+  {
+    DLog(@"%@: %.1f %.1f %.1f | %.1f %.1f %.1f", r.node.name, GLKMathRadiansToDegrees(r.node.eulerAngles.x), GLKMathRadiansToDegrees(r.node.eulerAngles.y), GLKMathRadiansToDegrees(r.node.eulerAngles.z), r.node.scale.x, r.node.scale.y, r.node.scale.z);
+  }
 }
 
 - (IBAction)resetView:(id)sender

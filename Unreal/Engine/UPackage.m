@@ -16,7 +16,6 @@
 #import "UObject.h"
 #import "PackageController.h"
 #import <Cocoa/Cocoa.h>
-
 #define PACKAGE_MAGIC               0x9E2A83C1
 #define TERA_COOKER_V               76
 #define TERA_ENGINE_V               4206

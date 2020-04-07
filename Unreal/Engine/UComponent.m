@@ -117,7 +117,11 @@
   FPropertyTag *tag = [self propertyForName:@"LightColor"];
   self.lightColor = tag ? tag.value : [FColor colorWithColor:[NSColor colorWithRed:1 green:1 blue:1 alpha:1] package:self.package];
   tag = [self propertyForName:@"Brightness"];
-  self.brightness = tag.value ? [tag.value doubleValue] : 1.0;
+  self.brightness = tag.value ? [tag.value doubleValue] : 1.;
+  tag = [self propertyForName:@"Radius"];
+  self.radius = tag.value ? [tag.value doubleValue] : 1024.;
+  tag = [self propertyForName:@"FalloffExponent"];
+  self.falloffExponent = tag.value ? [tag.value doubleValue] : 2.;
   self.inclusionConvexVolumes = [FArray readFrom:s type:[FConvexVolume class]];
   self.exclusionConvexVolumes = [FArray readFrom:s type:[FConvexVolume class]];
   return s;
@@ -135,18 +139,6 @@
 
 @implementation PointLightComponent
 
-- (FIStream *)postProperties
-{
-  FIStream *s = [super postProperties];
-  FPropertyTag *tag = [self propertyForName:@"Radius"];
-  self.radius = tag.value ? [tag.value doubleValue] : 100.0;
-  tag = [self propertyForName:@"FalloffExponent"];
-  self.falloffExponent = tag.value ? [tag.value doubleValue] : 3.0;
-  tag = [self propertyForName:@"Translation"];
-  self.translation = tag.value ? GLKVector3Make([(FVector3 *)tag.value x], [(FVector3 *)tag.value y], [(FVector3 *)tag.value z]) : GLKVector3Make(0, 0, 0);
-  return s;
-}
-
 @end
 
 @implementation SpotLightComponent
@@ -155,14 +147,13 @@
 {
   FIStream *s = [super postProperties];
   FPropertyTag *tag = [self propertyForName:@"InnerConeAngle"];
-  self.innerConeAngle = tag.value ? [tag.value doubleValue] : 0.01;
-  if (self.innerConeAngle < 0.01 && self.innerConeAngle > -0.01)
-    self.innerConeAngle = 0.01;
+  self.innerConeAngle = tag.value ? [tag.value doubleValue] : 0.;
   tag = [self propertyForName:@"OuterConeAngle"];
-  self.outerConeAngle = tag.value ? [tag.value doubleValue] : 0.01;
-  
+  self.outerConeAngle = tag.value ? [tag.value doubleValue] : 44.;
   tag = [self propertyForName:@"LightShaftConeAngle"];
-  self.lightShaftConeAngle = tag.value ? [tag.value doubleValue] : 0.01;
+  self.lightShaftConeAngle = tag.value ? [tag.value doubleValue] : 89.;
+  tag = [self propertyForName:@"bRenderLightShafts"];
+  self.renderLightShafts = tag.value ? [tag.value boolValue] : NO;
   return s;
 }
 

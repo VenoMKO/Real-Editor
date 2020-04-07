@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15705" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16096" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15705"/>
-        <plugIn identifier="com.apple.SceneKitIBPlugin" version="15705"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16096"/>
+        <plugIn identifier="com.apple.SceneKitIBPlugin" version="16096"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -11,6 +11,7 @@
             <connections>
                 <outlet property="actorsTable" destination="3e2-ql-ec7" id="tcI-5q-rog"/>
                 <outlet property="exportOptionsView" destination="hh3-gC-LJ4" id="onm-5L-uQl"/>
+                <outlet property="exportProgressPanel" destination="wYo-1r-xnT" id="xMR-jD-Jwp"/>
                 <outlet property="exportType" destination="IDA-jh-7Vu" id="wfn-nD-ZJJ"/>
                 <outlet property="importOptionsView" destination="PhD-jF-QBI" id="Ysy-6V-aJt"/>
                 <outlet property="sceneView" destination="LmM-Gl-9W2" id="Ojd-tK-fcp"/>
@@ -62,7 +63,6 @@
                                                 <tableColumns>
                                                     <tableColumn width="236" minWidth="40" maxWidth="1000" id="8Sz-zr-oNr">
                                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="Actors">
-                                                            <font key="font" metaFont="message" size="11"/>
                                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                             <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                         </tableHeaderCell>
@@ -150,7 +150,7 @@
                     </constraints>
                     <buttonCell key="cell" type="smallSquare" title="Export RAW" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="yAb-WI-Jj9">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="message" size="11"/>
+                        <font key="font" metaFont="menu" size="11"/>
                     </buttonCell>
                     <connections>
                         <action selector="exportRaw:" target="-2" id="HrD-v1-WLU"/>
@@ -160,7 +160,7 @@
                     <rect key="frame" x="-1" y="-2" width="69" height="23"/>
                     <buttonCell key="cell" type="smallSquare" title="Export" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ScM-K8-WTR">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="message" size="11"/>
+                        <font key="font" metaFont="menu" size="11"/>
                     </buttonCell>
                     <connections>
                         <action selector="exportData:" target="-2" id="S4i-rc-8aj"/>
@@ -170,14 +170,14 @@
                     <rect key="frame" x="67" y="-2" width="69" height="23"/>
                     <buttonCell key="cell" type="smallSquare" title="Import" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Gx7-qV-cbd">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="message" size="11"/>
+                        <font key="font" metaFont="menu" size="11"/>
                     </buttonCell>
                 </button>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ccp-9d-xGH">
                     <rect key="frame" x="67" y="18" width="69" height="23"/>
                     <buttonCell key="cell" type="smallSquare" title="Load mats" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Y79-d8-Wob">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="message" size="11"/>
+                        <font key="font" metaFont="menu" size="11"/>
                     </buttonCell>
                     <connections>
                         <action selector="loadMaterials:" target="-2" id="yGn-hs-9Q3"/>
@@ -208,19 +208,11 @@
             <point key="canvasLocation" x="348" y="1055.5"/>
         </customView>
         <customView id="hh3-gC-LJ4">
-            <rect key="frame" x="0.0" y="0.0" width="394" height="83"/>
+            <rect key="frame" x="0.0" y="0.0" width="394" height="61"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iCB-Vm-0I8">
-                    <rect key="frame" x="122" y="18" width="128" height="18"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <buttonCell key="cell" type="check" title="Export skeleton" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="if5-2u-P1K">
-                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                        <font key="font" metaFont="system"/>
-                    </buttonCell>
-                </button>
                 <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IDA-jh-7Vu">
-                    <rect key="frame" x="116" y="39" width="205" height="26"/>
+                    <rect key="frame" x="116" y="17" width="205" height="26"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <popUpButtonCell key="cell" type="push" title="FilmBox 2020.0.1 (FBX)" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="uk6-oY-R1S" id="FvV-2p-ggi">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
@@ -238,7 +230,7 @@
                     </popUpButtonCell>
                 </popUpButton>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aaP-sN-AaM">
-                    <rect key="frame" x="74" y="44" width="38" height="17"/>
+                    <rect key="frame" x="74" y="22" width="38" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Type:" id="YY6-LH-drX">
                         <font key="font" metaFont="system"/>
@@ -247,7 +239,58 @@
                     </textFieldCell>
                 </textField>
             </subviews>
-            <point key="canvasLocation" x="-84" y="912"/>
+            <point key="canvasLocation" x="-84" y="900.5"/>
         </customView>
+        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" hidesOnDeactivate="YES" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="wYo-1r-xnT" customClass="NSPanel">
+            <windowStyleMask key="styleMask" titled="YES" utility="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="272" y="112" width="548" height="134"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1057"/>
+            <view key="contentView" id="ZLy-Fw-uiL">
+                <rect key="frame" x="0.0" y="0.0" width="548" height="134"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <progressIndicator wantsLayer="YES" maxValue="100" doubleValue="50" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="Fub-mW-2Av">
+                        <rect key="frame" x="20" y="52" width="508" height="20"/>
+                        <connections>
+                            <binding destination="-2" name="value" keyPath="self.exportProgressValue" id="gNP-BQ-L5T"/>
+                        </connections>
+                    </progressIndicator>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="hdN-0y-Uaw">
+                        <rect key="frame" x="18" y="79" width="37" height="16"/>
+                        <textFieldCell key="cell" lineBreakMode="clipping" title="Label" id="akh-kt-J8m">
+                            <font key="font" usesAppearanceFont="YES"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                        <connections>
+                            <binding destination="-2" name="value" keyPath="self.exportProgressDescription" id="D9E-sG-Pay"/>
+                        </connections>
+                    </textField>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="TvI-3P-ySM">
+                        <rect key="frame" x="453" y="13" width="81" height="32"/>
+                        <buttonCell key="cell" type="push" title="Button" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="USN-N3-jA6">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="endExportPanel:" target="-2" id="kUU-ok-e7F"/>
+                            <binding destination="-2" name="title" keyPath="self.exportProgressCancelTitle" id="mt5-mg-O74"/>
+                        </connections>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="Fub-mW-2Av" firstAttribute="top" secondItem="hdN-0y-Uaw" secondAttribute="bottom" constant="8" id="Eih-gj-wYg"/>
+                    <constraint firstItem="Fub-mW-2Av" firstAttribute="leading" secondItem="ZLy-Fw-uiL" secondAttribute="leading" constant="20" id="HYI-Xj-QbG"/>
+                    <constraint firstAttribute="trailing" secondItem="TvI-3P-ySM" secondAttribute="trailing" constant="20" id="LB0-xq-t5P"/>
+                    <constraint firstItem="TvI-3P-ySM" firstAttribute="top" secondItem="Fub-mW-2Av" secondAttribute="bottom" constant="12" id="XXA-RK-2i1"/>
+                    <constraint firstItem="hdN-0y-Uaw" firstAttribute="top" secondItem="ZLy-Fw-uiL" secondAttribute="top" constant="39" id="ash-wd-da7"/>
+                    <constraint firstItem="hdN-0y-Uaw" firstAttribute="leading" secondItem="Fub-mW-2Av" secondAttribute="leading" id="dNf-77-0tz"/>
+                    <constraint firstAttribute="bottom" secondItem="TvI-3P-ySM" secondAttribute="bottom" constant="20" id="s2G-CO-2RQ"/>
+                    <constraint firstAttribute="trailing" secondItem="Fub-mW-2Av" secondAttribute="trailing" constant="20" id="tG3-sR-baG"/>
+                </constraints>
+            </view>
+            <point key="canvasLocation" x="979" y="338"/>
+        </window>
     </objects>
 </document>

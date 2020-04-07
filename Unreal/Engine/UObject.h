@@ -46,6 +46,8 @@ typedef NS_ENUM(int, UObjectExportOptions)
 - (BOOL)canHaveChildOfClass:(NSString *)className;
 - (id)parent;
 
+- (NSUInteger)bytesToEnd:(FIStream *)stream;
+
 + (id)objectForClass:(NSString *)className;
 - (void)readProperties;
 - (FIStream *)postProperties;

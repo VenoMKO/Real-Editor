@@ -191,10 +191,10 @@
   [data writeInt:self.serialSize];
   if (self.serialSize)
     [data writeInt:self.serialOffset];
-  [data writeInt:self.exportFlags];
+  [data writeInt:(int)self.exportFlags];
   [data appendData:[self.generationNetObjectCount cooked:0]];
   [data appendData:[self.packageGuid cooked]];
-  [data writeInt:self.packageFlags];
+  [data writeInt:(int)self.packageFlags];
   return data;
 }
 

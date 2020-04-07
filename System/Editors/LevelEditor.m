@@ -16,8 +16,36 @@
 #import "Material.h"
 #import "Texture2D.h"
 #import "Actor.h"
+#import "MeshActor.h"
+#import "LightActor.h"
 #import "FBXUtils.h"
+#import "T3DUtils.h"
 #import "Terrain.h"
+
+#define DEBUG_EXPORT_BOUNDS 0
+#define DEBUG_EXPORT_CLASS 1
+
+BOOL CheckBounds(Actor *a)
+{
+  GLKVector3 pos = [a absolutePostion];
+  GLKVector3 min = GLKVector3Make(0, 0, 0);
+  GLKVector3 max = GLKVector3Make(-1, -1, -1);
+  return pos.x >= min.x && pos.y >= min.y && pos.x <= max.x && pos.y <= max.y;
+}
+
+BOOL CheckClass(Actor *a)
+{
+  NSArray *allowedClasses = @[@"SpotLight"];
+  return [allowedClasses indexOfObject:[a objectClass]] != NSNotFound;
+}
+
+NSString *MeshComponentExportPath(MeshActor *actor)
+{
+  UObject *mesh = [actor mesh];
+  NSMutableArray *targetPathComps = [[[mesh objectPath] componentsSeparatedByString:@"."] mutableCopy];
+  [targetPathComps removeObjectAtIndex:0];
+  return [targetPathComps componentsJoinedByString:@"/"];
+}
 
 const double ScaleFactor = 1.0;
 
@@ -25,6 +53,7 @@ const double ScaleFactor = 1.0;
 {
   SCNMaterial *defMat;
   NSMutableArray *meshes;
+  BOOL cancelExport;
 }
 
 @property (strong) NSMutableArray         *terrains;
@@ -35,6 +64,10 @@ const double ScaleFactor = 1.0;
 @property (strong) NSMutableArray         *actors;
 @property (strong) NSOperationQueue       *materialQueue;
 @property (weak) IBOutlet NSPopUpButton   *exportType;
+@property (weak) IBOutlet NSWindow        *exportProgressPanel;
+@property double                          exportProgressValue;
+@property NSString                        *exportProgressDescription;
+@property NSString                        *exportProgressCancelTitle;
 @end
 
 @implementation LevelEditor
@@ -93,7 +126,7 @@ const double ScaleFactor = 1.0;
     GLKVector3 postRotation = GLKVector3Make(0, 0, 0);
     
     if ((object = [self meshForActor:actor]))
-    { 
+    {
       n = [(StaticMesh *)object renderNode:0];
       if (n)
         [meshes addObject:object];
@@ -137,7 +170,6 @@ const double ScaleFactor = 1.0;
     [self.nodes addObject:n];
     [self.actors addObject:actor];
     n.name = [NSString stringWithFormat:@"%lu",[self.actors count] - 1];
-    
     
     n.scale = SCNVector3Make(ScaleFactor, ScaleFactor, ScaleFactor);
     
@@ -238,6 +270,106 @@ const double ScaleFactor = 1.0;
   }];
 }
 
+- (void)exportT3D:(NSString *)path
+{
+  NSString *dataDirPath = [[path stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"S1Data"];
+  [[NSFileManager defaultManager] createDirectoryAtPath:dataDirPath withIntermediateDirectories:YES attributes:nil error:NULL];
+  
+  NSMutableString *result = [NSMutableString new];
+  unsigned padding = 0;
+  T3DAddLine(result, padding, T3DBeginObject(@"Map", nil, nil)); padding++;
+  T3DAddLine(result, padding, T3DBeginObject(@"Level", nil, nil)); padding++;
+  
+  NSArray *actors = [[[self.object actors] nsarray] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(Actor *actor, NSDictionary<NSString *,id> *bindings) {
+    return [actor respondsToSelector:@selector(exportToT3D:padding:index:)];
+  }]];
+  NSMutableDictionary *indicies = [NSMutableDictionary new];
+  double step = 100. / (float)actors.count;
+  double progress = 0;
+  for (Actor *actor in actors)
+  {
+    progress += step;
+    if (cancelExport)
+    {
+      return;
+    }
+    [actor properties];
+    NSString *name = [actor displayName];
+    int idx = -1;
+    if (!indicies[name])
+    {
+      indicies[name] = @(1);
+      idx = 0;
+    }
+    else
+    {
+      idx = [indicies[name] intValue];
+      indicies[name] = @(idx+1);
+    }
+#if DEBUG_EXPORT_BOUNDS
+    if (!CheckBounds(actor))
+    {
+      continue;
+    }
+#endif
+#if DEBUG_EXPORT_CLASS
+    if (!CheckClass(actor))
+    {
+      continue;
+    }
+#endif
+    dispatch_async(dispatch_get_main_queue(), ^{
+      self.exportProgressValue = progress;
+      self.exportProgressDescription = [NSString stringWithFormat:@"Exporting: %@", name];
+    });
+    if ([actor isKindOfClass:[StaticMeshActor class]])
+    {
+      StaticMesh *mesh = (StaticMesh*)[(StaticMeshActor*)actor mesh];
+      NSMutableArray *targetPathComps = [[[mesh objectPath] componentsSeparatedByString:@"."] mutableCopy];
+      [targetPathComps removeObjectAtIndex:0];
+      NSString *targetPath = [dataDirPath stringByAppendingPathComponent:[targetPathComps componentsJoinedByString:@"/"]];
+      [[NSFileManager defaultManager] createDirectoryAtPath:[targetPath stringByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:NULL];
+      NSString *fbxPath = [targetPath stringByAppendingPathExtension:@"fbx"];
+      if (mesh && ![[NSFileManager defaultManager] fileExistsAtPath:fbxPath])
+      {
+        if (cancelExport) return;
+        dispatch_async(dispatch_get_main_queue(), ^{
+          self.exportProgressDescription = [NSString stringWithFormat:@"Exporting: %@", [fbxPath lastPathComponent]];
+        });
+        [[FBXUtils new] exportStaticMesh:mesh options:@{@"path" : fbxPath, @"lodIdx" : @(0), @"type" : @(0)}];
+      }
+    }
+    else
+    {
+      [actor exportToT3D:result padding:padding index:idx];
+    }
+  }
+  
+  padding--;
+  T3DAddLine(result, padding, T3DEndObject(@"Level"));
+  padding--;
+  T3DAddLine(result, padding, T3DEndObject(@"Map"));
+  T3DAddLine(result, padding, T3DBeginObject(@"FolderList", nil, nil));
+  padding++;
+  T3DAddLine(result, padding, @"Folder=\"%@\"",self.object.package.name);
+  padding--;
+  T3DAddLine(result, padding, T3DEndObject(@"FolderList"));
+  [result deleteCharactersInRange:NSMakeRange(0, 1)];
+  if (cancelExport) return;
+  [result writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:NULL];
+  dispatch_async(dispatch_get_main_queue(), ^{
+    self.exportProgressValue = 100;
+    self.exportProgressDescription = @"Finished!";
+    self.exportProgressCancelTitle = @"Done";
+  });
+}
+
+- (IBAction)endExportPanel:(id)sender
+{
+  cancelExport = YES;
+  [self.view.window endSheet:self.exportProgressPanel];
+}
+
 - (SCNMaterial *)defaultMaterial
 {
   if (!defMat)
@@ -316,7 +448,7 @@ const double ScaleFactor = 1.0;
 
 - (NSString *)exportName
 {
-  return [self.object.package.name stringByAppendingPathExtension:@"fbx"];
+  return [self.object.package.name stringByAppendingPathExtension:@"t3d"];
 }
 
 - (IBAction)exportData:(id)sender
@@ -345,6 +477,17 @@ const double ScaleFactor = 1.0;
 
 - (void)doExport:(Level *)sobj path:(NSString *)path
 {
+  if ([[path pathExtension] isEqualToString:@"t3d"])
+  {
+    //[sobj exportT3D:path];
+    cancelExport = NO;
+    self.exportProgressCancelTitle = @"Cancel";
+    self.exportProgressValue = 0.;
+    [self.view.window beginSheet:self.exportProgressPanel completionHandler:nil];
+    [self performSelectorInBackground:@selector(exportT3D:) withObject:path];
+    return;
+  }
+  path = [[path stringByDeletingPathExtension] stringByAppendingPathExtension:@"fbx"];
   FBXUtils *u = [FBXUtils new];
   [u exportLevel:sobj options:@{@"path" : path,
                                 @"type" : @(self.exportType.selectedTag)}];

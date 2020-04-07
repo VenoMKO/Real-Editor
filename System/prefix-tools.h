@@ -70,6 +70,15 @@ FOUNDATION_EXPORT NSError *NSStringToError(NSString *string);
 FOUNDATION_EXPORT void NSAppError(UPackage *package, NSString *format, ...);
 FOUNDATION_EXPORT void DThrow(NSString *format, ...);
 
+#define CLAMP(x, low, high) ({\
+__typeof__(x) __x = (x); \
+__typeof__(low) __low = (low);\
+__typeof__(high) __high = (high);\
+__x > __high ? __high : (__x < __low ? __low : __x);\
+})
+
+#define DivideAndRoundUp(Dividend, Divisor) (Dividend + Divisor - 1) / Divisor
+
 #ifdef DEBUG
   #ifndef TOOLS
     #define DLog(args...) ExtendNSLog(__FILE__, __LINE__, __PRETTY_FUNCTION__, args);

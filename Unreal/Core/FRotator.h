@@ -26,5 +26,6 @@
 - (FRotator *)normalized;
 - (FRotator *)denormalized;
 - (SCNQuaternion)quaternion;
+- (GLKVector3)glkVector3;
 
 @end

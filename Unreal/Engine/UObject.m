@@ -325,6 +325,14 @@
   return self.fObject.children;
 }
 
+- (NSUInteger)bytesToEnd:(FIStream *)stream
+{
+  NSUInteger pos = stream.position;
+  if (pos < self.exportObject.originalOffset + self.exportObject.serialSize)
+    return self.exportObject.originalOffset + self.exportObject.serialSize - pos;
+  return 0;
+}
+
 - (FPropertyTag *)propertyForName:(NSString *)aName
 {
   @synchronized (self)

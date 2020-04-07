@@ -6,12 +6,11 @@
 //  Copyright © 2017 Vladislav Skachkov. All rights reserved.
 //
 
-#import "UObject.h"
+#import "Actor.h"
 #import "FArray.h"
 #import "FString.h"
-#import "FTerrain.h"
 
-@interface Terrain : UObject
+@interface Terrain : Actor
 
 @property (strong) FArray *heights;
 @property (strong) FArray *infoData;
@@ -23,6 +22,7 @@
 @property (assign) int numVerticesX;
 @property (assign) int numVerticesY;
 
+- (void)exportToT3D:(NSMutableString*)result padding:(unsigned)padding index:(unsigned)index;
 - (CGImageRef)heightMap;
 - (NSString *)info;
 

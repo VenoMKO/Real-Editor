@@ -21,6 +21,7 @@
 @interface PackageController () <NSSearchFieldDelegate>
 
 @property (strong) NSMutableArray               *cache;
+@property (strong) NSMutableArray               *operations;
 
 @property (weak) IBOutlet NSSplitView           *splitView;
 @property (assign) CGFloat                      propertiesDivierWidth;

@@ -54,17 +54,17 @@
 @interface LightComponent : ActorComponent
 @property (strong) FColor *lightColor;
 @property (assign) CGFloat brightness;
+@property (assign) CGFloat radius;
+@property (assign) CGFloat falloffExponent;
 @property (strong) FArray *inclusionConvexVolumes;
 @property (strong) FArray *exclusionConvexVolumes;
 @end
 
 @interface PointLightComponent : LightComponent
-@property (assign) CGFloat radius;
-@property (assign) CGFloat falloffExponent;
-@property (assign) GLKVector3 translation;
 @end
 
 @interface SpotLightComponent : PointLightComponent
+@property BOOL             renderLightShafts;
 @property (assign) CGFloat innerConeAngle;
 @property (assign) CGFloat outerConeAngle;
 @property (assign) CGFloat lightShaftConeAngle;

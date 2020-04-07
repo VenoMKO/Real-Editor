@@ -200,6 +200,10 @@ inline __attribute__ ((always_inline)) float CosTab(int i)
   return r;
 }
 
+- (GLKVector3)glkVector3
+{
+  return GLKVector3Make(self.pitch, self.yaw, self.roll);
+}
 
 - (id)plist
 {

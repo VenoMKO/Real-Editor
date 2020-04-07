@@ -42,7 +42,6 @@
 @property (strong) FArray *modelComponents;
 @property (strong) FArray *gameSequences;
 @property (strong) FMap *textureToInstancesMap;
-//@property (strong) FMap *dynamicTextureInstances; PackageVer: 787
 @property (strong) FByteArray *cachedPhysBSPData;
 @property (strong) FMultiMap *cachedPhysSMDataMap;
 @property (strong) FArray *cachedPhysSMDataStore;
@@ -55,8 +54,13 @@
 @property (weak) UObject *navListEnd;
 @property (weak) UObject *coverListStart;
 @property (weak) UObject *coverListEnd;
-@property (weak) UObject *pylonListStart;
-@property (weak) UObject *pylonListEnd;
 @property (strong) FArray *crossLevelActors;
 @property (assign) int unk;
+- (void)exportT3D:(NSString *)path;
+@end
+
+@interface World : UObject
+@property (weak) Level *persistentLevel;
+@property (weak) UObject *gameSummary;
+@property (strong) FArray *extraReferencedObjects;
 @end

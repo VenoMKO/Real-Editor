@@ -12,11 +12,16 @@
 #import "FVector.h"
 #import "FRotator.h"
 #import "MeshComponent.h"
+#import "T3DUtils.h"
 
 @interface Actor ()
 @end
 
 @implementation Actor
+
+- (void)exportToT3D:(NSMutableString *)result padding:(unsigned)padding index:(int)index
+{
+}
 
 - (FIStream *)postProperties
 {
@@ -144,46 +149,6 @@
 
 @end
 
-@implementation StaticMeshActor
-
-- (FIStream *)postProperties
-{
-  [super postProperties];
-  FPropertyTag *ref = [self propertyForName:@"StaticMeshComponent"];
-  if (ref)
-    self.component = [self.package objectForIndex:[ref.value intValue]];
-  [self.component properties]; // Force read props
-  return nil;
-}
-
-- (NSString *)displayName
-{
-  NSString *name = [[(MeshComponent *)self.component mesh] objectName];
-  return name ? name : self.objectName;
-}
-
-@end
-
-@implementation SkeletalMeshActor
-
-- (FIStream *)postProperties
-{
-  [super postProperties];
-  FPropertyTag *ref = [self propertyForName:@"SkeletalMeshComponent"];
-  if (ref)
-    self.component = [self.package objectForIndex:[ref.value intValue]];
-  [self.component properties]; // Force read props
-  return nil;
-}
-
-- (NSString *)displayName
-{
-  NSString *name = [[(MeshComponent *)self.component mesh] objectName];
-  return name ? name : self.objectName;
-}
-
-@end
-
 @implementation InterpActor
 
 - (FIStream *)postProperties
@@ -211,24 +176,3 @@
 }
 
 @end
-
-@implementation LightActor
-
-- (FIStream *)postProperties
-{
-  [super postProperties];
-  self.lightComponent = [self.package objectForIndex:[[self propertyForName:@"LightComponent"].value intValue]];
-  [self.lightComponent properties];
-  return nil;
-}
-
-@end
-
-@implementation PointLight
-@end
-
-@implementation SpotLight
-@end
-
-
-

@@ -7,17 +7,21 @@
 //
 
 #import <SceneKit/SceneKit.h>
+#import "UPackage.h"
 
 @interface ModelView : SCNView {
   CGFloat             radius;
   CGFloat             minRadius;
 }
-@property (assign) SCNNode          *orbitNode;
-@property (assign) SCNNode          *cameraNode;
-@property (assign) SCNNode          *objectNode;
-@property (assign) BOOL             locked;
-@property (assign) BOOL             materialView;
-@property (assign) BOOL             increaseFogDensity;
+@property (weak) UPackage             *package;
+@property (weak) UObject              *selection;
+@property (assign) SCNNode            *orbitNode;
+@property (assign) SCNNode            *cameraNode;
+@property (assign) SCNNode            *objectNode;
+@property (assign) BOOL               locked;
+@property (assign) BOOL               materialView;
+@property (assign) BOOL               increaseFogDensity;
+@property (assign) IBInspectable BOOL allowObjectSelection;
 
 - (void)setup;
 - (void)reset;

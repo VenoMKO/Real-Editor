@@ -19,6 +19,10 @@ const int MenuItemTagObjectExport = 400;
 const int MenuItemTagObjectExportRaw = 401;
 const int MenuItemTagObjectExportProperties = 402;
 
+#ifndef DEBUG
+#define DEBUG 0
+#endif
+
 const BOOL MenuItemDebugVisible = DEBUG;
 
 #define SECONDS_PRE_DAY 86400
