@@ -110,7 +110,17 @@
     }
     
     SCNMaterial *m = [mat sceneMaterial];
-    tempMat[idx] = m;
+    if (m)
+    {
+      if (idx < tempMat.count)
+      {
+        tempMat[idx] = m;
+      }
+      else
+      {
+        [tempMat addObject:m];
+      }
+    }
   }
   
   dispatch_async(dispatch_get_main_queue(), ^{
