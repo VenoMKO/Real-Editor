@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16096" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16096"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="MaterialEditor">
+            <connections>
+                <outlet property="canvas" destination="xUY-4l-w8n" id="az8-hD-Reu"/>
+                <outlet property="container" destination="d2C-RS-MP7" id="4GN-PQ-JZE"/>
+                <outlet property="heightConstraint" destination="eE7-2o-nd0" id="rPp-Kd-ZAB"/>
+                <outlet property="scrollView" destination="REt-sC-jIG" id="soz-jR-KkH"/>
+                <outlet property="toolBarView" destination="Xiv-vM-MhN" id="y1D-T6-Qfh"/>
+                <outlet property="view" destination="c22-O7-iKe" id="IfR-vY-vpF"/>
+                <outlet property="widthConstraint" destination="4Y3-4S-ZyB" id="f9O-66-LO4"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="c22-O7-iKe">
+            <rect key="frame" x="0.0" y="0.0" width="698" height="485"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <scrollView horizontalHuggingPriority="1" verticalHuggingPriority="1" horizontalCompressionResistancePriority="1" verticalCompressionResistancePriority="1" borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="REt-sC-jIG">
+                    <rect key="frame" x="0.0" y="0.0" width="698" height="485"/>
+                    <clipView key="contentView" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="M6f-qx-OLF">
+                        <rect key="frame" x="0.0" y="0.0" width="698" height="485"/>
+                        <subviews>
+                            <view translatesAutoresizingMaskIntoConstraints="NO" id="d2C-RS-MP7" customClass="FlippedView">
+                                <rect key="frame" x="0.0" y="0.0" width="698" height="484"/>
+                                <subviews>
+                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="xUY-4l-w8n" customClass="ExpressionView">
+                                        <rect key="frame" x="1" y="1" width="696" height="483"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" priority="999" constant="696" id="4Y3-4S-ZyB"/>
+                                            <constraint firstAttribute="height" priority="999" constant="483" id="eE7-2o-nd0"/>
+                                        </constraints>
+                                    </customView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="xUY-4l-w8n" secondAttribute="bottom" constant="1" id="0WW-fa-6ea"/>
+                                    <constraint firstAttribute="trailing" secondItem="xUY-4l-w8n" secondAttribute="trailing" constant="1" id="Ays-WO-zAf"/>
+                                    <constraint firstItem="xUY-4l-w8n" firstAttribute="top" secondItem="d2C-RS-MP7" secondAttribute="top" id="WRN-DL-IGh"/>
+                                    <constraint firstItem="xUY-4l-w8n" firstAttribute="leading" secondItem="d2C-RS-MP7" secondAttribute="leading" constant="1" id="Xxx-cw-I2K"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="d2C-RS-MP7" firstAttribute="leading" secondItem="M6f-qx-OLF" secondAttribute="leading" id="258-Az-IJV"/>
+                            <constraint firstAttribute="bottom" secondItem="d2C-RS-MP7" secondAttribute="bottom" id="KSe-X1-cL1"/>
+                            <constraint firstAttribute="trailing" secondItem="d2C-RS-MP7" secondAttribute="trailing" constant="1" id="qAW-ov-cNC"/>
+                        </constraints>
+                        <edgeInsets key="contentInsets" left="0.0" right="0.0" top="0.0" bottom="0.0"/>
+                    </clipView>
+                    <scroller key="horizontalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="RL0-UZ-m2k">
+                        <rect key="frame" x="0.0" y="469" width="698" height="16"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </scroller>
+                    <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="q6M-yq-aPF">
+                        <rect key="frame" x="682" y="0.0" width="16" height="485"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </scroller>
+                </scrollView>
+            </subviews>
+            <constraints>
+                <constraint firstItem="REt-sC-jIG" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="3os-b7-O6n"/>
+                <constraint firstAttribute="trailing" secondItem="REt-sC-jIG" secondAttribute="trailing" id="FXb-F2-Qq1"/>
+                <constraint firstItem="REt-sC-jIG" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="Z4P-zP-Tzc"/>
+                <constraint firstAttribute="bottom" secondItem="REt-sC-jIG" secondAttribute="bottom" id="g5f-cQ-cQZ"/>
+            </constraints>
+            <point key="canvasLocation" x="324" y="311.5"/>
+        </customView>
+        <customView id="Xiv-vM-MhN">
+            <rect key="frame" x="0.0" y="0.0" width="454" height="39"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="aSQ-id-pgN">
+                    <rect key="frame" x="-1" y="18" width="69" height="23"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="KPa-aw-xZX"/>
+                    </constraints>
+                    <buttonCell key="cell" type="smallSquare" title="Export RAW" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="yAb-WI-Jj9">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="controlContent" size="11"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="exportRaw:" target="-2" id="HrD-v1-WLU"/>
+                        <binding destination="-2" name="enabled" keyPath="self.object.exportObject.serialSize" id="KXT-M3-mex"/>
+                    </connections>
+                </button>
+            </subviews>
+            <constraints>
+                <constraint firstItem="aSQ-id-pgN" firstAttribute="top" secondItem="Xiv-vM-MhN" secondAttribute="top" constant="-1" id="RAb-jj-jsi"/>
+                <constraint firstItem="aSQ-id-pgN" firstAttribute="leading" secondItem="Xiv-vM-MhN" secondAttribute="leading" constant="-1" id="ozg-EY-nTh"/>
+            </constraints>
+            <point key="canvasLocation" x="330" y="655"/>
+        </customView>
+    </objects>
+</document>

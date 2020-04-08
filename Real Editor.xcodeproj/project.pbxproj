@@ -42,6 +42,8 @@
 		F13585E31D76EDC600E7EEA3 /* ContextedOutlineView.m in Sources */ = {isa = PBXBuildFile; fileRef = F13585E21D76EDC600E7EEA3 /* ContextedOutlineView.m */; };
 		F138FB482434AC70009FC1D6 /* LightActor.m in Sources */ = {isa = PBXBuildFile; fileRef = F138FB472434AC70009FC1D6 /* LightActor.m */; };
 		F138FB4B243B6EFC009FC1D6 /* ShaderCache.m in Sources */ = {isa = PBXBuildFile; fileRef = F138FB4A243B6EFC009FC1D6 /* ShaderCache.m */; };
+		F138FB4E243C846A009FC1D6 /* MaterialEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = F138FB4D243C846A009FC1D6 /* MaterialEditor.m */; };
+		F138FB51243C84E5009FC1D6 /* Material.xib in Resources */ = {isa = PBXBuildFile; fileRef = F138FB4F243C84E5009FC1D6 /* Material.xib */; };
 		F13DD2291E09325600632F07 /* libz.1.2.8.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F13DD2271E09324700632F07 /* libz.1.2.8.tbd */; };
 		F13F0BF41DC718A9008B3D4C /* MaterialInstanceConstantEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = F13F0BF31DC718A9008B3D4C /* MaterialInstanceConstantEditor.m */; };
 		F13F0BF61DC72ED1008B3D4C /* prefix-tools.m in Sources */ = {isa = PBXBuildFile; fileRef = F13F0BF51DC72ED1008B3D4C /* prefix-tools.m */; };
@@ -210,6 +212,9 @@
 		F138FB472434AC70009FC1D6 /* LightActor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LightActor.m; sourceTree = "<group>"; };
 		F138FB49243B6EFC009FC1D6 /* ShaderCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShaderCache.h; sourceTree = "<group>"; };
 		F138FB4A243B6EFC009FC1D6 /* ShaderCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShaderCache.m; sourceTree = "<group>"; };
+		F138FB4C243C846A009FC1D6 /* MaterialEditor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MaterialEditor.h; sourceTree = "<group>"; };
+		F138FB4D243C846A009FC1D6 /* MaterialEditor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MaterialEditor.m; sourceTree = "<group>"; };
+		F138FB50243C84E5009FC1D6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = System/Base.lproj/Material.xib; sourceTree = SOURCE_ROOT; };
 		F13DD2271E09324700632F07 /* libz.1.2.8.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.1.2.8.tbd; path = usr/lib/libz.1.2.8.tbd; sourceTree = SDKROOT; };
 		F13F0BF21DC718A9008B3D4C /* MaterialInstanceConstantEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MaterialInstanceConstantEditor.h; sourceTree = "<group>"; };
 		F13F0BF31DC718A9008B3D4C /* MaterialInstanceConstantEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MaterialInstanceConstantEditor.m; sourceTree = "<group>"; };
@@ -495,6 +500,7 @@
 				F10943A91D818CF100B9C12F /* Texture2D.xib */,
 				F1E52912241A087500B68DB3 /* Terrain.xib */,
 				F1B31FE11D731D7C00C0DDD6 /* UObject.xib */,
+				F138FB4F243C84E5009FC1D6 /* Material.xib */,
 				F17A4B5F1D7C387400341598 /* ObjectRedirector.xib */,
 				F1037F301D856F0E005F4EB2 /* RawExportOptions.xib */,
 				F1585DDB1DC397BA005462B4 /* MaterialInstanceConstant.xib */,
@@ -631,6 +637,8 @@
 				F1DDAAC51E31DFD100D46A35 /* TextBufferEditor.m */,
 				F1E5290F241A068100B68DB3 /* TerrainEditor.h */,
 				F1E52910241A068100B68DB3 /* TerrainEditor.m */,
+				F138FB4C243C846A009FC1D6 /* MaterialEditor.h */,
+				F138FB4D243C846A009FC1D6 /* MaterialEditor.m */,
 			);
 			path = Editors;
 			sourceTree = "<group>";
@@ -821,6 +829,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F138FB51243C84E5009FC1D6 /* Material.xib in Resources */,
 				F1FFBD171E0BFDDA00DAEB18 /* Classes.plist in Resources */,
 				F16AE42A1E0D15F3009C3897 /* StaticMesh.xib in Resources */,
 				F1DDAAC21E31DF6700D46A35 /* TextBuffer.xib in Resources */,
@@ -891,6 +900,7 @@
 				F1037F3A1D85A5AD005F4EB2 /* FBoxSphereBounds.m in Sources */,
 				F1170EC41D606A7800262974 /* FReadable.m in Sources */,
 				F1B999F71D699DD400AFAC80 /* FRotator.m in Sources */,
+				F138FB4E243C846A009FC1D6 /* MaterialEditor.m in Sources */,
 				F153721D1DCDDB280044F3DE /* MaterialInstanceConstantWizard.m in Sources */,
 				F16AE4271E0D10E1009C3897 /* StaticMeshEditor.m in Sources */,
 				F1FCB61B1D91190C0063FB54 /* MeshUtils.m in Sources */,
@@ -969,6 +979,14 @@
 				F1037F311D856F0E005F4EB2 /* Base */,
 			);
 			name = RawExportOptions.xib;
+			sourceTree = "<group>";
+		};
+		F138FB4F243C84E5009FC1D6 /* Material.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F138FB50243C84E5009FC1D6 /* Base */,
+			);
+			name = Material.xib;
 			sourceTree = "<group>";
 		};
 		F13F0BF81DC73B1D008B3D4C /* NewMaterialInstanceConstant.xib */ = {
