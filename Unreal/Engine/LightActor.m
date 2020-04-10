@@ -25,7 +25,7 @@
 
 @implementation PointLight
 
-- (void)exportToT3D:(NSMutableString*)result padding:(unsigned)padding index:(int)index
+- (BOOL)exportToT3D:(NSMutableString*)result padding:(unsigned)padding index:(int)index
 {
   T3DAddLine(result, padding, T3DBeginObject(@"Actor", [NSString stringWithFormat:@"PointLight_%d", index], @"/Script/Engine.PointLight"));
   padding++;
@@ -58,13 +58,14 @@
   }
   padding--;
   T3DAddLine(result, padding, T3DEndObject(@"Actor"));
+  return YES;
 }
 
 @end
 
 @implementation SpotLight
 
-- (void)exportToT3D:(NSMutableString*)result padding:(unsigned)padding index:(int)index
+- (BOOL)exportToT3D:(NSMutableString*)result padding:(unsigned)padding index:(int)index
 {
   T3DAddLine(result, padding, T3DBeginObject(@"Actor", [NSString stringWithFormat:@"SpotLight_%d", index], @"/Script/Engine.SpotLight"));
   padding++;
@@ -133,6 +134,7 @@
   }
   padding--;
   T3DAddLine(result, padding, T3DEndObject(@"Actor"));
+  return YES;
 }
 
 @end

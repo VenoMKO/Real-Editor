@@ -19,8 +19,9 @@
 
 @implementation Actor
 
-- (void)exportToT3D:(NSMutableString *)result padding:(unsigned)padding index:(int)index
+- (BOOL)exportToT3D:(NSMutableString *)result padding:(unsigned)padding index:(int)index
 {
+  return NO;
 }
 
 - (FIStream *)postProperties
@@ -145,34 +146,6 @@
     r.roll += selfRot.roll;
   }
   return r;
-}
-
-@end
-
-@implementation InterpActor
-
-- (FIStream *)postProperties
-{
-  [super postProperties];
-  FPropertyTag *ref = [self propertyForName:@"SkeletalMeshComponent"];
-  if (ref)
-  {
-    self.component = [self.package objectForIndex:[ref.value intValue]];
-  }
-  else
-  {
-    ref = [self propertyForName:@"StaticMeshComponent"];
-    if (ref)
-      self.component = [self.package objectForIndex:[ref.value intValue]];
-  }
-  [self.component properties]; // Force read props
-  return nil;
-}
-
-- (NSString *)displayName
-{
-  NSString *name = [[(MeshComponent *)self.component mesh] objectName];
-  return name ? name : self.objectName;
 }
 
 @end

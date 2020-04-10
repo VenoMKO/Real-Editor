@@ -16,3 +16,6 @@
 
 @interface SkeletalMeshActor : MeshActor
 @end
+
+@interface InterpActor : MeshActor
+@end

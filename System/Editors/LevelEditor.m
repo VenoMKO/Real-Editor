@@ -23,7 +23,7 @@
 #import "Terrain.h"
 
 #define DEBUG_EXPORT_BOUNDS 0
-#define DEBUG_EXPORT_CLASS 1
+#define DEBUG_EXPORT_CLASS 0
 
 BOOL CheckBounds(Actor *a)
 {
@@ -286,6 +286,7 @@ const double ScaleFactor = 1.0;
   NSMutableDictionary *indicies = [NSMutableDictionary new];
   double step = 100. / (float)actors.count;
   double progress = 0;
+  NSMutableString *actorsList = [@"Actors:\n" mutableCopy];
   for (Actor *actor in actors)
   {
     progress += step;
@@ -322,28 +323,74 @@ const double ScaleFactor = 1.0;
       self.exportProgressValue = progress;
       self.exportProgressDescription = [NSString stringWithFormat:@"Exporting: %@", name];
     });
-    if ([actor isKindOfClass:[StaticMeshActor class]])
+    if ([actor isKindOfClass:[StaticMeshActor class]] ||
+        [actor isKindOfClass:[InterpActor class]])
     {
-      StaticMesh *mesh = (StaticMesh*)[(StaticMeshActor*)actor mesh];
-      NSMutableArray *targetPathComps = [[[mesh objectPath] componentsSeparatedByString:@"."] mutableCopy];
-      [targetPathComps removeObjectAtIndex:0];
-      NSString *targetPath = [dataDirPath stringByAppendingPathComponent:[targetPathComps componentsJoinedByString:@"/"]];
-      [[NSFileManager defaultManager] createDirectoryAtPath:[targetPath stringByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:NULL];
-      NSString *fbxPath = [targetPath stringByAppendingPathExtension:@"fbx"];
-      if (mesh && ![[NSFileManager defaultManager] fileExistsAtPath:fbxPath])
+      NSUInteger t3dLength = result.length;
+      NSUInteger actorsLength = actorsList.length;
+      if (![actor exportToT3D:result padding:padding index:idx])
       {
+        continue;
+      }
+      [actorsList appendFormat:@"[%d]%@(%@)\n", [actor.package indexForObject:actor], [actor displayName], [actor objectClass]];
+      StaticMesh *mesh = (StaticMesh*)[(StaticMeshActor*)actor mesh];
+      NSString *targetPath = nil;
+      NSString *fbxPath = nil;
+      {
+        NSArray *targetPathComps = [[mesh objectPath] componentsSeparatedByString:@"."];
+        [targetPathComps subarrayWithRange:NSMakeRange(1, targetPathComps.count - 2)];
+        targetPath = [dataDirPath stringByAppendingPathComponent:[targetPathComps componentsJoinedByString:@"/"]];
+        fbxPath = [targetPath stringByAppendingPathExtension:@"fbx"];
+      }
+      
+      if (mesh)
+      {
+        if (mesh.exportObject.exportFlags | EF_ForcedExport)
+        {
+          mesh = (id)[mesh.package resolveForcedExport:mesh.exportObject];
+          if (cancelExport) return;
+        }
+        else if (mesh.importObject)
+        {
+          mesh = (id)[mesh.package resolveImport:mesh.importObject];
+          if (cancelExport) return;
+        }
+        if (!mesh)
+        {
+          DLog(@"Failed to find mesh: %@", actor);
+          [result deleteCharactersInRange:NSMakeRange(t3dLength, result.length - t3dLength)];
+          [actorsList deleteCharactersInRange:NSMakeRange(actorsLength, actorsList.length - actorsLength)];
+          continue;
+        }
         if (cancelExport) return;
-        dispatch_async(dispatch_get_main_queue(), ^{
-          self.exportProgressDescription = [NSString stringWithFormat:@"Exporting: %@", [fbxPath lastPathComponent]];
-        });
-        [[FBXUtils new] exportStaticMesh:mesh options:@{@"path" : fbxPath, @"lodIdx" : @(0), @"type" : @(0)}];
+        [actorsList appendFormat:@"\tMesh: %@:%@\n", mesh.package.stream.url.path, [mesh.objectPath stringByReplacingOccurrencesOfString:@"." withString:@"/"]];
+        if (![[NSFileManager defaultManager] fileExistsAtPath:fbxPath])
+        {
+          [[NSFileManager defaultManager] createDirectoryAtPath:[targetPath stringByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:NULL];
+          dispatch_async(dispatch_get_main_queue(), ^{
+            self.exportProgressDescription = [NSString stringWithFormat:@"Exporting: %@", [fbxPath lastPathComponent]];
+          });
+          if ([mesh isKindOfClass:[StaticMesh class]])
+          {
+            [[FBXUtils new] exportStaticMesh:mesh options:@{@"path" : fbxPath, @"lodIdx" : @(0), @"type" : @(0)}];
+          }
+          else if ([mesh isKindOfClass:[SkeletalMesh class]])
+          {
+            [[FBXUtils new] exportSkeletalMesh:(SkeletalMesh*)mesh options:@{@"path" : fbxPath, @"lodIdx" : @(0), @"type" : @(0)}];
+          }
+        }
       }
     }
     else
     {
-      [actor exportToT3D:result padding:padding index:idx];
+      if ([actor exportToT3D:result padding:padding index:idx])
+      {
+        [actorsList appendFormat:@"[%d]%@(%@)\n", [actor.package indexForObject:actor], [actor objectName], [actor objectClass]];
+      }
     }
   }
+  
+  [actorsList writeToFile:[[path stringByDeletingLastPathComponent] stringByAppendingFormat:@"/%@_actors_list.txt", self.object.package.name] atomically:YES encoding:NSUTF8StringEncoding error:nil];
   
   padding--;
   T3DAddLine(result, padding, T3DEndObject(@"Level"));

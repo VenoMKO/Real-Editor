@@ -19,7 +19,7 @@
 @property (assign, nonatomic) GLKVector3 rotation;
 @property (weak) ActorComponent *component;
 
-- (void)exportToT3D:(NSMutableString *)result padding:(unsigned)padding index:(int)index;
+- (BOOL)exportToT3D:(NSMutableString *)result padding:(unsigned)padding index:(int)index;
 - (NSString *)displayName;
 - (FRotator *)rotator;
 - (CGFloat)absoluteDrawScale;
@@ -28,7 +28,4 @@
 - (GLKVector3)absoluteRotation;
 - (GLKVector3)absoluteSCNRotation;
 - (FRotator *)absoluteRotator;
-@end
-
-@interface InterpActor : Actor
 @end

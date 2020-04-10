@@ -14,6 +14,7 @@
 #import "FArray.h"
 #import "FReadable.h"
 #import "UObject.h"
+#import "ObjectRedirector.h"
 #import "PackageController.h"
 #import <Cocoa/Cocoa.h>
 #define PACKAGE_MAGIC               0x9E2A83C1
@@ -25,6 +26,10 @@
 
 unsigned int CRCLookUpTable[256];
 static BOOL crcInit = NO;
+
+@class PackageCache;
+NSMutableDictionary *DirCache;
+PackageCache *GPackageCache;
 
 void InitCRCTable()
 {
@@ -50,6 +55,111 @@ unsigned int CRCForString( const char *Data , int Length)
   }
   return ~CRC;
 }
+
+@interface PackageRef : NSObject
+@property UPackage *package;
+@property int refCount;
+@end
+
+@implementation PackageRef
+
++ (instancetype)ref:(UPackage*)package
+{
+  PackageRef *ref = [PackageRef new];
+  ref.package = package;
+  return ref;
+}
+
+- (void)refRetain
+{
+  self.refCount++;
+}
+
+- (void)refRelease
+{
+  self.refCount--;
+}
+
+@end
+
+@interface PackageCache : NSObject
+@property (strong) NSMutableDictionary<NSString*,PackageRef*> *cache;
+@end
+
+@implementation PackageCache
+
+- (id)init
+{
+  if ((self = [super init]))
+  {
+    self.cache = [NSMutableDictionary new];
+  }
+  return self;
+}
+
+- (UPackage *)packgeForPath:(NSString *)path
+{
+  @synchronized (self)
+  {
+    return [self.cache[path] package];
+  }
+}
+
+- (void)retainPackage:(UPackage *)package
+{
+  @synchronized (self)
+  {
+    NSString *path;
+    if (package.originalURL)
+    {
+      path = package.originalURL.path;
+    }
+    else
+    {
+      path = package.stream.url.path;
+    }
+    PackageRef *ref;
+    if (!self.cache[path])
+    {
+      ref = [PackageRef ref:package];
+      self.cache[path] = ref;
+    }
+    else
+    {
+      ref = self.cache[path];
+    }
+    [ref refRetain];
+  }
+}
+
+- (void)releasePackage:(UPackage *)package
+{
+  @synchronized (self)
+  {
+    NSString *path;
+    if (package.originalURL)
+    {
+      path = package.originalURL.path;
+    }
+    else
+    {
+      path = package.stream.url.path;
+    }
+    PackageRef *ref;
+    if (!self.cache[path])
+    {
+      return;
+    }
+    ref = self.cache[path];
+    [ref refRelease];
+    if (ref.refCount <= 0)
+    {
+      [self.cache removeObjectForKey:path];
+    }
+  }
+}
+
+@end
 
 @interface FGeneration : FReadable
 @property (assign) int              exports;
@@ -108,8 +218,22 @@ unsigned int CRCForString( const char *Data , int Length)
 
 @implementation UPackage
 
++ (void)initialize
+{
+  [super initialize];
+  static dispatch_once_t token;
+  dispatch_once(&token, ^{
+    DirCache = [NSMutableDictionary new];
+    GPackageCache = [PackageCache new];
+  });
+}
+
 - (void)dealloc
 {
+  for (UPackage *package in self.dependentPackages)
+  {
+    [GPackageCache releasePackage:package];
+  }
   self.dependentPackages = nil;
   if (self.originalURL)
     [[NSFileManager defaultManager] removeItemAtPath:self.stream.url.path error:NULL];
@@ -769,57 +893,6 @@ unsigned int CRCForString( const char *Data , int Length)
   }
   return nil;
 }
-#ifdef DEBUG
-- (UObject *)_legacyResolveImport:(FObjectImport *)import at:(NSURL *)url
-{
-  FObjectImport *imp = import;
-  
-  while (imp.parent)
-  {
-    imp = (FObjectImport *)imp.parent;
-  }
-  
-  if (imp) {
-    for (UPackage *p in self.dependentPackages) {
-      NSString *n = [p name];
-      if ([n isEqualToString:imp.objectName]) {
-        for (FObjectExport *e in p.exports) {
-          if ([e.objectName isEqualToString:import.objectName]) {
-            if (!e.object) {
-              assert(0);
-            }
-            return e.object;
-          }
-        }
-      }
-    }
-    int cnt = 0;
-    NSArray *items = enumerateDirectory(url, &cnt);
-    NSURL *packagePath = nil;
-    for (NSURL *path in items) {
-      NSString *n = [[path lastPathComponent] stringByDeletingPathExtension];
-      if ([n isEqualToString:imp.objectName]) {
-        packagePath = path;
-        break;
-      }
-    }
-    if (packagePath) {
-      UPackage *p = [UPackage readFromURL:packagePath];
-      [p preheat];
-      
-      [self.dependentPackages addObject:p];
-      for (FObjectExport *e in p.exports) {
-        if ([e.objectName isEqualToString:import.objectName]) {
-          UObject *o = e.object;
-          [o readProperties];
-          return o;
-        }
-      }
-    }
-  }
-  return nil;
-}
-#endif
 
 - (UObject *)resolveImport:(FObjectImport *)import at:(NSURL *)url
 {
@@ -842,8 +915,14 @@ unsigned int CRCForString( const char *Data , int Length)
       }
     }
     
-    int cnt = 0;
-    NSArray *items = enumerateDirectory(url, &cnt);
+    NSArray *items = DirCache[url.path];
+    if (!items)
+    {
+      int cnt = 0;
+      items = enumerateDirectory(url, &cnt);
+      DirCache[url.path] = items;
+    }
+    
     for (NSURL *itemURl in items)
     {
       NSString *n = [[itemURl.path lastPathComponent] stringByDeletingPathExtension];
@@ -866,13 +945,129 @@ unsigned int CRCForString( const char *Data , int Length)
       return nil;
     }
     
-    UPackage *package = [UPackage readFromURL:packagePath];
+    UPackage *package = [GPackageCache packgeForPath:packagePath.path];
     if (!package)
-      return nil;
-    [package preheat];
+    {
+      package = [UPackage readFromURL:packagePath];
+      if (!package)
+        return nil;
+      [package preheat];
+    }
+    [GPackageCache retainPackage:package];
     [self.dependentPackages addObject:package];
     return [package objectForPath:objectPath];
   }
+}
+
+- (UObject *)resolveForcedExport:(FObjectExport *)object
+{
+  if (!object)
+  {
+    return nil;
+  }
+  if ([object respondsToSelector:@selector(exportObject)])
+  {
+    object = [(UObject*)object exportObject];
+  }
+  if (object.exportFlags | EF_ForcedExport)
+  {
+    UObject *uobj = object.object;
+    NSString *objectPath = [uobj objectPath];
+    if (objectPath)
+    {
+      NSArray *components = [objectPath componentsSeparatedByString:@"."];
+      components = [components subarrayWithRange:NSMakeRange(1, components.count - 1)];
+      objectPath = [components componentsJoinedByString:@"."];
+    }
+    NSString *packageName = [[objectPath componentsSeparatedByString:@"."] firstObject];
+    
+    if (!self.dependentPackages)
+    {
+      self.dependentPackages = [NSMutableArray new];
+    }
+    
+    for (UPackage *package in self.dependentPackages)
+    {
+      NSString *name = [package name];
+      if ([name hasPrefix:packageName])
+      {
+        UObject *result = [package objectForPath:objectPath];
+        if ([result isKindOfClass:[ObjectRedirector class]])
+        {
+          result = [(ObjectRedirector*)result reference];
+          if (result.importObject)
+          {
+            result = [self resolveImport:result.importObject];
+          }
+        }
+        if (result)
+        {
+          return result;
+        }
+      }
+    }
+    
+    NSString *path = [[NSUserDefaults standardUserDefaults] stringForKey:kSettingsProjectDir];
+    if (!path.length)
+    {
+      NSArray *components = [self.originalURL ? self.originalURL.path : self.stream.url.path pathComponents];
+      NSUInteger index = [components indexOfObject:@"S1Game"];
+      if (index == NSNotFound)
+      {
+        return nil;
+      }
+      path = [[components subarrayWithRange:NSMakeRange(0, index)] componentsJoinedByString:@"/"];
+    }
+    
+    NSArray *items = DirCache[path];
+    if (!items)
+    {
+      int cnt = 0;
+      items = enumerateDirectory([NSURL fileURLWithPath:path], &cnt);
+      DirCache[path] = items;
+    }
+    
+    for (NSURL *itemURL in items)
+    {
+      NSString *a = [[[itemURL.path lastPathComponent] stringByDeletingPathExtension] lowercaseString];
+      NSString *b = [packageName lowercaseString];
+      if ([a hasPrefix:b])
+      {
+        BOOL addedToCache = NO;
+        UPackage *package = [GPackageCache packgeForPath:itemURL.path];
+        if (!package)
+        {
+          package = [UPackage readFromURL:itemURL];
+          [package preheat];
+          if (!package)
+            continue;
+          addedToCache = YES;
+        }
+        [GPackageCache retainPackage:package];
+        [self.dependentPackages addObject:package];
+        UObject *result = [package objectForPath:objectPath];
+        if ([result isKindOfClass:[ObjectRedirector class]])
+        {
+          result = [(ObjectRedirector*)result reference];
+          if (result.importObject)
+          {
+            result = [self resolveImport:result.importObject];
+          }
+        }
+        if (!result)
+        {
+          if (addedToCache)
+          {
+            [self.dependentPackages removeObject:package];
+            [GPackageCache releasePackage:package];
+          }
+          continue;
+        }
+        return result;
+      }
+    }
+  }
+  return object.object;
 }
 
 - (UObject *)resolveImport:(FObjectImport *)import
@@ -884,6 +1079,15 @@ unsigned int CRCForString( const char *Data , int Length)
   
   UObject *ret = nil;
   NSString *path = [d stringForKey:kSettingsProjectDir];
+  if (!path.length)
+  {
+    NSArray *components = [self.originalURL.path pathComponents];
+    NSUInteger index = [components indexOfObject:@"S1Game"];
+    if (index != NSNotFound)
+    {
+      path = [[components subarrayWithRange:NSMakeRange(0, index)] componentsJoinedByString:@"/"];
+    }
+  }
   if (path)
     ret = [self resolveImport:import at:[NSURL fileURLWithPath:path]];
   
@@ -939,6 +1143,10 @@ unsigned int CRCForString( const char *Data , int Length)
   }
   if ([obj isKindOfClass:[FObject class]])
     obj = [(FObject *)obj object];
+  if (obj)
+  {
+    [obj properties];
+  }
   return obj;
 }
 

@@ -9,6 +9,7 @@
 #import "MeshComponent.h"
 #import "FStaticMesh.h"
 #import "UPackage.h"
+#import "ObjectRedirector.h"
 
 @implementation MeshComponent
 
@@ -28,6 +29,15 @@
   self.lodInfo = [FArray readFrom:s type:[FStaticMeshComponentLODInfo class]];
   if (s.position - self.rawDataOffset != self.dataSize)
     DThrow(@"end missmatch!");
+  if (self.mesh)
+  {
+    [self.mesh properties];
+    if ([self.mesh isKindOfClass:[ObjectRedirector class]])
+    {
+      self.mesh = [(ObjectRedirector*)self.mesh reference];
+      [self.mesh properties];
+    }
+  }
   return s;
 }
 
@@ -46,6 +56,15 @@
 {
   FIStream *s = [super postProperties];
   self.mesh = [self.package objectForIndex:[[[self propertyForName:@"SkeletalMesh"] value] intValue]];
+  if (self.mesh)
+  {
+    [self.mesh properties];
+    if ([self.mesh isKindOfClass:[ObjectRedirector class]])
+    {
+      self.mesh = [(ObjectRedirector*)self.mesh reference];
+      [self.mesh properties];
+    }
+  }
   return s;
 }
 
