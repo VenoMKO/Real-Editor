@@ -44,7 +44,7 @@
       T3DAddLine(result, padding, @"LightColor=(B=%d,G=%d,R=%d,A=%d)", c.b, c.g, c.r, 255);
       T3DAddLine(result, padding, @"IndirectLightingIntensity=%.06f", 1.);
       T3DAddLine(result, padding, @"VolumetricScatteringIntensity=%.06f", 1.);
-      T3DAddLine(result, padding, @"bUseInverseSquaredFalloff=False");
+      //T3DAddLine(result, padding, @"bUseInverseSquaredFalloff=False");
       GLKVector3 p = [self absolutePostion];
       T3DAddLine(result, padding, @"RelativeLocation=(X=%.06f,Y=%.06f,Z=%.06f)", p.x, p.y, p.z);
     }
@@ -96,7 +96,7 @@
       T3DAddLine(result, padding, @"Intensity=%.06f", self.lightComponent.brightness);
       T3DAddLine(result, padding, @"AttenuationRadius=%.06f", self.lightComponent.radius);
       T3DAddLine(result, padding, @"SourceRadius=%.06f", self.lightComponent.radius);
-      T3DAddLine(result, padding, @"bUseInverseSquaredFalloff=False");
+      //T3DAddLine(result, padding, @"bUseInverseSquaredFalloff=False");
       GLKVector3 p = [self absolutePostion];
       T3DAddLine(result, padding, @"RelativeLocation=(X=%.06f,Y=%.06f,Z=%.06f)", p.x, p.y, p.z);
       FRotator *r = [self absoluteRotator];
