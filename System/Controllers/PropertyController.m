@@ -240,25 +240,25 @@
 
 - (NSNumber *)formattedR
 {
-  FColor *v = self.property.value;
+  FLinearColor *v = self.property.value;
   return @(v.r);
 }
 
 - (NSNumber *)formattedG
 {
-  FColor *v = self.property.value;
+  FLinearColor *v = self.property.value;
   return @(v.g);
 }
 
 - (NSNumber *)formattedB
 {
-  FColor *v = self.property.value;
+  FLinearColor *v = self.property.value;
   return @(v.b);
 }
 
 - (NSNumber *)formattedA
 {
-  FColor *v = self.property.value;
+  FLinearColor *v = self.property.value;
   return @(v.a);
 }
 

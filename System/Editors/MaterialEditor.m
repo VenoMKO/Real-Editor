@@ -29,6 +29,7 @@ const CGFloat ExpressionHeight = 50;
 @property NSMutableDictionary *expressionToViewMap;
 @property CGFloat offsetX;
 @property CGFloat offsetY;
+@property CGFloat maxX;
 @end
 
 @implementation MaterialEditor
@@ -104,7 +105,7 @@ const CGFloat ExpressionHeight = 50;
       maxX = posX;
     }
   }
-  
+  self.canvas.maxX = maxX;
   int canvasWidth = abs(minX) + abs(maxX) + (CanvasPadding * 2);
   int canvasHeight = abs(minY) + abs(maxY) + (CanvasPadding * 2);
   if (minX < 0)
@@ -143,7 +144,7 @@ const CGFloat ExpressionHeight = 50;
   {
     value = @0;
   }
-  int posX = [value intValue] + self.offsetX;
+  int posX = (self.maxX - [value intValue]) + self.offsetX;
   value = [expression propertyValue:@"EditorY"];
   if (!value)
   {
@@ -155,20 +156,8 @@ const CGFloat ExpressionHeight = 50;
 
 - (NSRect)expressionBounds:(UObject *)expression
 {
-  NSNumber *value = [expression propertyValue:@"EditorX"];
-  if (!value)
-  {
-    value = @0;
-  }
-  int posX = [value intValue] + self.offsetX;
-  value = [expression propertyValue:@"EditorY"];
-  if (!value)
-  {
-    value = @0;
-  }
-  int posY = [value intValue] + self.offsetY;
   NSRect result;
-  result.origin = NSMakePoint(posX, posY);
+  result.origin = [self expressionPosition:expression];
   
   NSString *name = [expression.objectClass stringByReplacingOccurrencesOfString:@"MaterialExpression" withString:@""];
   NSRect lableRect = [name boundingRectWithSize:NSMakeSize(5000, AttrFontSizeTitle) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : [NSFont systemFontOfSize:AttrFontSizeTitle], NSForegroundColorAttributeName : [NSColor labelColor]} context:nil];
@@ -176,10 +165,11 @@ const CGFloat ExpressionHeight = 50;
   int width = NSWidth(lableRect) + AttrFontSizeTitle;
   int height = ExpressionHeight;
   
-  value = [expression propertyValue:@"SizeX"];
+  NSNumber *value = [expression propertyValue:@"SizeX"];
   if (value)
   {
     width = MAX([value intValue], width);
+    result.origin.x -= ([value intValue] - (CanvasPadding * 2));
   }
   value = [expression propertyValue:@"SizeY"];
   if (value)
@@ -209,21 +199,6 @@ const CGFloat ExpressionHeight = 50;
   }
   
   int index = 1;
-  
-  if ([expression propertyForName:@"A"])
-  {
-    [self drawLineFromElement:expression name:@"A" index:index labelColor:color];index++;
-  }
-  
-  if ([expression propertyForName:@"B"])
-  {
-    [self drawLineFromElement:expression name:@"B" index:index labelColor:color];index++;
-  }
-  
-  if ([expression propertyForName:@"Input"])
-  {
-    [self drawLineFromElement:expression name:@"Input" index:index labelColor:color];index++;
-  }
   
   if ([expression propertyForName:@"Time"])
   {
@@ -295,14 +270,29 @@ const CGFloat ExpressionHeight = 50;
     [self drawLineFromElement:expression name:@"AGreaterThanB" index:index labelColor:color];index++;
   }
   
+  if ([expression propertyForName:@"Input"])
+  {
+    [self drawLineFromElement:expression name:@"Input" index:index labelColor:color];index++;
+  }
+  
+  if ([expression propertyForName:@"B"])
+  {
+    [self drawLineFromElement:expression name:@"B" index:index labelColor:color];index++;
+  }
+  
+  if ([expression propertyForName:@"A"])
+  {
+    [self drawLineFromElement:expression name:@"A" index:index labelColor:color];index++;
+  }
+  
   if (index == 1 || ![expression propertyValue:@"Texture"])
   {
     index = 1;
   }
   index = [self drawElementParameters:expression names:@[@"ParameterName"] color:color class:[FName class] index:index];
-  index = [self drawElementParameters:expression names:@[@"Speed", @"SpeedX", @"SpeedY", @"UTiling", @"VTiling", @"BiasScale", @"Period", @"HeightRatio", @"ReferencePlane"] color:color class:[NSNumber class] index:index];
+  index = [self drawElementParameters:expression names:@[@"Speed", @"SpeedX", @"SpeedY", @"UTiling", @"VTiling", @"CoordinateIndex", @"BiasScale", @"Period", @"HeightRatio", @"ReferencePlane", @"DefaultValue"] color:color class:[NSNumber class] index:index];
   
-  if ([name hasPrefix:@"Constant"])
+  if ([name hasPrefix:@"Constant"] || [name hasPrefix:@"ComponentMask"])
   {
     index = [self drawElementParameters:expression names:@[@"R", @"G", @"B", @"A"] color:color class:[NSNumber class] index:index];
   }
@@ -310,10 +300,10 @@ const CGFloat ExpressionHeight = 50;
   index = [self drawElementParameters:expression names:@[@"Texture"] color:color class:[UObject class] index:index];
 }
 
-- (int)drawElementParameters:(UObject*)expression names:(NSArray *)names color:(NSColor*)color class:(Class)objClass index:(int)index
+- (int)drawElementParameters:(UObject*)expression names:(NSArray *)names color:(NSColor*)color class:(Class)objClass index:(int)idx
 {
-  for (NSString *cname in names)
-  {
+  __block int index = idx;
+  [names enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(NSString *cname, NSUInteger idx, BOOL *stop) {
     NSNumber *value = [expression propertyValue:cname];
     if (value)
     {
@@ -328,18 +318,18 @@ const CGFloat ExpressionHeight = 50;
       }
       if ([objClass isSubclassOfClass:[NSNumber class]] || [objClass isSubclassOfClass:[NSString class]])
       {
-        [self drawLabel:[NSString stringWithFormat:@"%@: %@", name, value] ofExpression:expression posY:index right:NO color:color];index++;
+        [self drawLabel:[NSString stringWithFormat:@"%@: %@", name, value] ofExpression:expression posY:index right:YES color:color];index++;
       }
       else if ([objClass isSubclassOfClass:[UObject class]])
       {
-        [self drawLabel:[NSString stringWithFormat:@"%@: %@", name, [(UObject*)[expression.package objectForIndex:[value intValue]] objectName]] ofExpression:expression posY:index right:NO color:color];index++;
+        [self drawLabel:[NSString stringWithFormat:@"%@: %@", name, [(UObject*)[expression.package objectForIndex:[value intValue]] objectName]] ofExpression:expression posY:index right:YES color:color];index++;
       }
       else if ([objClass isSubclassOfClass:[FName class]])
       {
-        [self drawLabel:[NSString stringWithFormat:@"%@: %@", name, [expression.package nameForIndex:[value intValue]]] ofExpression:expression posY:index right:NO color:color];index++;
+        [self drawLabel:[NSString stringWithFormat:@"%@: %@", name, [expression.package nameForIndex:[value intValue]]] ofExpression:expression posY:index right:YES color:color];index++;
       }
     }
-  }
+  }];
   return index;
 }
 
@@ -350,17 +340,41 @@ const CGFloat ExpressionHeight = 50;
   {
     return;
   }
+  
+  NSMutableArray *mask = [NSMutableArray new];
+  for (FPropertyTag *property in expressionContainer)
+  {
+    if ([[property name] isEqualToString:@"MaskR"])
+    {
+      [mask addObject:@"R"];
+    }
+    else if ([[property name] isEqualToString:@"MaskG"])
+    {
+      [mask addObject:@"G"];
+    }
+    else if ([[property name] isEqualToString:@"MaskB"])
+    {
+      [mask addObject:@"B"];
+    }
+    else if ([[property name] isEqualToString:@"MaskA"])
+    {
+      [mask addObject:@"A"];
+    }
+  }
   NSRect sourceBounds = [self expressionBounds:expression];
-  NSPoint sourcePos = NSMakePoint(NSMaxX(sourceBounds), sourceBounds.origin.y);
-  [self drawLabel:expressionName ofExpression:expression posY:index right:YES color:color];
+  NSPoint sourcePos = NSMakePoint(NSMinX(sourceBounds), sourceBounds.origin.y);
+  
+  NSString *label = [NSString stringWithFormat:@"%@%@", expressionName, mask.count ? [NSString stringWithFormat:@"(%@)", [mask componentsJoinedByString:@","]] : @""];
+  
+  [self drawLabel:label ofExpression:expression posY:index right:NO color:color];
   UObject *destExpression = [expression.package objectForIndex:[[(FPropertyTag*)expressionContainer[0] value] intValue]];
   NSRect targetBounds = [self expressionBounds:destExpression];
-  NSPoint targetPos = NSMakePoint(NSMinX(targetBounds), NSMidY(targetBounds));
+  NSPoint targetPos = NSMakePoint(NSMaxX(targetBounds), NSMidY(targetBounds));
   
   [[NSColor grayColor] setStroke];
   NSBezierPath *path = [NSBezierPath bezierPath];
   [path moveToPoint:targetPos];
-  [path curveToPoint:NSMakePoint(sourcePos.x, sourcePos.y + ((index - 1) * AttrFontSize + AttrFontSize)) controlPoint1:NSMakePoint(targetPos.x - 50, targetPos.y) controlPoint2:NSMakePoint(sourcePos.x + 50, sourcePos.y + ((index - 1) * AttrFontSize) + AttrFontSize)];
+  [path curveToPoint:NSMakePoint(sourcePos.x, sourcePos.y + ((index - 1) * AttrFontSize + AttrFontSize)) controlPoint1:NSMakePoint(targetPos.x + 50, targetPos.y) controlPoint2:NSMakePoint(sourcePos.x - 50, sourcePos.y + ((index - 1) * AttrFontSize) + AttrFontSize)];
   [path stroke];
 }
 

@@ -84,6 +84,11 @@
   return @{@"r" : @(self.r), @"g" : @(self.g), @"b" : @(self.b), @"a" : @(self.a), @"type" : @"lc"};
 }
 
+- (NSString *)description
+{
+  return [NSString stringWithFormat:@"R:%.3f G:%.3f B:%.3f A:%.3f", self.r,self.g,self.b,self.a];
+}
+
 @end
 
 @implementation FColor
