@@ -158,15 +158,9 @@ struct VMaterial
     }
     
   }
-  //BOOL hasLightMap = NO;
-  FbxLayerElementUV *uvDiffuseLayer = FbxLayerElementUV::Create(mesh, "DiffuseUV");
-  //FbxLayerElementUV *uvLightMapLayer = FbxLayerElementUV::Create(mesh, "LightMapUV");
   FbxLayerElementNormal *layerElementNormal = FbxLayerElementNormal::Create(mesh, "");
   FbxLayerElementBinormal *layerElementBinormal = FbxLayerElementBinormal::Create(mesh, "");
   FbxLayerElementTangent *layerElementTangent = FbxLayerElementTangent::Create(mesh, "");
-  
-  uvDiffuseLayer->SetMappingMode(FbxLayerElement::eByControlPoint);
-  uvDiffuseLayer->SetReferenceMode(FbxLayerElement::eDirect);
   
   layerElementNormal->SetMappingMode(FbxLayerElement::eByControlPoint);
   layerElementNormal->SetReferenceMode(FbxLayerElement::eDirect);
@@ -184,28 +178,39 @@ struct VMaterial
     layerElementNormal->GetDirectArray().Add(FbxVector4(ZAxis.x, -ZAxis.y, ZAxis.z));
     layerElementTangent->GetDirectArray().Add(FbxVector4(YAxis.x, -YAxis.y, YAxis.z));
     layerElementBinormal->GetDirectArray().Add(FbxVector4(-XAxis.x, XAxis.y, -XAxis.z));
-    
-    float u = vertices[vertIndex].uv[0].u;
-    float v = vertices[vertIndex].uv[0].v;
-    uvDiffuseLayer->GetDirectArray().Add(FbxVector2(u, -v + 1.f));
-    
-    /*
-    if (vertices[vertIndex].numUVs)
-    {
-      u = vertices[vertIndex].uv[1].u;
-      v = vertices[vertIndex].uv[1].v;
-      uvLightMapLayer->GetDirectArray().Add(FbxVector2(u, -v + 1.f));
-      hasLightMap = YES;
-    }
-     */
   }
   
   layer->SetNormals(layerElementNormal);
   layer->SetBinormals(layerElementBinormal);
   layer->SetTangents(layerElementTangent);
-  layer->SetUVs(uvDiffuseLayer, FbxLayerElement::eTextureDiffuse);
-  //if (hasLightMap)
-  //  layer->SetUVs(uvLightMapLayer, FbxLayerElement::eTextureDiffuse);
+  
+  const short uvsCount = vertices[0].numUVs;
+  for (int uvIndex = 0; uvIndex < uvsCount; ++uvIndex)
+  {
+    FbxLayer *meshLayer = mesh->GetLayer(uvIndex);
+    if (!meshLayer)
+    {
+      mesh->CreateLayer();
+      meshLayer = mesh->GetLayer(uvIndex);
+      if (!layer)
+      {
+        DLog(@"Failed to get mesh layer!");
+        return;
+      }
+    }
+    FbxLayerElementUV *uvLayer = FbxLayerElementUV::Create(mesh, [[NSString stringWithFormat:@"UVSet_%d", uvIndex] UTF8String]);
+    uvLayer->SetMappingMode(FbxLayerElement::eByControlPoint);
+    uvLayer->SetReferenceMode(FbxLayerElement::eDirect);
+    for (int vertIndex = 0; vertIndex < vertexCount; ++vertIndex)
+    {
+      
+      float u = vertices[vertIndex].uv[uvIndex].u;
+      float v = vertices[vertIndex].uv[uvIndex].v;
+      uvLayer->GetDirectArray().Add(FbxVector2(u, -v + 1.f));
+    }
+    uvLayer->GetIndexArray().SetCount(sourceModel.indexContainer.elementCount);
+    meshLayer->SetUVs(uvLayer);
+  }
   
   free(vertices);
   
@@ -231,7 +236,6 @@ struct VMaterial
   }
   
   int sectionCount = (int)sourceModel.sections.count;
-  uvDiffuseLayer->GetIndexArray().SetCount(sourceModel.indexContainer.elementCount);
   for (int sectionIndex = 0; sectionIndex < sectionCount; sectionIndex++)
   {
     
