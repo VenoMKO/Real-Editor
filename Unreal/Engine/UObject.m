@@ -116,6 +116,11 @@
       return;
     }
     
+    if (self.exportObject.archetypeIdx > 0)
+    {
+      self.archetype = [self.package objectForIndex:self.exportObject.archetypeIdx];
+    }
+    
     FPropertyTag *property = [FPropertyTag readFrom:s object:self];
     self.properties = [NSMutableArray array];
     
@@ -339,7 +344,12 @@
   {
     if (!self.properties)
       [self readProperties];
-    return [FPropertyTag propertyForName:aName from:self.properties];
+    FPropertyTag *prop = [FPropertyTag propertyForName:aName from:self.properties];
+    if (!prop && self.archetype)
+    {
+      return [self.archetype propertyForName:aName];
+    }
+    return prop;
   }
 }
 

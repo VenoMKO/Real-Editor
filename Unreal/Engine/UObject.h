@@ -20,6 +20,7 @@ typedef NS_ENUM(int, UObjectExportOptions)
 @class UObjectEditor, FPropertyTag, FStateFrame;
 @interface UObject : FReadable
 @property (strong) UObject        *native;
+@property (assign) UObject        *archetype;
 @property (assign) int            netIndex;
 @property (assign) int            expressionIndex;
 @property (assign) unsigned       dataSize;

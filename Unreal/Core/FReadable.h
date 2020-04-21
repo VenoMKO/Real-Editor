@@ -25,6 +25,7 @@
 @interface FObject : FReadable
 
 @property (assign) int      nameIdx;
+@property (assign) int      nameFlags;
 @property (assign) long     classIdx;
 @property (assign) int      parentIdx;
 @property (retain) UObject  *object;
@@ -46,7 +47,7 @@
 @interface FObjectExport : FObject
 
 @property (assign) int      superIdx;
-@property (assign) long     archetypeIdx;
+@property (assign) int      archetypeIdx;
 @property (assign) RFObjectFlags     objectFlags;
 @property (assign) unsigned serialSize;
 @property (assign) unsigned serialOffset;

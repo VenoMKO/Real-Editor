@@ -121,12 +121,13 @@
   fobj.superIdx = [stream readInt:0];
   fobj.parentIdx = [stream readInt:0];
   fobj.nameIdx = [stream readInt:0];
+  fobj.nameFlags = [stream readInt:0];
   if (fobj.nameIdx > stream.package.names.count)
   {
     DThrow(@"Error reading export: %d",fobj.nameIdx);
     return nil;
   }
-  fobj.archetypeIdx = [stream readLong:0];
+  fobj.archetypeIdx = [stream readInt:0];
   fobj.objectFlags = [stream readLong:0];
   fobj.serialSize = [stream readInt:0];
   if (fobj.serialSize)
@@ -169,7 +170,8 @@
   [data writeInt:self.superIdx];
   [data writeInt:self.parentIdx];
   [data writeInt:self.nameIdx];
-  [data writeLong:self.archetypeIdx];
+  [data writeInt:self.nameFlags];
+  [data writeInt:self.archetypeIdx];
   if (self.objectFlags & RF_StateChanged) // We use RF_StateChanged to detect objects that were chaged. Don't save this tag
   {
     RFObjectFlags f = self.objectFlags;

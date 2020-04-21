@@ -89,6 +89,11 @@
   [self.packageController performSelector:@selector(goForward:) withObject:sender];
 }
 
+- (IBAction)goToArchetype:(id)sender
+{
+  [self.packageController performSelector:@selector(selectObject:) withObject:self.object.archetype];
+}
+
 
 - (NSArray *)tokenField:(NSTokenField *)tokenField completionsForSubstring:(NSString *)substring indexOfToken:(NSInteger)tokenIndex indexOfSelectedItem:(NSInteger *)selectedIndex
 {
