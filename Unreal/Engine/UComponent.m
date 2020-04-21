@@ -158,3 +158,12 @@
 }
 
 @end
+
+@implementation ParticleSystemComponent
+
+- (id)templateObject
+{
+  return [self propertyValue:@"Template"];
+}
+
+@end

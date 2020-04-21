@@ -69,3 +69,7 @@
 @property (assign) CGFloat outerConeAngle;
 @property (assign) CGFloat lightShaftConeAngle;
 @end
+
+@interface ParticleSystemComponent : ActorComponent
+- (id)templateObject;
+@end

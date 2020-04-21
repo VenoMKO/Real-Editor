@@ -17,7 +17,7 @@
 @property (assign, nonatomic) GLKVector3 drawScale3D;
 @property (assign, nonatomic) CGFloat    drawScale;
 @property (assign, nonatomic) GLKVector3 rotation;
-@property (weak) ActorComponent *component;
+@property (retain) ActorComponent *component;
 
 - (BOOL)exportToT3D:(NSMutableString *)result padding:(unsigned)padding index:(int)index;
 - (NSString *)displayName;
@@ -28,4 +28,8 @@
 - (GLKVector3)absoluteRotation;
 - (GLKVector3)absoluteSCNRotation;
 - (FRotator *)absoluteRotator;
+@end
+
+@interface Emitter : Actor
+@property ParticleSystemComponent *component;
 @end

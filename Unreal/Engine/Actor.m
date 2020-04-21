@@ -175,3 +175,25 @@
 }
 
 @end
+
+@implementation Emitter
+@dynamic component;
+
+- (FIStream *)postProperties
+{
+  [super postProperties];
+  NSNumber *objIdex = [self propertyValue:@"ParticleSystemComponent"];
+  if ([objIdex intValue])
+  {
+    self.component = [self.package objectForIndex:objIdex.intValue];
+  }
+  return nil;
+}
+
+- (NSString *)displayName
+{
+  NSString *name = [[self.component templateObject] objectName];
+  return name ? name : self.objectName;
+}
+
+@end
