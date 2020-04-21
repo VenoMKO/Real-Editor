@@ -20,7 +20,6 @@
 @property (assign) SCNNode            *objectNode;
 @property (assign) BOOL               locked;
 @property (assign) BOOL               materialView;
-@property (assign) BOOL               increaseFogDensity;
 @property (assign) IBInspectable BOOL allowObjectSelection;
 
 - (void)setup;

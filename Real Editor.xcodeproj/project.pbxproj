@@ -56,7 +56,6 @@
 		F15372191DCDCAB70044F3DE /* NewTexture2D.xib in Resources */ = {isa = PBXBuildFile; fileRef = F15372171DCDCAB70044F3DE /* NewTexture2D.xib */; };
 		F153721D1DCDDB280044F3DE /* MaterialInstanceConstantWizard.m in Sources */ = {isa = PBXBuildFile; fileRef = F153721C1DCDDB280044F3DE /* MaterialInstanceConstantWizard.m */; };
 		F15372201DCDDCC30044F3DE /* Texture2DWizard.m in Sources */ = {isa = PBXBuildFile; fileRef = F153721F1DCDDCC30044F3DE /* Texture2DWizard.m */; };
-		F157799D1DDAF1ED009ECCA8 /* libfbxsdk.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F1A2088D1D900118005DCE79 /* libfbxsdk.dylib */; };
 		F1585DDD1DC397BA005462B4 /* MaterialInstanceConstant.xib in Resources */ = {isa = PBXBuildFile; fileRef = F1585DDB1DC397BA005462B4 /* MaterialInstanceConstant.xib */; };
 		F15AB1631E2F6E0600BBD34F /* TextBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = F15AB1621E2F6E0600BBD34F /* TextBuffer.m */; };
 		F15AB1671E2F6F4A00BBD34F /* UClass.m in Sources */ = {isa = PBXBuildFile; fileRef = F15AB1661E2F6F4A00BBD34F /* UClass.m */; };
@@ -76,6 +75,8 @@
 		F17A4B5B1D7C337100341598 /* ObjectRedirector.m in Sources */ = {isa = PBXBuildFile; fileRef = F17A4B5A1D7C337100341598 /* ObjectRedirector.m */; };
 		F17A4B5E1D7C374000341598 /* ObjectRedirectorEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = F17A4B5D1D7C374000341598 /* ObjectRedirectorEditor.m */; };
 		F17A4B611D7C387400341598 /* ObjectRedirector.xib in Resources */ = {isa = PBXBuildFile; fileRef = F17A4B5F1D7C387400341598 /* ObjectRedirector.xib */; };
+		F18479F2244DDFE9005BE56E /* libfbxsdk.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F18479F1244DDFB1005BE56E /* libfbxsdk.dylib */; };
+		F18479F4244DE01D005BE56E /* libfbxsdk.dylib in Copy Files */ = {isa = PBXBuildFile; fileRef = F18479F1244DDFB1005BE56E /* libfbxsdk.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		F186180E1D881946004B3F4F /* SkeletalMesh.xib in Resources */ = {isa = PBXBuildFile; fileRef = F186180D1D881946004B3F4F /* SkeletalMesh.xib */; };
 		F18618111D882D61004B3F4F /* SkeletalMeshEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = F18618101D882D61004B3F4F /* SkeletalMeshEditor.m */; };
 		F18618141D886EC9004B3F4F /* SceneView.m in Sources */ = {isa = PBXBuildFile; fileRef = F18618131D886EC9004B3F4F /* SceneView.m */; };
@@ -111,7 +112,6 @@
 		F1D96B161D5FA0DC00071E45 /* Package.xib in Resources */ = {isa = PBXBuildFile; fileRef = F1D96B141D5FA0DC00071E45 /* Package.xib */; };
 		F1DDAAC21E31DF6700D46A35 /* TextBuffer.xib in Resources */ = {isa = PBXBuildFile; fileRef = F1DDAAC11E31DF6700D46A35 /* TextBuffer.xib */; };
 		F1DDAAC61E31DFD100D46A35 /* TextBufferEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = F1DDAAC51E31DFD100D46A35 /* TextBufferEditor.m */; };
-		F1E5290E2418E39600B68DB3 /* libfbxsdk.dylib in Copy Files */ = {isa = PBXBuildFile; fileRef = F1E5290D2418E39600B68DB3 /* libfbxsdk.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		F1E52911241A068100B68DB3 /* TerrainEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = F1E52910241A068100B68DB3 /* TerrainEditor.m */; };
 		F1E52913241A087500B68DB3 /* Terrain.xib in Resources */ = {isa = PBXBuildFile; fileRef = F1E52912241A087500B68DB3 /* Terrain.xib */; };
 		F1E8690324335F4A00A2F49B /* MeshActor.m in Sources */ = {isa = PBXBuildFile; fileRef = F1E8690224335F4A00A2F49B /* MeshActor.m */; };
@@ -134,7 +134,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				F1E5290E2418E39600B68DB3 /* libfbxsdk.dylib in Copy Files */,
+				F18479F4244DE01D005BE56E /* libfbxsdk.dylib in Copy Files */,
 			);
 			name = "Copy Files";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -266,6 +266,7 @@
 		F17A4B5C1D7C374000341598 /* ObjectRedirectorEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectRedirectorEditor.h; sourceTree = "<group>"; };
 		F17A4B5D1D7C374000341598 /* ObjectRedirectorEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjectRedirectorEditor.m; sourceTree = "<group>"; };
 		F17A4B601D7C387400341598 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = ObjectRedirector.xib; sourceTree = "<group>"; };
+		F18479F1244DDFB1005BE56E /* libfbxsdk.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfbxsdk.dylib; path = "../../../../../Applications/Autodesk/FBX SDK/2020.0.1/lib/clang/debug/libfbxsdk.dylib"; sourceTree = "<group>"; };
 		F186180D1D881946004B3F4F /* SkeletalMesh.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SkeletalMesh.xib; sourceTree = "<group>"; };
 		F186180F1D882D61004B3F4F /* SkeletalMeshEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkeletalMeshEditor.h; sourceTree = "<group>"; };
 		F18618101D882D61004B3F4F /* SkeletalMeshEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SkeletalMeshEditor.m; sourceTree = "<group>"; };
@@ -286,8 +287,6 @@
 		F191C0021E27874300EC5600 /* FMaterialUniformExpression.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMaterialUniformExpression.h; sourceTree = "<group>"; };
 		F191C0031E27874300EC5600 /* FMaterialUniformExpression.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMaterialUniformExpression.m; sourceTree = "<group>"; };
 		F1A208831D8FF4A1005DCE79 /* libfbxsdk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfbxsdk.a; path = "../../../../../Applications/Autodesk/FBX SDK/2017.0.1/lib/clang/release/libfbxsdk.a"; sourceTree = "<group>"; };
-		F1A2088B1D9000F9005DCE79 /* libfbxsdk.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfbxsdk.dylib; path = "../../../../../Applications/Autodesk/FBX SDK/2017.0.1/lib/clang/libstdcpp/release/libfbxsdk.dylib"; sourceTree = "<group>"; };
-		F1A2088D1D900118005DCE79 /* libfbxsdk.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfbxsdk.dylib; path = "../../../../../Applications/Autodesk/FBX SDK/2017.0.1/lib/clang/debug/libfbxsdk.dylib"; sourceTree = "<group>"; };
 		F1B0081C1D5FBA0D00B40C2D /* Resources.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Resources.xcassets; sourceTree = "<group>"; };
 		F1B31FE21D731D7C00C0DDD6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = UObject.xib; sourceTree = "<group>"; };
 		F1B31FE51D7587B900C0DDD6 /* BoolProperty.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BoolProperty.xib; sourceTree = "<group>"; };
@@ -325,7 +324,6 @@
 		F1DDAAC11E31DF6700D46A35 /* TextBuffer.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TextBuffer.xib; sourceTree = "<group>"; };
 		F1DDAAC41E31DFD100D46A35 /* TextBufferEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextBufferEditor.h; sourceTree = "<group>"; };
 		F1DDAAC51E31DFD100D46A35 /* TextBufferEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextBufferEditor.m; sourceTree = "<group>"; };
-		F1E5290D2418E39600B68DB3 /* libfbxsdk.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfbxsdk.dylib; path = "../../../../Applications/Autodesk/FBX SDK/2020.0.1/lib/clang/debug/libfbxsdk.dylib"; sourceTree = "<group>"; };
 		F1E5290F241A068100B68DB3 /* TerrainEditor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TerrainEditor.h; sourceTree = "<group>"; };
 		F1E52910241A068100B68DB3 /* TerrainEditor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TerrainEditor.m; sourceTree = "<group>"; };
 		F1E52912241A087500B68DB3 /* Terrain.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Terrain.xib; sourceTree = "<group>"; };
@@ -356,11 +354,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F18479F2244DDFE9005BE56E /* libfbxsdk.dylib in Frameworks */,
 				F13DD2291E09325600632F07 /* libz.1.2.8.tbd in Frameworks */,
 				F15372161DCDC6630044F3DE /* GLUT.framework in Frameworks */,
 				F18618161D8913E1004B3F4F /* SceneKit.framework in Frameworks */,
 				F10943AF1D81E62100B9C12F /* Quartz.framework in Frameworks */,
-				F157799D1DDAF1ED009ECCA8 /* libfbxsdk.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -386,11 +384,10 @@
 		F1170ECE1D60714100262974 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F18479F1244DDFB1005BE56E /* libfbxsdk.dylib */,
 				F13DD2271E09324700632F07 /* libz.1.2.8.tbd */,
 				F12B17371DD75A2300226E73 /* libz.tbd */,
 				F15372151DCDC6630044F3DE /* GLUT.framework */,
-				F1A2088D1D900118005DCE79 /* libfbxsdk.dylib */,
-				F1A2088B1D9000F9005DCE79 /* libfbxsdk.dylib */,
 				F1A208831D8FF4A1005DCE79 /* libfbxsdk.a */,
 				F18618151D8913E1004B3F4F /* SceneKit.framework */,
 				F10943AE1D81E62100B9C12F /* Quartz.framework */,
@@ -646,7 +643,6 @@
 		F1D96AE91D5F9F7100071E45 = {
 			isa = PBXGroup;
 			children = (
-				F1E5290D2418E39600B68DB3 /* libfbxsdk.dylib */,
 				F13DD22E1E09374F00632F07 /* Real Editor */,
 				F1D96AF31D5F9F7100071E45 /* Products */,
 				F1170ECE1D60714100262974 /* Frameworks */,

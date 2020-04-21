@@ -46,7 +46,7 @@ enum {MAX_ZONES=64};			// Max zones per level.
   self.bounds = [FBoxSphereBounds readFrom:s];
   self.vectors = [TransFArray readFrom:s type:[FVector3 class]];
   self.points = [TransFArray readFrom:s type:[FVector3 class]];
-  self.nodes = [TransFArray readFrom:s type:[FBspNode class]];
+  //self.nodes = [TransFArray readFrom:s type:[FBspNode class]];
   return s;
 }
 

@@ -30,6 +30,13 @@ NSString *const kSettingsTextureIsNormalMap = @"com.VenoMKO.Real-Editor.Settings
 NSString *const kSettingsTextureGenMipMap = @"com.VenoMKO.Real-Editor.SettingsImportGenMipMap";
 NSString *const kSettingsTextureSaveMode = @"com.VenoMKO.Real-Editor.SettingsSaveMode";
 NSString *const kSettingsTextureFormat = @"com.VenoMKO.Real-Editor.SettingsImportTextureFormat";
+NSString *const kSettingsLevelExportStaticMeshes = @"com.VenoMKO.Real-Editor.SettingsExportLevelSM";
+NSString *const kSettingsLevelExportSkeletalMeshes = @"com.VenoMKO.Real-Editor.SettingsExportLevelSkel";
+NSString *const kSettingsLevelExportTerrain = @"com.VenoMKO.Real-Editor.SettingsExportLevelTerrain";
+NSString *const kSettingsLevelExportLights = @"com.VenoMKO.Real-Editor.SettingsExportLevelLights";
+NSString *const kSettingsLevelExportInterp = @"com.VenoMKO.Real-Editor.SettingsExportLevelInterp";
+NSString *const kSettingsLevelExportOther = @"com.VenoMKO.Real-Editor.SettingsExportLevelOther";
+NSString *const kSettingsLevelExportAddIndex = @"com.VenoMKO.Real-Editor.SettingsExportLevelAddIndex";
 
 NSString *const kSettingsSkelMeshCalcTangents = @"com.VenoMKO.Real-Editor.SettingsImportSkelMeshCalculateTangents";
 NSString *const kSettingsSkelMeshFlipTangents = @"com.VenoMKO.Real-Editor.SettingsImportSkelMeshFlipTangents";
@@ -64,7 +71,7 @@ NSDictionary *Defaults()
 {
   return @{kSettingsLoadTextures : @(YES),
            kSettingsShowObjectInfo : @(NO),
-           kSettingsCacheSize : @(5),
+           kSettingsCacheSize : @(30),
            kSettingsAAMode : @(4),
            kSettingsLookForDepends : @(YES),
            kSettingsTextureRenderR : @(YES),
@@ -84,7 +91,14 @@ NSDictionary *Defaults()
            kSettingsImportPath : NSHomeDirectory(),
            kSettingsCheckForUpdates : @(YES),
            kSettingsLogging : @(YES),
-           kSettingsRetention : @(7)
+           kSettingsRetention : @(7),
+           kSettingsLevelExportStaticMeshes : @(YES),
+           kSettingsLevelExportSkeletalMeshes : @(NO),
+           kSettingsLevelExportTerrain : @(YES),
+           kSettingsLevelExportLights : @(YES),
+           kSettingsLevelExportInterp : @(YES),
+           kSettingsLevelExportOther : @(NO),
+           kSettingsLevelExportAddIndex : @(YES)
            };
 }
 

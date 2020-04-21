@@ -21,7 +21,33 @@
 
 - (BOOL)exportToT3D:(NSMutableString *)result padding:(unsigned)padding index:(int)index
 {
-  return NO;
+  T3DAddLine(result, padding, T3DBeginObject(@"Actor", [[self displayName] stringByAppendingFormat:@"_%d",index], @"/Script/Engine.Actor"));
+  {
+    padding++;
+    T3DAddLine(result, padding, T3DBeginObject(@"Object", @"DefaultSceneRoot", @"/Script/Engine.SceneComponent"));
+    T3DAddLine(result, padding, T3DEndObject(@"Object"));
+    T3DAddLine(result, padding, T3DBeginObject(@"Object", @"DefaultSceneRoot", nil));
+    {
+      padding++;
+      GLKVector3 pos = [self absolutePostion];
+      T3DAddLine(result, padding, @"RelativeLocation=(X=%.6f,Y=%.6f,Z=%.6f)", pos.x, pos.y, pos.z);
+      GLKVector3 rot = [[[self absoluteRotator] euler] glkVector3];
+      T3DAddLine(result, padding, @"RelativeRotation=(Pitch=%.6f,Yaw=%.6f,Roll=%.6f)", rot.y, rot.z, rot.x);
+      GLKVector3 scale = [self absoluteDrawScale3D];
+      scale = GLKVector3MultiplyScalar(scale, [self absoluteDrawScale]);
+      T3DAddLine(result, padding, @"RelativeScale3D=(X=%.6f,Y=%.6f,Z=%.6f)", scale.x, scale.y, scale.z);
+      T3DAddLine(result, padding, @"bVisualizeComponent=True");
+      T3DAddLine(result, padding, @"CreationMethod=Instance");
+      padding--;
+    }
+    T3DAddLine(result, padding, T3DEndObject(@"Object"));
+    T3DAddLine(result, padding, @"RootComponent=SceneComponent'\"DefaultSceneRoot\"'");
+    T3DAddLine(result, padding, @"ActorLabel=\"%@_%d\"", [self displayName], index);
+    T3DAddLine(result, padding, @"InstanceComponents(0)=SceneComponent'\"DefaultSceneRoot\"'");
+    padding--;
+  }
+  T3DEndObject(@"Actor");
+  return YES;
 }
 
 - (FIStream *)postProperties

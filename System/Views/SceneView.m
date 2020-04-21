@@ -10,7 +10,6 @@
 
 #define DEFAULT_RADIUS  50.f
 #define ZOOM_STEP       400.0f
-#define DEFAULT_ZFAR    100000.
 #define DEFAULT_CAM_X   -25.f
 #define DEFAULT_CAM_Y   35.f
 #define DEFAULT_CAM_Z   0.f
@@ -58,8 +57,7 @@
   if (!self.orbitNode) {
     SCNNode *cameraNode = [SCNNode node];
     cameraNode.camera = [SCNCamera camera];
-    cameraNode.camera.zNear = 1.;
-    cameraNode.camera.zFar = DEFAULT_ZFAR;
+    cameraNode.camera.automaticallyAdjustsZRange = YES;
     CGFloat fov = [[NSUserDefaults standardUserDefaults] doubleForKey:kSettingsFov];
     cameraNode.camera.focalLength = fov;
     self.cameraNode = cameraNode;
@@ -136,7 +134,6 @@
 - (void)reset
 {
   radius = DEFAULT_RADIUS;
-  self.cameraNode.camera.zFar = DEFAULT_ZFAR;
   if (self.materialView)
   {
     radius = 60;
@@ -181,6 +178,33 @@
       if (nodes.count > 1)
       {
         center = SCNVector3Make((min.x + max.x) * .5, (min.y + max.y) * .5f, (min.z + max.z) * .5);
+        
+        NSArray *nodes = self.objectNode.childNodes;
+        SCNNode *closestNode = nil;
+        float closestNodeDistance = FLT_MAX;
+        for (SCNNode *n in nodes)
+        {
+          if (!n.geometry)
+          {
+            continue;
+          }
+          if (!closestNode)
+          {
+            closestNode = n;
+            closestNodeDistance = GLKVector3Distance(SCNVector3ToGLKVector3(center), SCNVector3ToGLKVector3(n.position));
+            continue;
+          }
+          float d = GLKVector3Distance(SCNVector3ToGLKVector3(center), SCNVector3ToGLKVector3(n.position));
+          if (d < closestNodeDistance)
+          {
+            closestNode = n;
+            closestNodeDistance = d;
+          }
+        }
+        if (closestNode)
+        {
+          center = closestNode.position;
+        }
       }
       else
       {
@@ -200,8 +224,9 @@
     }
   }
   
-  
+  self.cameraNode.camera.automaticallyAdjustsZRange = YES;
   self.cameraNode.position = SCNVector3Make(0, 0, radius);
+  [self.cameraNode lookAt:self.orbitNode.position];
   if (self.materialView)
   {
     self.orbitNode.eulerAngles = SCNVector3Make(GLKMathDegreesToRadians(0),

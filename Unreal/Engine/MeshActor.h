@@ -7,14 +7,19 @@
 //
 
 #import "Actor.h"
+#import "MeshComponent.h"
 @interface MeshActor : Actor
+@property MeshComponent *component;
 - (id)mesh;
+- (BOOL)lockLockation;
 @end
 
 @interface StaticMeshActor : MeshActor
+@property StaticMeshComponent *component;
 @end
 
 @interface SkeletalMeshActor : MeshActor
+@property SkeletalMeshComponent *component;
 @end
 
 @interface InterpActor : MeshActor

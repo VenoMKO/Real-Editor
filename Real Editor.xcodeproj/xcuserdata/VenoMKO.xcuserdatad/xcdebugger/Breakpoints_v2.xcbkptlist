@@ -211,8 +211,8 @@
             filePath = "Unreal/Engine/MeshComponent.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "37"
-            endingLineNumber = "37"
+            startingLineNumber = "61"
+            endingLineNumber = "61"
             landmarkName = "-postProperties"
             landmarkType = "7">
          </BreakpointContent>
@@ -227,8 +227,8 @@
             filePath = "Unreal/Engine/MeshComponent.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "64"
-            endingLineNumber = "64"
+            startingLineNumber = "88"
+            endingLineNumber = "88"
             landmarkName = "-postProperties"
             landmarkType = "7">
          </BreakpointContent>
@@ -252,15 +252,31 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "1A944B7B-34CE-4D2A-892D-5DB77553F267"
+            uuid = "2BE01A87-4BE1-4D09-A474-73B746D05F66"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "System/Editors/LevelEditor.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "360"
-            endingLineNumber = "360"
+            startingLineNumber = "399"
+            endingLineNumber = "399"
+            landmarkName = "-exportT3D:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "62191308-4B20-40D7-B43E-1B18ADD992D9"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "System/Editors/LevelEditor.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "401"
+            endingLineNumber = "401"
             landmarkName = "-exportT3D:"
             landmarkType = "7">
          </BreakpointContent>

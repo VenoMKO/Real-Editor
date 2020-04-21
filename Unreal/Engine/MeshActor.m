@@ -7,11 +7,11 @@
 //
 
 #import "MeshActor.h"
-#import "MeshComponent.h"
 #import "UPackage.h"
 #import "T3DUtils.h"
 
 @implementation MeshActor
+@dynamic component;
 
 - (id)mesh
 {
@@ -24,9 +24,16 @@
   return name ? name : self.objectName;
 }
 
+- (BOOL)lockLockation
+{
+  NSNumber *value = [self propertyValue:@"bLockLocation"];
+  return value ? [value boolValue] : NO;
+}
+
 @end
 
 @implementation StaticMeshActor
+@dynamic component;
 
 - (FIStream *)postProperties
 {
@@ -68,6 +75,10 @@
       GLKVector3 scale = [self absoluteDrawScale3D];
       scale = GLKVector3MultiplyScalar(scale, [self absoluteDrawScale]);
       T3DAddLine(result, padding, @"RelativeScale3D=(X=%.6f,Y=%.6f,Z=%.6f)", scale.x, scale.y, scale.z);
+      T3DAddLine(result, padding, @"bCastStaticShadow=%@", self.component.castShadow ? @"True" : @"False");
+      T3DAddLine(result, padding, @"bCastDynamicShadow=%@", self.component.castDynamicShadow ? @"True" : @"False");
+      T3DAddLine(result, padding, @"Mobility=Static");
+      T3DAddLine(result, padding, @"LightingChannels=(bChannel0=%@)", self.component.acceptsLights || self.component.acceptsDynamicLights ? @"True" : @"False");
       padding--;
     }
     T3DAddLine(result, padding, T3DEndObject(@"Object"));
@@ -84,6 +95,7 @@
 @end
 
 @implementation SkeletalMeshActor
+@dynamic component;
 
 - (FIStream *)postProperties
 {
@@ -153,6 +165,10 @@
         GLKVector3 scale = [self absoluteDrawScale3D];
         scale = GLKVector3MultiplyScalar(scale, [self absoluteDrawScale]);
         T3DAddLine(result, padding, @"RelativeScale3D=(X=%.6f,Y=%.6f,Z=%.6f)", scale.x, scale.y, scale.z);
+        T3DAddLine(result, padding, @"bCastStaticShadow=%@", self.component.castShadow ? @"True" : @"False");
+        T3DAddLine(result, padding, @"bCastDynamicShadow=%@", self.component.castDynamicShadow ? @"True" : @"False");
+        T3DAddLine(result, padding, @"LightingChannels=(bChannel0=%@)", self.component.acceptsLights || self.component.acceptsDynamicLights ? @"True" : @"False");
+        T3DAddLine(result, padding, @"Mobility=Movable");
         padding--;
       }
       T3DAddLine(result, padding, T3DEndObject(@"Object"));

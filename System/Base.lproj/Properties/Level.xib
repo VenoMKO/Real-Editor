@@ -12,7 +12,6 @@
                 <outlet property="actorsTable" destination="3e2-ql-ec7" id="tcI-5q-rog"/>
                 <outlet property="exportOptionsView" destination="hh3-gC-LJ4" id="onm-5L-uQl"/>
                 <outlet property="exportProgressPanel" destination="wYo-1r-xnT" id="xMR-jD-Jwp"/>
-                <outlet property="exportType" destination="IDA-jh-7Vu" id="wfn-nD-ZJJ"/>
                 <outlet property="importOptionsView" destination="PhD-jF-QBI" id="Ysy-6V-aJt"/>
                 <outlet property="sceneView" destination="LmM-Gl-9W2" id="Ojd-tK-fcp"/>
                 <outlet property="toolBarView" destination="Xiv-vM-MhN" id="y1D-T6-Qfh"/>
@@ -36,12 +35,20 @@
                                     <rect key="frame" x="0.0" y="0.0" width="214" height="410"/>
                                     <color key="backgroundColor" name="windowBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </sceneView>
+                                <progressIndicator wantsLayer="YES" maxValue="100" displayedWhenStopped="NO" indeterminate="YES" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="I2L-YN-nbU">
+                                    <rect key="frame" x="91" y="189" width="32" height="32"/>
+                                    <connections>
+                                        <binding destination="-2" name="animate" keyPath="self.loading" id="bR2-dh-S9p"/>
+                                    </connections>
+                                </progressIndicator>
                             </subviews>
                             <constraints>
                                 <constraint firstAttribute="bottom" secondItem="LmM-Gl-9W2" secondAttribute="bottom" id="2BL-Cd-EOx"/>
+                                <constraint firstItem="I2L-YN-nbU" firstAttribute="centerY" secondItem="LmM-Gl-9W2" secondAttribute="centerY" id="3Ij-rt-5KE"/>
                                 <constraint firstItem="LmM-Gl-9W2" firstAttribute="leading" secondItem="4w5-UY-Aq2" secondAttribute="leading" id="Boa-AM-uPO"/>
                                 <constraint firstAttribute="trailing" secondItem="LmM-Gl-9W2" secondAttribute="trailing" id="LpQ-Pz-B6Y"/>
                                 <constraint firstItem="LmM-Gl-9W2" firstAttribute="top" secondItem="4w5-UY-Aq2" secondAttribute="top" id="eF8-WX-upC"/>
+                                <constraint firstItem="I2L-YN-nbU" firstAttribute="centerX" secondItem="LmM-Gl-9W2" secondAttribute="centerX" id="rbD-MG-Ij0"/>
                             </constraints>
                         </customView>
                         <customView id="Jec-rL-kTG" customClass="NSVisualEffectView">
@@ -150,7 +157,7 @@
                     </constraints>
                     <buttonCell key="cell" type="smallSquare" title="Export RAW" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="yAb-WI-Jj9">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="menu" size="11"/>
+                        <font key="font" metaFont="message" size="11"/>
                     </buttonCell>
                     <connections>
                         <action selector="exportRaw:" target="-2" id="HrD-v1-WLU"/>
@@ -160,7 +167,7 @@
                     <rect key="frame" x="-1" y="-2" width="69" height="23"/>
                     <buttonCell key="cell" type="smallSquare" title="Export" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ScM-K8-WTR">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="menu" size="11"/>
+                        <font key="font" metaFont="message" size="11"/>
                     </buttonCell>
                     <connections>
                         <action selector="exportData:" target="-2" id="S4i-rc-8aj"/>
@@ -170,14 +177,14 @@
                     <rect key="frame" x="67" y="-2" width="69" height="23"/>
                     <buttonCell key="cell" type="smallSquare" title="Import" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Gx7-qV-cbd">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="menu" size="11"/>
+                        <font key="font" metaFont="message" size="11"/>
                     </buttonCell>
                 </button>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ccp-9d-xGH">
                     <rect key="frame" x="67" y="18" width="69" height="23"/>
                     <buttonCell key="cell" type="smallSquare" title="Load mats" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Y79-d8-Wob">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="menu" size="11"/>
+                        <font key="font" metaFont="message" size="11"/>
                     </buttonCell>
                     <connections>
                         <action selector="loadMaterials:" target="-2" id="yGn-hs-9Q3"/>
@@ -208,38 +215,88 @@
             <point key="canvasLocation" x="348" y="1055.5"/>
         </customView>
         <customView id="hh3-gC-LJ4">
-            <rect key="frame" x="0.0" y="0.0" width="394" height="61"/>
+            <rect key="frame" x="0.0" y="0.0" width="408" height="94"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IDA-jh-7Vu">
-                    <rect key="frame" x="116" y="17" width="205" height="26"/>
+                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gqL-A0-aib">
+                    <rect key="frame" x="18" y="58" width="64" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <popUpButtonCell key="cell" type="push" title="FilmBox 2020.0.1 (FBX)" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="uk6-oY-R1S" id="FvV-2p-ggi">
-                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                    <buttonCell key="cell" type="check" title="Terrain" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="BmG-Pt-sZB">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
-                        <menu key="menu" id="ve6-NR-6Jc">
-                            <items>
-                                <menuItem title="FilmBox 2020.0.1 (FBX)" state="on" id="uk6-oY-R1S"/>
-                                <menuItem title="FilmBox 6.0 (FBX)" tag="3" id="CFl-tk-NEo"/>
-                                <menuItem title="Collada (DAE)" tag="8" id="2Bg-8Y-rd4"/>
-                                <menuItem title="Alias (OBJ)" tag="7" id="myX-JS-jNi">
-                                    <modifierMask key="keyEquivalentModifierMask"/>
-                                </menuItem>
-                            </items>
-                        </menu>
-                    </popUpButtonCell>
-                </popUpButton>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aaP-sN-AaM">
-                    <rect key="frame" x="74" y="22" width="38" height="17"/>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="self.exportTerrain" id="WTJ-SF-q9A"/>
+                    </connections>
+                </button>
+                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zfg-ha-TFM">
+                    <rect key="frame" x="18" y="38" width="108" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Type:" id="YY6-LH-drX">
+                    <buttonCell key="cell" type="check" title="Static Meshes" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="HMG-b9-uaX">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
-                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="self.exportStaticMeshes" id="fHC-xS-pbq"/>
+                    </connections>
+                </button>
+                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Srb-Ht-EjK">
+                    <rect key="frame" x="18" y="18" width="121" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="check" title="Skeletal Meshes" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="7HT-Ru-2U1">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="self.exportSkeletalMeshes" id="WFx-jh-MQQ"/>
+                    </connections>
+                </button>
+                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FgS-Tb-0Gm">
+                    <rect key="frame" x="159" y="38" width="101" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="check" title="Interp Actors" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="re8-37-jNk">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="self.exportInterpActors" id="vGd-dX-4KN"/>
+                    </connections>
+                </button>
+                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yA7-a4-xKf">
+                    <rect key="frame" x="159" y="18" width="100" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="check" title="Other Actors" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="4tZ-ev-u9V">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="self.exportOtherActors" id="cvD-ib-br3"/>
+                    </connections>
+                </button>
+                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kef-O5-6aW">
+                    <rect key="frame" x="159" y="58" width="60" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="check" title="Lights" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="slE-rJ-CRH">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="self.exportLights" id="MIQ-GO-Wip"/>
+                    </connections>
+                </button>
+                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="M7x-lj-qDK">
+                    <rect key="frame" x="265" y="58" width="83" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="check" title="Add Index" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="zN9-qW-cmo">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="self.exportAddObjectIndex" id="xMj-Wb-LDP"/>
+                    </connections>
+                </button>
             </subviews>
-            <point key="canvasLocation" x="-84" y="900.5"/>
+            <point key="canvasLocation" x="-77" y="917"/>
         </customView>
         <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" hidesOnDeactivate="YES" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="wYo-1r-xnT" customClass="NSPanel">
             <windowStyleMask key="styleMask" titled="YES" utility="YES"/>

@@ -56,6 +56,7 @@ const double ScaleFactor = 1.0;
   BOOL cancelExport;
 }
 
+@property BOOL loading;
 @property (strong) NSMutableArray         *terrains;
 @property (weak) IBOutlet ModelView       *sceneView;
 @property (weak) IBOutlet NSTableView     *actorsTable;
@@ -63,11 +64,19 @@ const double ScaleFactor = 1.0;
 @property (strong) NSMutableArray         *meshNodes;
 @property (strong) NSMutableArray         *actors;
 @property (strong) NSOperationQueue       *materialQueue;
-@property (weak) IBOutlet NSPopUpButton   *exportType;
 @property (weak) IBOutlet NSWindow        *exportProgressPanel;
 @property double                          exportProgressValue;
 @property NSString                        *exportProgressDescription;
 @property NSString                        *exportProgressCancelTitle;
+
+@property BOOL                            exportStaticMeshes;
+@property BOOL                            exportSkeletalMeshes;
+@property BOOL                            exportTerrain;
+@property BOOL                            exportLights;
+@property BOOL                            exportInterpActors;
+@property BOOL                            exportOtherActors;
+@property BOOL                            exportAddObjectIndex;
+
 @end
 
 @implementation LevelEditor
@@ -79,12 +88,11 @@ const double ScaleFactor = 1.0;
   self.actors = [NSMutableArray new];
   self.terrains = [NSMutableArray new];
   [self.sceneView setup];
-  self.sceneView.increaseFogDensity = YES;
   self.nodes = [NSMutableArray new];
   self.meshNodes = [NSMutableArray new];
   self.materialQueue = [NSOperationQueue new];
   self.materialQueue.maxConcurrentOperationCount = 3;
-  
+  self.loading = YES;
   [self performSelectorInBackground:@selector(setupLevel) withObject:nil];
 }
 
@@ -234,9 +242,11 @@ const double ScaleFactor = 1.0;
   
   self.sceneView.objectNode.eulerAngles = SCNVector3Make(GLKMathDegreesToRadians(0), GLKMathDegreesToRadians(-90), GLKMathDegreesToRadians(-90));
   self.sceneView.objectNode.scale = SCNVector3Make(1, -1, 1);
-  [self.actorsTable performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
-  [self.sceneView performSelectorOnMainThread:@selector(reset) withObject:nil waitUntilDone:NO];
-  self.sceneView.cameraNode.camera.zNear = 10;
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [self.actorsTable reloadData];
+    [self.sceneView reset];
+    self.loading = NO;
+  });
 }
 
 - (StaticMesh *)meshForActor:(Actor *)actor
@@ -261,18 +271,23 @@ const double ScaleFactor = 1.0;
       {
         NSInteger idx = [self.meshNodes indexOfObject:n];
         [self.materialQueue addOperationWithBlock:^{
-          [self setupMaterialsForNode:n object:meshes[idx] lod:0];
+          @try
+          {
+            [self setupMaterialsForNode:n object:meshes[idx] lod:0];
+          }
+          @catch(NSException *e)
+          {
+            DLog(@"%@",e.description);
+          }
         }];
       }
     }
-    [self.actorsTable performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
-    [self.sceneView performSelectorOnMainThread:@selector(reset) withObject:nil waitUntilDone:NO];
   }];
 }
 
 - (void)exportT3D:(NSString *)path
 {
-  NSString *dataDirPath = [[path stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"S1Data"];
+  NSString *dataDirPath = [path stringByDeletingLastPathComponent];
   [[NSFileManager defaultManager] createDirectoryAtPath:dataDirPath withIntermediateDirectories:YES attributes:nil error:NULL];
   
   NSMutableString *result = [NSMutableString new];
@@ -281,6 +296,45 @@ const double ScaleFactor = 1.0;
   T3DAddLine(result, padding, T3DBeginObject(@"Level", nil, nil)); padding++;
   
   NSArray *actors = [[[self.object actors] nsarray] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(Actor *actor, NSDictionary<NSString *,id> *bindings) {
+    if ([actor isKindOfClass:[StaticMeshActor class]])
+    {
+      if (!self.exportStaticMeshes)
+      {
+        return NO;
+      }
+    }
+    else if ([actor isKindOfClass:[SkeletalMeshActor class]])
+    {
+      if (!self.exportSkeletalMeshes)
+      {
+        return NO;
+      }
+    }
+    else if ([actor isKindOfClass:[InterpActor class]])
+    {
+      if (!self.exportInterpActors)
+      {
+        return NO;
+      }
+    }
+    else if ([actor isKindOfClass:[LightActor class]])
+    {
+      if (!self.exportLights)
+      {
+        return NO;
+      }
+    }
+    else if ([actor isKindOfClass:[Terrain class]])
+    {
+      if (!self.exportTerrain)
+      {
+        return NO;
+      }
+    }
+    else if (!self.exportOtherActors)
+    {
+      return NO;
+    }
     return [actor respondsToSelector:@selector(exportToT3D:padding:index:)];
   }]];
   NSMutableDictionary *indicies = [NSMutableDictionary new];
@@ -297,15 +351,22 @@ const double ScaleFactor = 1.0;
     [actor properties];
     NSString *name = [actor displayName];
     int idx = -1;
-    if (!indicies[name])
+    if (!self.exportAddObjectIndex)
     {
-      indicies[name] = @(1);
-      idx = 0;
+      if (!indicies[name])
+      {
+        indicies[name] = @(1);
+        idx = 0;
+      }
+      else
+      {
+        idx = [indicies[name] intValue];
+        indicies[name] = @(idx+1);
+      }
     }
     else
     {
-      idx = [indicies[name] intValue];
-      indicies[name] = @(idx+1);
+      idx = [actor.package indexForObject:actor];
     }
 #if DEBUG_EXPORT_BOUNDS
     if (!CheckBounds(actor))
@@ -326,8 +387,6 @@ const double ScaleFactor = 1.0;
     if ([actor isKindOfClass:[StaticMeshActor class]] ||
         [actor isKindOfClass:[InterpActor class]])
     {
-      NSUInteger t3dLength = result.length;
-      NSUInteger actorsLength = actorsList.length;
       if (![actor exportToT3D:result padding:padding index:idx])
       {
         continue;
@@ -338,8 +397,9 @@ const double ScaleFactor = 1.0;
       NSString *fbxPath = nil;
       {
         NSArray *targetPathComps = [[mesh objectPath] componentsSeparatedByString:@"."];
-        [targetPathComps subarrayWithRange:NSMakeRange(1, targetPathComps.count - 2)];
-        targetPath = [dataDirPath stringByAppendingPathComponent:[targetPathComps componentsJoinedByString:@"/"]];
+        targetPathComps = [targetPathComps subarrayWithRange:NSMakeRange(1, targetPathComps.count - 1)];
+        NSString *meshTypeDir = [mesh isKindOfClass:[StaticMesh class]] ? @"StaticMeshes/S1Data" : @"SkeletalMeshes/S1Data";
+        targetPath = [[dataDirPath stringByAppendingPathComponent:meshTypeDir] stringByAppendingPathComponent:[targetPathComps componentsJoinedByString:@"/"]];
         fbxPath = [targetPath stringByAppendingPathExtension:@"fbx"];
       }
       
@@ -355,11 +415,9 @@ const double ScaleFactor = 1.0;
           mesh = (id)[mesh.package resolveImport:mesh.importObject];
           if (cancelExport) return;
         }
-        if (!mesh)
+        if (!mesh || !mesh.lodInfo.count)
         {
           DLog(@"Failed to find mesh: %@", actor);
-          [result deleteCharactersInRange:NSMakeRange(t3dLength, result.length - t3dLength)];
-          [actorsList deleteCharactersInRange:NSMakeRange(actorsLength, actorsList.length - actorsLength)];
           continue;
         }
         if (cancelExport) return;
@@ -372,6 +430,7 @@ const double ScaleFactor = 1.0;
           });
           if ([mesh isKindOfClass:[StaticMesh class]])
           {
+            //TODO: UCX_name collisions
             [[FBXUtils new] exportStaticMesh:mesh options:@{@"path" : fbxPath, @"lodIdx" : @(0), @"type" : @(0)}];
           }
           else if ([mesh isKindOfClass:[SkeletalMesh class]])
@@ -500,48 +559,50 @@ const double ScaleFactor = 1.0;
 
 - (IBAction)exportData:(id)sender
 {
+  NSUserDefaults *d = [NSUserDefaults standardUserDefaults];
+  self.exportOtherActors = [d boolForKey:kSettingsLevelExportOther];
+  self.exportStaticMeshes = [d boolForKey:kSettingsLevelExportStaticMeshes];
+  self.exportSkeletalMeshes = [d boolForKey:kSettingsLevelExportSkeletalMeshes];
+  self.exportLights =  [d boolForKey:kSettingsLevelExportLights];
+  self.exportInterpActors = [d boolForKey:kSettingsLevelExportInterp];
+  self.exportTerrain = [d boolForKey:kSettingsLevelExportTerrain];
+  self.exportAddObjectIndex = [d boolForKey:kSettingsLevelExportAddIndex];
+  
   NSSavePanel *panel = [NSSavePanel savePanel];
   panel.canCreateDirectories = YES;
   panel.nameFieldStringValue = self.exportName;
   panel.accessoryView = self.exportOptionsView;
   panel.prompt = @"Export";
-  NSString *path = [[NSUserDefaults standardUserDefaults] objectForKey:[kSettingsExportPath stringByAppendingFormat:@".%@",self.object.objectClass]];
+  NSString *path = [d objectForKey:[kSettingsExportPath stringByAppendingFormat:@".%@",self.object.objectClass]];
   if (path)
     panel.directoryURL = [NSURL fileURLWithPath:path];
   
-  __weak id obj = self.object;
+  __weak id wself = self;
   [panel beginSheetModalForWindow:self.view.window completionHandler:^(NSInteger result) {
-    [[NSUserDefaults standardUserDefaults] setObject:[panel.URL.path stringByDeletingLastPathComponent] forKey:[kSettingsExportPath stringByAppendingFormat:@".%@",self.object.objectClass]];
-    if (result == NSModalResponseOK)
+    [d setObject:[panel.URL.path stringByDeletingLastPathComponent] forKey:[kSettingsExportPath stringByAppendingFormat:@".%@",self.object.objectClass]];
+    if (result == NSModalResponseOK && wself)
     {
-      __strong id sobj = obj;
-      dispatch_async(dispatch_get_main_queue(), ^{
-        [self doExport:sobj path:[panel.URL path]];
-      });
+      __strong LevelEditor *sself = wself;
+      [d setBool:sself.exportOtherActors forKey:kSettingsLevelExportOther];
+      [d setBool:sself.exportStaticMeshes forKey:kSettingsLevelExportStaticMeshes];
+      [d setBool:sself.exportSkeletalMeshes forKey:kSettingsLevelExportSkeletalMeshes];
+      [d setBool:sself.exportLights forKey:kSettingsLevelExportLights];
+      [d setBool:sself.exportInterpActors forKey:kSettingsLevelExportInterp];
+      [d setBool:sself.exportTerrain forKey:kSettingsLevelExportTerrain];
+      [d setBool:sself.exportAddObjectIndex forKey:kSettingsLevelExportAddIndex];
+      [d synchronize];
+      [sself doExport:[panel.URL path]];
     }
   }];
 }
 
-- (void)doExport:(Level *)sobj path:(NSString *)path
+- (void)doExport:(NSString *)path
 {
-  if ([[path pathExtension] isEqualToString:@"t3d"])
-  {
-    //[sobj exportT3D:path];
-    cancelExport = NO;
-    self.exportProgressCancelTitle = @"Cancel";
-    self.exportProgressValue = 0.;
-    [self.view.window beginSheet:self.exportProgressPanel completionHandler:nil];
-    [self performSelectorInBackground:@selector(exportT3D:) withObject:path];
-    return;
-  }
-  path = [[path stringByDeletingPathExtension] stringByAppendingPathExtension:@"fbx"];
-  FBXUtils *u = [FBXUtils new];
-  [u exportLevel:sobj options:@{@"path" : path,
-                                @"type" : @(self.exportType.selectedTag)}];
-  for (Terrain *terrain in self.terrains)
-  {
-    [self exportTerrain:terrain path:path];
-  }
+  cancelExport = NO;
+  self.exportProgressCancelTitle = @"Cancel";
+  self.exportProgressValue = 0.;
+  [self.view.window beginSheet:self.exportProgressPanel completionHandler:nil];
+  [self performSelectorInBackground:@selector(exportT3D:) withObject:path];
 }
 
 - (void)exportTerrain:(Terrain *)terrain path:(NSString *)path
