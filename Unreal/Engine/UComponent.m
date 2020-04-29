@@ -80,6 +80,30 @@
   return prop.value;
 }
 
+- (BOOL)castShadow
+{
+  NSNumber *value = [self propertyValue:@"CastShadow"];
+  return value ? [value boolValue] : YES;
+}
+
+- (BOOL)castDynamicShadow
+{
+  NSNumber *value = [self propertyValue:@"bCastDynamicShadow"];
+  return value ? [value boolValue] : YES;
+}
+
+- (BOOL)acceptsLights
+{
+  NSNumber *value = [self propertyValue:@"bAcceptsLights"];
+  return value ? [value boolValue] : YES;
+}
+
+- (BOOL)acceptsDynamicLights
+{
+  NSNumber *value = [self propertyValue:@"bAcceptsDynamicLights"];
+  return value ? [value boolValue] : YES;
+}
+
 @end
 
 @implementation PrimitiveComponent

@@ -157,7 +157,7 @@
                     </constraints>
                     <buttonCell key="cell" type="smallSquare" title="Export RAW" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="yAb-WI-Jj9">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="message" size="11"/>
+                        <font key="font" metaFont="menu" size="11"/>
                     </buttonCell>
                     <connections>
                         <action selector="exportRaw:" target="-2" id="HrD-v1-WLU"/>
@@ -167,7 +167,7 @@
                     <rect key="frame" x="-1" y="-2" width="69" height="23"/>
                     <buttonCell key="cell" type="smallSquare" title="Export" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ScM-K8-WTR">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="message" size="11"/>
+                        <font key="font" metaFont="menu" size="11"/>
                     </buttonCell>
                     <connections>
                         <action selector="exportData:" target="-2" id="S4i-rc-8aj"/>
@@ -177,14 +177,14 @@
                     <rect key="frame" x="67" y="-2" width="69" height="23"/>
                     <buttonCell key="cell" type="smallSquare" title="Import" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Gx7-qV-cbd">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="message" size="11"/>
+                        <font key="font" metaFont="menu" size="11"/>
                     </buttonCell>
                 </button>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ccp-9d-xGH">
                     <rect key="frame" x="67" y="18" width="69" height="23"/>
                     <buttonCell key="cell" type="smallSquare" title="Load mats" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Y79-d8-Wob">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="message" size="11"/>
+                        <font key="font" metaFont="menu" size="11"/>
                     </buttonCell>
                     <connections>
                         <action selector="loadMaterials:" target="-2" id="yGn-hs-9Q3"/>
@@ -263,7 +263,7 @@
                     </connections>
                 </button>
                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yA7-a4-xKf">
-                    <rect key="frame" x="159" y="18" width="100" height="18"/>
+                    <rect key="frame" x="264" y="58" width="100" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Other Actors" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="4tZ-ev-u9V">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -285,7 +285,7 @@
                     </connections>
                 </button>
                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="M7x-lj-qDK">
-                    <rect key="frame" x="265" y="58" width="83" height="18"/>
+                    <rect key="frame" x="264" y="38" width="83" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Add Index" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="zN9-qW-cmo">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -293,6 +293,17 @@
                     </buttonCell>
                     <connections>
                         <binding destination="-2" name="value" keyPath="self.exportAddObjectIndex" id="xMj-Wb-LDP"/>
+                    </connections>
+                </button>
+                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uhx-hS-VgG">
+                    <rect key="frame" x="159" y="18" width="98" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="check" title="Speed Trees" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="aLd-xL-Vha">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="self.exportSpeedTrees" id="BVr-wD-sPO"/>
                     </connections>
                 </button>
             </subviews>

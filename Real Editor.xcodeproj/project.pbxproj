@@ -75,6 +75,11 @@
 		F17A4B5B1D7C337100341598 /* ObjectRedirector.m in Sources */ = {isa = PBXBuildFile; fileRef = F17A4B5A1D7C337100341598 /* ObjectRedirector.m */; };
 		F17A4B5E1D7C374000341598 /* ObjectRedirectorEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = F17A4B5D1D7C374000341598 /* ObjectRedirectorEditor.m */; };
 		F17A4B611D7C387400341598 /* ObjectRedirector.xib in Resources */ = {isa = PBXBuildFile; fileRef = F17A4B5F1D7C387400341598 /* ObjectRedirector.xib */; };
+		F17ED111245888BB00243981 /* SpeedTree.m in Sources */ = {isa = PBXBuildFile; fileRef = F17ED110245888BB00243981 /* SpeedTree.m */; };
+		F17ED1142458898200243981 /* SpeedTreeActor.m in Sources */ = {isa = PBXBuildFile; fileRef = F17ED1132458898200243981 /* SpeedTreeActor.m */; };
+		F17ED117245889EC00243981 /* SpeedTreeComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = F17ED116245889EC00243981 /* SpeedTreeComponent.m */; };
+		F17ED11A2458C8F900243981 /* SpeedTreeEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = F17ED1192458C8F900243981 /* SpeedTreeEditor.m */; };
+		F17ED11D2458CB3700243981 /* SpeedTree.xib in Resources */ = {isa = PBXBuildFile; fileRef = F17ED11B2458CB3700243981 /* SpeedTree.xib */; };
 		F18479F2244DDFE9005BE56E /* libfbxsdk.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F18479F1244DDFB1005BE56E /* libfbxsdk.dylib */; };
 		F18479F4244DE01D005BE56E /* libfbxsdk.dylib in Copy Files */ = {isa = PBXBuildFile; fileRef = F18479F1244DDFB1005BE56E /* libfbxsdk.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		F186180E1D881946004B3F4F /* SkeletalMesh.xib in Resources */ = {isa = PBXBuildFile; fileRef = F186180D1D881946004B3F4F /* SkeletalMesh.xib */; };
@@ -266,6 +271,15 @@
 		F17A4B5C1D7C374000341598 /* ObjectRedirectorEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectRedirectorEditor.h; sourceTree = "<group>"; };
 		F17A4B5D1D7C374000341598 /* ObjectRedirectorEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjectRedirectorEditor.m; sourceTree = "<group>"; };
 		F17A4B601D7C387400341598 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = ObjectRedirector.xib; sourceTree = "<group>"; };
+		F17ED10F245888BB00243981 /* SpeedTree.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SpeedTree.h; sourceTree = "<group>"; };
+		F17ED110245888BB00243981 /* SpeedTree.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SpeedTree.m; sourceTree = "<group>"; };
+		F17ED1122458898200243981 /* SpeedTreeActor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SpeedTreeActor.h; sourceTree = "<group>"; };
+		F17ED1132458898200243981 /* SpeedTreeActor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SpeedTreeActor.m; sourceTree = "<group>"; };
+		F17ED115245889EC00243981 /* SpeedTreeComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SpeedTreeComponent.h; sourceTree = "<group>"; };
+		F17ED116245889EC00243981 /* SpeedTreeComponent.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SpeedTreeComponent.m; sourceTree = "<group>"; };
+		F17ED1182458C8F900243981 /* SpeedTreeEditor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SpeedTreeEditor.h; sourceTree = "<group>"; };
+		F17ED1192458C8F900243981 /* SpeedTreeEditor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SpeedTreeEditor.m; sourceTree = "<group>"; };
+		F17ED11C2458CB3700243981 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = System/Base.lproj/SpeedTree.xib; sourceTree = SOURCE_ROOT; };
 		F18479F1244DDFB1005BE56E /* libfbxsdk.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfbxsdk.dylib; path = "../../../../../Applications/Autodesk/FBX SDK/2020.0.1/lib/clang/debug/libfbxsdk.dylib"; sourceTree = "<group>"; };
 		F186180D1D881946004B3F4F /* SkeletalMesh.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SkeletalMesh.xib; sourceTree = "<group>"; };
 		F186180F1D882D61004B3F4F /* SkeletalMeshEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkeletalMeshEditor.h; sourceTree = "<group>"; };
@@ -497,6 +511,7 @@
 				F10943A91D818CF100B9C12F /* Texture2D.xib */,
 				F1E52912241A087500B68DB3 /* Terrain.xib */,
 				F1B31FE11D731D7C00C0DDD6 /* UObject.xib */,
+				F17ED11B2458CB3700243981 /* SpeedTree.xib */,
 				F138FB4F243C84E5009FC1D6 /* Material.xib */,
 				F17A4B5F1D7C387400341598 /* ObjectRedirector.xib */,
 				F1037F301D856F0E005F4EB2 /* RawExportOptions.xib */,
@@ -565,6 +580,8 @@
 				F1170EDA1D607DC000262974 /* UPackage.m */,
 				F1BE35EC1D65F5B2009940F1 /* UObject.h */,
 				F1BE35ED1D65F5B2009940F1 /* UObject.m */,
+				F17ED10F245888BB00243981 /* SpeedTree.h */,
+				F17ED110245888BB00243981 /* SpeedTree.m */,
 				F17A4B591D7C337100341598 /* ObjectRedirector.h */,
 				F17A4B5A1D7C337100341598 /* ObjectRedirector.m */,
 				F10943811D7ED85C00B9C12F /* Texture2D.h */,
@@ -636,6 +653,8 @@
 				F1E52910241A068100B68DB3 /* TerrainEditor.m */,
 				F138FB4C243C846A009FC1D6 /* MaterialEditor.h */,
 				F138FB4D243C846A009FC1D6 /* MaterialEditor.m */,
+				F17ED1182458C8F900243981 /* SpeedTreeEditor.h */,
+				F17ED1192458C8F900243981 /* SpeedTreeEditor.m */,
 			);
 			path = Editors;
 			sourceTree = "<group>";
@@ -734,6 +753,8 @@
 				F18650E21E38A9C700BD8E34 /* MeshComponent.m */,
 				F1EB8CA61E3B46EF004F7EB3 /* TerrainComponent.h */,
 				F1EB8CA71E3B46EF004F7EB3 /* TerrainComponent.m */,
+				F17ED115245889EC00243981 /* SpeedTreeComponent.h */,
+				F17ED116245889EC00243981 /* SpeedTreeComponent.m */,
 			);
 			name = Components;
 			sourceTree = "<group>";
@@ -747,6 +768,8 @@
 				F1E8690224335F4A00A2F49B /* MeshActor.m */,
 				F138FB462434AC70009FC1D6 /* LightActor.h */,
 				F138FB472434AC70009FC1D6 /* LightActor.m */,
+				F17ED1122458898200243981 /* SpeedTreeActor.h */,
+				F17ED1132458898200243981 /* SpeedTreeActor.m */,
 			);
 			name = Actors;
 			sourceTree = "<group>";
@@ -852,6 +875,7 @@
 				F1585DDD1DC397BA005462B4 /* MaterialInstanceConstant.xib in Resources */,
 				F14388301DBDED0D000CC39E /* Preferences.xib in Resources */,
 				F1B31FFA1D75BA8100C0DDD6 /* ArrayProperty.xib in Resources */,
+				F17ED11D2458CB3700243981 /* SpeedTree.xib in Resources */,
 				F1BAB8BF1D70BF240035ED58 /* ObjectController.xib in Resources */,
 				F172072D1E16D51400391BED /* NewImport.xib in Resources */,
 				F1F80CB41E432DF60045A4C7 /* RawProperty.xib in Resources */,
@@ -891,6 +915,8 @@
 				F191C0041E27874300EC5600 /* FMaterialUniformExpression.m in Sources */,
 				F15372141DCCAE7D0044F3DE /* UIExtensions.m in Sources */,
 				F1EB8CA81E3B46EF004F7EB3 /* TerrainComponent.m in Sources */,
+				F17ED11A2458C8F900243981 /* SpeedTreeEditor.m in Sources */,
+				F17ED111245888BB00243981 /* SpeedTree.m in Sources */,
 				F132E17C1E0FB6DC001CDB47 /* TextureCubeEditor.m in Sources */,
 				F14020512423A327007F7DAE /* T3DUtils.m in Sources */,
 				F1037F3A1D85A5AD005F4EB2 /* FBoxSphereBounds.m in Sources */,
@@ -922,6 +948,7 @@
 				F191BFF81E274FDC00EC5600 /* FTerrain.m in Sources */,
 				F1170ED81D6075B800262974 /* FArray.m in Sources */,
 				F1037F371D85A45F005F4EB2 /* SkeletalMesh.m in Sources */,
+				F17ED117245889EC00243981 /* SpeedTreeComponent.m in Sources */,
 				F191C0001E277B0F00EC5600 /* FMaterial.m in Sources */,
 				F10943A81D80B7CB00B9C12F /* TextureUtils.m in Sources */,
 				F162CEED1E1901550089F953 /* Level.m in Sources */,
@@ -935,6 +962,7 @@
 				F1629A731E26722E004C9871 /* Model.m in Sources */,
 				F17A4B5E1D7C374000341598 /* ObjectRedirectorEditor.m in Sources */,
 				F16AE41B1E0C476F009C3897 /* Polys.m in Sources */,
+				F17ED1142458898200243981 /* SpeedTreeActor.m in Sources */,
 				F1170ECD1D6070E800262974 /* Extensions.m in Sources */,
 				F138FB4B243B6EFC009FC1D6 /* ShaderCache.m in Sources */,
 				F1170ED51D6071E300262974 /* minilzo.c in Sources */,
@@ -1032,6 +1060,14 @@
 			);
 			name = ObjectRedirector.xib;
 			path = ..;
+			sourceTree = "<group>";
+		};
+		F17ED11B2458CB3700243981 /* SpeedTree.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F17ED11C2458CB3700243981 /* Base */,
+			);
+			name = SpeedTree.xib;
 			sourceTree = "<group>";
 		};
 		F1B31FE11D731D7C00C0DDD6 /* UObject.xib */ = {

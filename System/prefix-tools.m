@@ -35,6 +35,7 @@ NSString *const kSettingsLevelExportSkeletalMeshes = @"com.VenoMKO.Real-Editor.S
 NSString *const kSettingsLevelExportTerrain = @"com.VenoMKO.Real-Editor.SettingsExportLevelTerrain";
 NSString *const kSettingsLevelExportLights = @"com.VenoMKO.Real-Editor.SettingsExportLevelLights";
 NSString *const kSettingsLevelExportInterp = @"com.VenoMKO.Real-Editor.SettingsExportLevelInterp";
+NSString *const kSettingsLevelExportTrees = @"com.VenoMKO.Real-Editor.SettingsExportLevelTrees";
 NSString *const kSettingsLevelExportOther = @"com.VenoMKO.Real-Editor.SettingsExportLevelOther";
 NSString *const kSettingsLevelExportAddIndex = @"com.VenoMKO.Real-Editor.SettingsExportLevelAddIndex";
 
@@ -97,6 +98,7 @@ NSDictionary *Defaults()
            kSettingsLevelExportTerrain : @(YES),
            kSettingsLevelExportLights : @(YES),
            kSettingsLevelExportInterp : @(YES),
+           kSettingsLevelExportTrees : @(YES),
            kSettingsLevelExportOther : @(NO),
            kSettingsLevelExportAddIndex : @(YES)
            };

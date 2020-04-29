@@ -43,6 +43,7 @@ FOUNDATION_EXPORT NSString *const kSettingsLevelExportSkeletalMeshes;
 FOUNDATION_EXPORT NSString *const kSettingsLevelExportTerrain;
 FOUNDATION_EXPORT NSString *const kSettingsLevelExportLights;
 FOUNDATION_EXPORT NSString *const kSettingsLevelExportInterp;
+FOUNDATION_EXPORT NSString *const kSettingsLevelExportTrees;
 FOUNDATION_EXPORT NSString *const kSettingsLevelExportOther;
 FOUNDATION_EXPORT NSString *const kSettingsLevelExportAddIndex;
 

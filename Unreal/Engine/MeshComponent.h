@@ -10,10 +10,6 @@
 
 @interface MeshComponent : PrimitiveComponent
 @property (weak) UObject *mesh;
-- (BOOL)castShadow;
-- (BOOL)castDynamicShadow;
-- (BOOL)acceptsLights;
-- (BOOL)acceptsDynamicLights;
 @end
 
 @interface StaticMeshComponent : MeshComponent

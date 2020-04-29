@@ -22,6 +22,10 @@
 - (GLKVector3)translation;
 - (CGFloat)scale;
 - (FRotator *)rotator;
+- (BOOL)castShadow;
+- (BOOL)castDynamicShadow;
+- (BOOL)acceptsLights;
+- (BOOL)acceptsDynamicLights;
 @end
 
 @interface PrimitiveComponent : ActorComponent

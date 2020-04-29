@@ -21,6 +21,7 @@
 #import "FBXUtils.h"
 #import "T3DUtils.h"
 #import "Terrain.h"
+#import "SpeedTreeActor.h"
 
 #define DEBUG_EXPORT_BOUNDS 0
 #define DEBUG_EXPORT_CLASS 0
@@ -76,6 +77,7 @@ const double ScaleFactor = 1.0;
 @property BOOL                            exportInterpActors;
 @property BOOL                            exportOtherActors;
 @property BOOL                            exportAddObjectIndex;
+@property BOOL                            exportSpeedTrees;
 
 @end
 
@@ -331,6 +333,13 @@ const double ScaleFactor = 1.0;
         return NO;
       }
     }
+    else if ([actor isKindOfClass:[SpeedTreeActor class]])
+    {
+      if (!self.exportSpeedTrees)
+      {
+        return NO;
+      }
+    }
     else if (!self.exportOtherActors)
     {
       return NO;
@@ -393,15 +402,6 @@ const double ScaleFactor = 1.0;
       }
       [actorsList appendFormat:@"[%d]%@(%@)\n", [actor.package indexForObject:actor], [actor displayName], [actor objectClass]];
       StaticMesh *mesh = (StaticMesh*)[(StaticMeshActor*)actor mesh];
-      NSString *targetPath = nil;
-      NSString *fbxPath = nil;
-      {
-        NSArray *targetPathComps = [[mesh objectPath] componentsSeparatedByString:@"."];
-        targetPathComps = [targetPathComps subarrayWithRange:NSMakeRange(1, targetPathComps.count - 1)];
-        NSString *meshTypeDir = [mesh isKindOfClass:[StaticMesh class]] ? @"StaticMeshes/S1Data" : @"SkeletalMeshes/S1Data";
-        targetPath = [[dataDirPath stringByAppendingPathComponent:meshTypeDir] stringByAppendingPathComponent:[targetPathComps componentsJoinedByString:@"/"]];
-        fbxPath = [targetPath stringByAppendingPathExtension:@"fbx"];
-      }
       
       if (mesh)
       {
@@ -421,6 +421,17 @@ const double ScaleFactor = 1.0;
           continue;
         }
         if (cancelExport) return;
+        
+        NSString *targetPath = nil;
+        NSString *fbxPath = nil;
+        {
+          NSArray *targetPathComps = [[mesh objectPath] componentsSeparatedByString:@"."];
+          //targetPathComps = [targetPathComps subarrayWithRange:NSMakeRange(1, targetPathComps.count - 1)];
+          NSString *meshTypeDir = [mesh isKindOfClass:[StaticMesh class]] ? @"StaticMeshes/S1Data" : @"SkeletalMeshes/S1Data";
+          targetPath = [[dataDirPath stringByAppendingPathComponent:meshTypeDir] stringByAppendingPathComponent:[targetPathComps componentsJoinedByString:@"/"]];
+          fbxPath = [targetPath stringByAppendingPathExtension:@"fbx"];
+        }
+        
         [actorsList appendFormat:@"\tMesh: %@:%@\n", mesh.package.stream.url.path, [mesh.objectPath stringByReplacingOccurrencesOfString:@"." withString:@"/"]];
         if (![[NSFileManager defaultManager] fileExistsAtPath:fbxPath])
         {
@@ -436,6 +447,52 @@ const double ScaleFactor = 1.0;
           else if ([mesh isKindOfClass:[SkeletalMesh class]])
           {
             [[FBXUtils new] exportSkeletalMesh:(SkeletalMesh*)mesh options:@{@"path" : fbxPath, @"lodIdx" : @(0), @"type" : @(0)}];
+          }
+        }
+      }
+    }
+    else if ([actor isKindOfClass:[SpeedTreeActor class]])
+    {
+      if (![actor exportToT3D:result padding:padding index:idx])
+      {
+        continue;
+      }
+      [actorsList appendFormat:@"[%d]%@(%@)\n", [actor.package indexForObject:actor], [actor displayName], [actor objectClass]];
+      
+      SpeedTree *tree = [[(SpeedTreeActor *)actor component] speedTree];
+      
+      if (tree)
+      {
+        if (tree.exportObject.exportFlags | EF_ForcedExport)
+        {
+          tree = (id)[tree.package resolveForcedExport:tree.exportObject];
+          if (cancelExport) return;
+        }
+        else if (tree.importObject)
+        {
+          tree = (id)[tree.package resolveImport:tree.importObject];
+          if (cancelExport) return;
+        }
+        
+        NSString *targetPath = nil;
+        NSString *sptPath = nil;
+        {
+          NSArray *targetPathComps = [[tree objectPath] componentsSeparatedByString:@"."];
+          //targetPathComps = [targetPathComps subarrayWithRange:NSMakeRange(1, targetPathComps.count - 1)];
+          targetPath = [[dataDirPath stringByAppendingPathComponent:@"SpeedTree/S1Data"] stringByAppendingPathComponent:[targetPathComps componentsJoinedByString:@"/"]];
+          sptPath = [targetPath stringByAppendingPathExtension:@"spt"];
+        }
+        if (![[NSFileManager defaultManager] fileExistsAtPath:sptPath])
+        {
+          [[NSFileManager defaultManager] createDirectoryAtPath:[targetPath stringByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:NULL];
+          dispatch_async(dispatch_get_main_queue(), ^{
+            self.exportProgressDescription = [NSString stringWithFormat:@"Exporting: %@", [sptPath lastPathComponent]];
+          });
+          
+          NSData *data = [tree exportWithOptions:nil];
+          if (data.length)
+          {
+            [data writeToFile:sptPath atomically:YES];
           }
         }
       }
@@ -566,6 +623,7 @@ const double ScaleFactor = 1.0;
   self.exportLights =  [d boolForKey:kSettingsLevelExportLights];
   self.exportInterpActors = [d boolForKey:kSettingsLevelExportInterp];
   self.exportTerrain = [d boolForKey:kSettingsLevelExportTerrain];
+  self.exportSpeedTrees = [d boolForKey:kSettingsLevelExportTrees];
   self.exportAddObjectIndex = [d boolForKey:kSettingsLevelExportAddIndex];
   
   NSSavePanel *panel = [NSSavePanel savePanel];
@@ -589,6 +647,7 @@ const double ScaleFactor = 1.0;
       [d setBool:sself.exportLights forKey:kSettingsLevelExportLights];
       [d setBool:sself.exportInterpActors forKey:kSettingsLevelExportInterp];
       [d setBool:sself.exportTerrain forKey:kSettingsLevelExportTerrain];
+      [d setBool:sself.exportSpeedTrees forKey:kSettingsLevelExportTrees];
       [d setBool:sself.exportAddObjectIndex forKey:kSettingsLevelExportAddIndex];
       [d synchronize];
       [sself doExport:[panel.URL path]];
