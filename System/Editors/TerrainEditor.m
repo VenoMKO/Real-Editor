@@ -27,8 +27,6 @@
 
 - (void)updateImage
 {
-  //NSImage *img = [self.object forceExportedRenderedImageR:_r.state G:_g.state B:_b.state A:_a.state invert:NO];
-  //self.imageView.image = [img CGImageForProposedRect:NULL context:NULL hints:NULL];
   self.imageView.image = [self.object heightMap];
 }
 

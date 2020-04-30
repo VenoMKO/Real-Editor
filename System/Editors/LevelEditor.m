@@ -22,6 +22,7 @@
 #import "T3DUtils.h"
 #import "Terrain.h"
 #import "SpeedTreeActor.h"
+#import "PrefabInstance.h"
 
 #define DEBUG_EXPORT_BOUNDS 0
 #define DEBUG_EXPORT_CLASS 0
@@ -144,6 +145,11 @@ const double ScaleFactor = 1.0;
         continue;
       
       [self.meshNodes addObject:n];
+    }
+    else if ([actor isKindOfClass:[PrefabInstance class]])
+    {
+      Prefab *prefab = [(PrefabInstance*)actor templatePrefab];
+      n = [prefab renderNode:0];
     }
     else if ([actor isKindOfClass:[SpotLight class]] && loadLights)
     {

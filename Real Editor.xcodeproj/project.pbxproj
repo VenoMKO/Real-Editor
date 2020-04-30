@@ -80,6 +80,10 @@
 		F17ED117245889EC00243981 /* SpeedTreeComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = F17ED116245889EC00243981 /* SpeedTreeComponent.m */; };
 		F17ED11A2458C8F900243981 /* SpeedTreeEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = F17ED1192458C8F900243981 /* SpeedTreeEditor.m */; };
 		F17ED11D2458CB3700243981 /* SpeedTree.xib in Resources */ = {isa = PBXBuildFile; fileRef = F17ED11B2458CB3700243981 /* SpeedTree.xib */; };
+		F17ED120245999E600243981 /* PrefabInstance.m in Sources */ = {isa = PBXBuildFile; fileRef = F17ED11F245999E600243981 /* PrefabInstance.m */; };
+		F17ED123245A1E5B00243981 /* Prefab.m in Sources */ = {isa = PBXBuildFile; fileRef = F17ED122245A1E5B00243981 /* Prefab.m */; };
+		F17ED125245A274C00243981 /* Prefab.xib in Resources */ = {isa = PBXBuildFile; fileRef = F17ED124245A274B00243981 /* Prefab.xib */; };
+		F17ED128245A277900243981 /* PrefabEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = F17ED126245A277800243981 /* PrefabEditor.m */; };
 		F18479F2244DDFE9005BE56E /* libfbxsdk.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F18479F1244DDFB1005BE56E /* libfbxsdk.dylib */; };
 		F18479F4244DE01D005BE56E /* libfbxsdk.dylib in Copy Files */ = {isa = PBXBuildFile; fileRef = F18479F1244DDFB1005BE56E /* libfbxsdk.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		F186180E1D881946004B3F4F /* SkeletalMesh.xib in Resources */ = {isa = PBXBuildFile; fileRef = F186180D1D881946004B3F4F /* SkeletalMesh.xib */; };
@@ -280,6 +284,13 @@
 		F17ED1182458C8F900243981 /* SpeedTreeEditor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SpeedTreeEditor.h; sourceTree = "<group>"; };
 		F17ED1192458C8F900243981 /* SpeedTreeEditor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SpeedTreeEditor.m; sourceTree = "<group>"; };
 		F17ED11C2458CB3700243981 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = System/Base.lproj/SpeedTree.xib; sourceTree = SOURCE_ROOT; };
+		F17ED11E245999E600243981 /* PrefabInstance.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefabInstance.h; sourceTree = "<group>"; };
+		F17ED11F245999E600243981 /* PrefabInstance.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PrefabInstance.m; sourceTree = "<group>"; };
+		F17ED121245A1E5B00243981 /* Prefab.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Prefab.h; sourceTree = "<group>"; };
+		F17ED122245A1E5B00243981 /* Prefab.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Prefab.m; sourceTree = "<group>"; };
+		F17ED124245A274B00243981 /* Prefab.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Prefab.xib; sourceTree = "<group>"; };
+		F17ED126245A277800243981 /* PrefabEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrefabEditor.m; sourceTree = "<group>"; };
+		F17ED127245A277900243981 /* PrefabEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrefabEditor.h; sourceTree = "<group>"; };
 		F18479F1244DDFB1005BE56E /* libfbxsdk.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfbxsdk.dylib; path = "../../../../../Applications/Autodesk/FBX SDK/2020.0.1/lib/clang/debug/libfbxsdk.dylib"; sourceTree = "<group>"; };
 		F186180D1D881946004B3F4F /* SkeletalMesh.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SkeletalMesh.xib; sourceTree = "<group>"; };
 		F186180F1D882D61004B3F4F /* SkeletalMeshEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkeletalMeshEditor.h; sourceTree = "<group>"; };
@@ -497,6 +508,8 @@
 				F191BFFB1E2750A900EC5600 /* Terrain.m */,
 				F117F0ED1E35F3AE005A4950 /* Brush.h */,
 				F117F0EE1E35F3AE005A4950 /* Brush.m */,
+				F17ED11E245999E600243981 /* PrefabInstance.h */,
+				F17ED11F245999E600243981 /* PrefabInstance.m */,
 			);
 			name = GMP;
 			sourceTree = "<group>";
@@ -505,6 +518,7 @@
 			isa = PBXGroup;
 			children = (
 				F162CEFB1E1936190089F953 /* Level.xib */,
+				F17ED124245A274B00243981 /* Prefab.xib */,
 				F132E17E1E0FBCFB001CDB47 /* TextureCube.xib */,
 				F16AE4291E0D15F3009C3897 /* StaticMesh.xib */,
 				F186180D1D881946004B3F4F /* SkeletalMesh.xib */,
@@ -596,6 +610,8 @@
 				F132E1821E0FCB37001CDB47 /* TextureCube.m */,
 				F138FB49243B6EFC009FC1D6 /* ShaderCache.h */,
 				F138FB4A243B6EFC009FC1D6 /* ShaderCache.m */,
+				F17ED121245A1E5B00243981 /* Prefab.h */,
+				F17ED122245A1E5B00243981 /* Prefab.m */,
 			);
 			path = Engine;
 			sourceTree = "<group>";
@@ -643,6 +659,8 @@
 				F13F0BF31DC718A9008B3D4C /* MaterialInstanceConstantEditor.m */,
 				F16AE4251E0D10E1009C3897 /* StaticMeshEditor.h */,
 				F16AE4261E0D10E1009C3897 /* StaticMeshEditor.m */,
+				F17ED127245A277900243981 /* PrefabEditor.h */,
+				F17ED126245A277800243981 /* PrefabEditor.m */,
 				F132E17A1E0FB6DC001CDB47 /* TextureCubeEditor.h */,
 				F132E17B1E0FB6DC001CDB47 /* TextureCubeEditor.m */,
 				F162CEF71E1935F60089F953 /* LevelEditor.h */,
@@ -859,6 +877,7 @@
 				F13F0BFA1DC73B1D008B3D4C /* NewMaterialInstanceConstant.xib in Resources */,
 				F1B0081D1D5FBA0D00B40C2D /* Resources.xcassets in Resources */,
 				F1B31FE31D731D7C00C0DDD6 /* UObject.xib in Resources */,
+				F17ED125245A274C00243981 /* Prefab.xib in Resources */,
 				F13585E01D76CF9E00E7EEA3 /* ObjectProperty.xib in Resources */,
 				F186180E1D881946004B3F4F /* SkeletalMesh.xib in Resources */,
 				F186181B1D895DCA004B3F4F /* tex0.png in Resources */,
@@ -958,12 +977,15 @@
 				F18618111D882D61004B3F4F /* SkeletalMeshEditor.m in Sources */,
 				F191BFFC1E2750A900EC5600 /* Terrain.m in Sources */,
 				F1170EE71D60D8EC00262974 /* PackageController.m in Sources */,
+				F17ED128245A277900243981 /* PrefabEditor.m in Sources */,
 				F1D96B131D5FA02900071E45 /* main.m in Sources */,
 				F1629A731E26722E004C9871 /* Model.m in Sources */,
+				F17ED120245999E600243981 /* PrefabInstance.m in Sources */,
 				F17A4B5E1D7C374000341598 /* ObjectRedirectorEditor.m in Sources */,
 				F16AE41B1E0C476F009C3897 /* Polys.m in Sources */,
 				F17ED1142458898200243981 /* SpeedTreeActor.m in Sources */,
 				F1170ECD1D6070E800262974 /* Extensions.m in Sources */,
+				F17ED123245A1E5B00243981 /* Prefab.m in Sources */,
 				F138FB4B243B6EFC009FC1D6 /* ShaderCache.m in Sources */,
 				F1170ED51D6071E300262974 /* minilzo.c in Sources */,
 				F18618141D886EC9004B3F4F /* SceneView.m in Sources */,

@@ -15,13 +15,17 @@
 
 - (id)mesh
 {
+  if (!self.component)
+  {
+    [self properties];
+  }
   return [(MeshComponent *)self.component mesh];
 }
 
 - (NSString *)displayName
 {
-  NSString *name = [[self mesh] objectName];
-  return name ? name : self.objectName;
+  NSString *name = [[self mesh] displayName];
+  return name ? name : [super displayName];
 }
 
 - (BOOL)lockLockation

@@ -2,6 +2,11 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>Prefab</key>
+	<dict>
+		<key>PrefabArchetypes</key>
+		<string>Object</string>
+	</dict>
 	<key>GFxMovieInfo</key>
 	<dict>
 		<key>References</key>
