@@ -89,6 +89,14 @@
   NSArray *matSource = object.materials;
   NSMutableArray *tempMat = [NSMutableArray new];
   
+  for (__unused MaterialInstanceConstant *mat in matSource)
+  {
+    [tempMat addObject:self.defaultMaterial];
+  }
+  
+  [node.geometry performSelectorOnMainThread:@selector(setMaterials:) withObject:tempMat waitUntilDone:YES];
+  tempMat = [NSMutableArray new];
+  
   for (NSUInteger idx = 0; idx < matSource.count; idx++)
   {
     MaterialInstanceConstant *mat = matSource[idx];
