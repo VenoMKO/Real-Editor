@@ -185,7 +185,7 @@ const double ScaleFactor = 1.0;
     
     [self.nodes addObject:n];
     [self.actors addObject:actor];
-    n.name = [NSString stringWithFormat:@"%lu",[self.actors count] - 1];
+    n.name = [NSString stringWithFormat:@"%d",[actor.package indexForObject:actor]];
     
     n.scale = SCNVector3Make(ScaleFactor, ScaleFactor, ScaleFactor);
     

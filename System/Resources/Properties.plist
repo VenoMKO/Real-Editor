@@ -2,6 +2,41 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>SkeletalMeshActorMAT</key>
+	<dict>
+		<key>Attached</key>
+		<string>Object</string>
+	</dict>
+	<key>SeqAct_Interp</key>
+	<dict>
+		<key>LinkedVariables</key>
+		<string>Object</string>
+	</dict>
+	<key>SeqEvent_Console</key>
+	<dict>
+		<key>LinkedVariables</key>
+		<string>Object</string>
+	</dict>
+	<key>InterpGroup</key>
+	<dict>
+		<key>InterpTracks</key>
+		<string>Object</string>
+	</dict>
+	<key>InterpData</key>
+	<dict>
+		<key>InterpGroups</key>
+		<string>Object</string>
+	</dict>
+	<key>Sequence</key>
+	<dict>
+		<key>SequenceObjects</key>
+		<string>Object</string>
+	</dict>
+	<key>SkeletalMeshComponent</key>
+	<dict>
+		<key>AnimSets</key>
+		<string>Object</string>
+	</dict>
 	<key>Prefab</key>
 	<dict>
 		<key>PrefabArchetypes</key>

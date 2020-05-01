@@ -34,6 +34,9 @@
                                 <sceneView autoenablesDefaultLighting="YES" allowsCameraControl="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LmM-Gl-9W2" customClass="ModelView">
                                     <rect key="frame" x="0.0" y="0.0" width="214" height="410"/>
                                     <color key="backgroundColor" name="windowBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="boolean" keyPath="allowObjectSelection" value="YES"/>
+                                    </userDefinedRuntimeAttributes>
                                 </sceneView>
                                 <progressIndicator wantsLayer="YES" maxValue="100" displayedWhenStopped="NO" indeterminate="YES" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="I2L-YN-nbU">
                                     <rect key="frame" x="91" y="189" width="32" height="32"/>

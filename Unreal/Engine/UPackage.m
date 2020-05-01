@@ -972,6 +972,7 @@ unsigned int CRCForString( const char *Data , int Length)
   if (object.exportFlags | EF_ForcedExport)
   {
     UObject *uobj = object.object;
+    [uobj properties];
     NSString *objectPath = [uobj objectPath];
     if (objectPath)
     {
@@ -991,7 +992,7 @@ unsigned int CRCForString( const char *Data , int Length)
       NSString *name = [package name];
       if ([name hasPrefix:packageName])
       {
-        UObject *result = [package objectForPath:objectPath];
+        UObject *result = [package objectForNetIndex:uobj.netIndex name:object.objectName];
         if ([result isKindOfClass:[ObjectRedirector class]])
         {
           result = [(ObjectRedirector*)result reference];
@@ -1081,7 +1082,7 @@ unsigned int CRCForString( const char *Data , int Length)
   NSString *path = [d stringForKey:kSettingsProjectDir];
   if (!path.length)
   {
-    NSArray *components = [self.originalURL.path pathComponents];
+    NSArray *components = [self.originalURL ? self.originalURL.path : self.stream.url.path pathComponents];
     NSUInteger index = [components indexOfObject:@"S1Game"];
     if (index != NSNotFound)
     {
@@ -1102,6 +1103,24 @@ unsigned int CRCForString( const char *Data , int Length)
   }
   
   return ret;
+}
+
+- (id)objectForNetIndex:(int)index name:(NSString *)name
+{
+  UObject *obj = nil;
+  @try
+  {
+    obj = [self objectForIndex:index+1];
+    if (obj && ![obj.objectName isEqualToString:name])
+    {
+      DThrow(@"Failed to get object: [%d]%@", index, name);
+    }
+  }
+  @catch(NSException *e)
+  {
+    DLog(@"%@", e.description);
+  }
+  return obj;
 }
 
 - (UObject *)objectForPath:(NSString *)path

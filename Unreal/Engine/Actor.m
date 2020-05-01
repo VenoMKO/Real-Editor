@@ -193,7 +193,7 @@
 - (NSString *)displayName
 {
   NSString *name = [[self.component templateObject] objectName];
-  return name ? name : self.objectName;
+  return name ? name : super.displayName;
 }
 
 @end

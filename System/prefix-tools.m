@@ -136,9 +136,9 @@ void PublicLog(NSString *format, ...)
   fprintf(stderr,"%s", [[[dfmt stringFromDate:[NSDate date]] stringByAppendingFormat:@" %@", body] UTF8String]);
 }
 
-NSError *NSStringToError(NSString *string)
+NSError *NSStringToError(NSString *string, NSString *title)
 {
-  NSDictionary *err = @{NSLocalizedDescriptionKey : @"Error!", NSLocalizedRecoverySuggestionErrorKey : string};
+  NSDictionary *err = @{NSLocalizedDescriptionKey : title ? title : @"Error!", NSLocalizedRecoverySuggestionErrorKey : string};
   return [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier] code:0 userInfo:err];
 }
 
@@ -153,9 +153,11 @@ void NSAppError(UPackage *package, NSString *format, ...)
     NSWindow *host = package.controller.window;
     NSBeep();
     if (host)
-      [NSApp presentError:NSStringToError(body) modalForWindow:host delegate:nil didPresentSelector:NULL contextInfo:NULL];
+      [NSApp presentError:NSStringToError(body, nil) modalForWindow:host delegate:nil didPresentSelector:NULL contextInfo:NULL];
     else
-      [NSApp presentError:NSStringToError(body)];
+    {
+      [NSApp presentError:NSStringToError(body, package.stream.url.path)];
+    }
   });
   
 }

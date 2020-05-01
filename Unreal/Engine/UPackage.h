@@ -64,6 +64,7 @@ NSArray *enumerateDirectory(NSURL *aUrl, int *validItems);
 - (int)indexForName:(NSString *)name;
 
 - (id)objectForIndex:(NSInteger)index;
+- (id)objectForNetIndex:(int)index name:(NSString *)name;
 - (int)indexForObject:(id)object;
 
 - (id)fobjectForIndex:(NSInteger)index;

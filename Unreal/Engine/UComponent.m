@@ -187,7 +187,7 @@
 
 - (id)templateObject
 {
-  return [self propertyValue:@"Template"];
+  return [self.package objectForIndex:[[self propertyValue:@"Template"] intValue]];
 }
 
 @end

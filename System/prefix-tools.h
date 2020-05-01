@@ -75,7 +75,7 @@ typedef NS_ENUM(unsigned, UGame)
 @class UPackage;
 FOUNDATION_EXPORT void ExtendNSLog(const char *file, int lineNumber, const char *functionName, NSString *format, ...);
 FOUNDATION_EXPORT void PublicLog(NSString *format, ...);
-FOUNDATION_EXPORT NSError *NSStringToError(NSString *string);
+FOUNDATION_EXPORT NSError *NSStringToError(NSString *string, NSString *title);
 FOUNDATION_EXPORT void NSAppError(UPackage *package, NSString *format, ...);
 FOUNDATION_EXPORT void DThrow(NSString *format, ...);
 

@@ -60,6 +60,7 @@
     cameraNode.camera.automaticallyAdjustsZRange = YES;
     CGFloat fov = [[NSUserDefaults standardUserDefaults] doubleForKey:kSettingsFov];
     cameraNode.camera.focalLength = fov;
+    cameraNode.camera.automaticallyAdjustsZRange = YES;
     self.cameraNode = cameraNode;
     SCNNode *orbitNode = [SCNNode node];
     [orbitNode addChildNode:cameraNode];
@@ -116,7 +117,7 @@
 - (void)mouseUp:(NSEvent *)event
 {
   [super mouseUp:event];
-  if (!self.package || !self.allowObjectSelection) return;
+  if (!self.allowObjectSelection) return;
   NSPoint relativeLocation = [self.window.contentView convertPoint:event.locationInWindow toView:self];
   NSArray *items = [self hitTest:relativeLocation options:nil];
   SCNHitTestResult *r = [items firstObject];
@@ -224,8 +225,8 @@
     }
   }
   
-  self.cameraNode.camera.automaticallyAdjustsZRange = YES;
   self.cameraNode.position = SCNVector3Make(0, 0, radius);
+  self.cameraNode.camera.automaticallyAdjustsZRange = YES;
   [self.cameraNode lookAt:self.orbitNode.position];
   if (self.materialView)
   {
