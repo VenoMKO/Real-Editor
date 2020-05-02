@@ -57,6 +57,7 @@ NSArray *enumerateDirectory(NSURL *aUrl, int *validItems);
 
 - (UObject *)resolveImport:(FObjectImport *)import;
 - (UObject *)resolveForcedExport:(FObjectExport *)object;
+- (UObject *)externalObjectForPath:(NSString *)objectPath;
 - (FObjectExport *)createExportObject:(NSString *)objectName class:(NSString *)objectClass;
 - (void)addNewExportObject:(FObject *)object forParent:(FObject *)parent;
 

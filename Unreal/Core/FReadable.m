@@ -212,7 +212,7 @@
     last = parent;
     parent = parent.parent;
   }
-  if ([last isKindOfClass:[FObjectExport class]] && !self.exportFlags & EF_ForcedExport)
+  if ([last isKindOfClass:[FObjectExport class]] && !(self.exportFlags & EF_ForcedExport))
   {
     p = [self.package.name stringByAppendingFormat:@".%@",p];
   }

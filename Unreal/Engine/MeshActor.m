@@ -79,8 +79,14 @@
       GLKVector3 scale = [self absoluteDrawScale3D];
       scale = GLKVector3MultiplyScalar(scale, [self absoluteDrawScale]);
       T3DAddLine(result, padding, @"RelativeScale3D=(X=%.6f,Y=%.6f,Z=%.6f)", scale.x, scale.y, scale.z);
-      T3DAddLine(result, padding, @"bCastStaticShadow=%@", self.component.castShadow ? @"True" : @"False");
-      T3DAddLine(result, padding, @"bCastDynamicShadow=%@", self.component.castDynamicShadow ? @"True" : @"False");
+      if (!self.component.castShadow)
+      {
+        T3DAddLine(result, padding, @"CastShadow=False");
+      }
+      if (!self.component.castDynamicShadow)
+      {
+        T3DAddLine(result, padding, @"bCastDynamicShadow=False");
+      }
       T3DAddLine(result, padding, @"Mobility=Static");
       T3DAddLine(result, padding, @"LightingChannels=(bChannel0=%@)", self.component.acceptsLights || self.component.acceptsDynamicLights ? @"True" : @"False");
       padding--;
@@ -109,6 +115,61 @@
     self.component = [self.package objectForIndex:[ref.value intValue]];
   [self.component properties]; // Force read props
   return nil;
+}
+
+- (BOOL)exportToT3D:(NSMutableString *)result padding:(unsigned)padding index:(int)index
+{
+  [self properties];
+  if (![self.component isKindOfClass:[MeshComponent class]])
+  {
+    return NO;
+  }
+  if ([self.component isKindOfClass:[SkeletalMeshComponent class]])
+  {
+    NSString *name = index < 0 ? self.displayName : [self.displayName stringByAppendingFormat:@"_%d",index];
+    T3DAddLine(result, padding, T3DBeginObject(@"Actor", name, @"/Script/Engine.SkeletalMeshActor"));
+    {
+      padding++;
+      T3DAddLine(result, padding, T3DBeginObject(@"Object", @"SkeletalMeshComponent0", nil));
+      {
+        padding++;
+        NSMutableArray *targetPathComps = [[[[(MeshComponent*)[self component] mesh] objectPath] componentsSeparatedByString:@"."] mutableCopy];
+        [targetPathComps removeObjectAtIndex:0];
+        NSString *targetPath = [targetPathComps componentsJoinedByString:@"/"];
+        T3DAddLine(result, padding, @"ClothingSimulationFactory=Class'\"/Script/ClothingSystemRuntimeNv.ClothingSimulationFactoryNv\"'");
+        T3DAddLine(result, padding, @"SkeletalMesh=SkeletalMesh'\"%@\"'", [@"/Game/S1Data/" stringByAppendingString:targetPath]);
+        
+        GLKVector3 pos = [self absolutePostion];
+        T3DAddLine(result, padding, @"RelativeLocation=(X=%.6f,Y=%.6f,Z=%.6f)", pos.x, pos.y, pos.z);
+        
+        GLKVector3 rot = [[[self absoluteRotator] euler] glkVector3];
+        T3DAddLine(result, padding, @"RelativeRotation=(Pitch=%.6f,Yaw=%.6f,Roll=%.6f)", rot.y, rot.z, rot.x);
+        
+        GLKVector3 scale = [self absoluteDrawScale3D];
+        scale = GLKVector3MultiplyScalar(scale, [self absoluteDrawScale]);
+        T3DAddLine(result, padding, @"RelativeScale3D=(X=%.6f,Y=%.6f,Z=%.6f)", scale.x, scale.y, scale.z);
+        if (!self.component.castShadow)
+        {
+          T3DAddLine(result, padding, @"CastShadow=False");
+        }
+        if (!self.component.castDynamicShadow)
+        {
+          T3DAddLine(result, padding, @"bCastDynamicShadow=False");
+        }
+        T3DAddLine(result, padding, @"LightingChannels=(bChannel0=%@)", self.component.acceptsLights || self.component.acceptsDynamicLights ? @"True" : @"False");
+        padding--;
+      }
+      T3DAddLine(result, padding, T3DEndObject(@"Object"));
+      T3DAddLine(result, padding, @"SkeletalMeshComponent=\"SkeletalMeshComponent0\"");
+      T3DAddLine(result, padding, @"RootComponent=\"SkeletalMeshComponent0\"");
+      T3DAddLine(result, padding, @"ActorLabel=\"%@\"", name);
+      T3DAddLine(result, padding, @"FolderPath=\"%@\"", self.package.name);
+    }
+    padding--;
+    T3DAddLine(result, padding, T3DEndObject(@"Actor"));
+    return YES;
+  }
+  return NO;
 }
 
 @end
@@ -169,8 +230,14 @@
         GLKVector3 scale = [self absoluteDrawScale3D];
         scale = GLKVector3MultiplyScalar(scale, [self absoluteDrawScale]);
         T3DAddLine(result, padding, @"RelativeScale3D=(X=%.6f,Y=%.6f,Z=%.6f)", scale.x, scale.y, scale.z);
-        T3DAddLine(result, padding, @"bCastStaticShadow=%@", self.component.castShadow ? @"True" : @"False");
-        T3DAddLine(result, padding, @"bCastDynamicShadow=%@", self.component.castDynamicShadow ? @"True" : @"False");
+        if (!self.component.castShadow)
+        {
+          T3DAddLine(result, padding, @"CastShadow=False");
+        }
+        if (!self.component.castDynamicShadow)
+        {
+          T3DAddLine(result, padding, @"bCastDynamicShadow=False");
+        }
         T3DAddLine(result, padding, @"LightingChannels=(bChannel0=%@)", self.component.acceptsLights || self.component.acceptsDynamicLights ? @"True" : @"False");
         T3DAddLine(result, padding, @"Mobility=Movable");
         padding--;

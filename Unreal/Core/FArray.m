@@ -243,3 +243,68 @@
 }
 
 @end
+
+@implementation TArray
+
++ (instancetype)bulkSerializeFrom:(FIStream *)stream type:(Class)type
+{
+  TArray *a = [[super superclass] readFrom:stream];
+  int cnt = [stream readInt:NULL];
+  a.array = [[NSMutableArray alloc] initWithCapacity:cnt];
+  a.elementSize = [stream readInt:NULL];
+  if ([type isSubclassOfClass:[NSNumber class]] && a.elementSize == sizeof(int))
+  {
+    for (int i = 0; i < cnt; ++i)
+    {
+      [a.array addObject:@([stream readInt:NULL])];
+    }
+  }
+  else if ([type isSubclassOfClass:[NSData class]] || ([type isSubclassOfClass:[NSNumber class]] && a.elementSize != sizeof(int)))
+  {
+    for (int i = 0; i < cnt; ++i)
+    {
+      [a.array addObject:[stream readData:a.elementSize]];
+    }
+  }
+  else
+  {
+    for (int i = 0; i < cnt; ++i)
+    {
+      [a.array addObject:[type readFrom:stream]];
+    }
+  }
+  return a;
+}
+
+- (NSMutableData *)bulkCooked:(NSInteger)offset
+{
+  NSMutableData *r = [NSMutableData new];
+  [r writeInt:(int)self.array.count];
+  [r writeInt:self.elementSize];
+  offset+=8;
+  if ([self.array.firstObject isKindOfClass:[NSData class]])
+  {
+    for (NSNumber *d in self.array)
+    {
+      [r writeInt:[d intValue]];
+    }
+  }
+  else if ([self.array.firstObject isKindOfClass:[NSData class]])
+  {
+    for (NSData *d in self.array)
+    {
+      [r appendData:d];
+    }
+  }
+  else
+  {
+    for (FReadable *d in self.array)
+    {
+      [r appendData:[d cooked:offset]];
+      offset+=self.elementSize;
+    }
+  }
+  return r;
+}
+
+@end

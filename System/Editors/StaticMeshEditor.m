@@ -132,7 +132,14 @@
   }
   
   dispatch_async(dispatch_get_main_queue(), ^{
-    node.geometry.materials = tempMat;
+    if (tempMat.count)
+    {
+      node.geometry.materials = tempMat;
+    }
+    else
+    {
+      node.geometry.materials = @[self.defaultMaterial];
+    }
   });
 }
 

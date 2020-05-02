@@ -38,3 +38,9 @@
 @property (assign) int elementSize;
 @property (assign) int elementCount;
 @end
+
+@interface TArray : FArray
++ (instancetype)bulkSerializeFrom:(FIStream *)stream type:(Class)type;
+- (NSMutableData *)bulkCooked:(NSInteger)offset;
+@property int elementSize;
+@end

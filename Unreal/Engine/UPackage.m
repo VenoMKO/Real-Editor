@@ -1123,6 +1123,88 @@ unsigned int CRCForString( const char *Data , int Length)
   return obj;
 }
 
+- (UObject *)externalObjectForPath:(NSString *)objectPath
+{
+  NSString *path = [[NSUserDefaults standardUserDefaults] stringForKey:kSettingsProjectDir];
+  if (!path.length)
+  {
+    NSArray *components = [self.originalURL ? self.originalURL.path : self.stream.url.path pathComponents];
+    NSUInteger index = [components indexOfObject:@"S1Game"];
+    if (index != NSNotFound)
+    {
+      path = [[components subarrayWithRange:NSMakeRange(0, index)] componentsJoinedByString:@"/"];
+    }
+  }
+  
+  if (!path.length)
+  {
+    return nil;
+  }
+  
+  NSString *packageName = [objectPath componentsSeparatedByString:@"."].firstObject;
+  
+  if (!self.dependentPackages)
+    self.dependentPackages = [NSMutableArray new];
+  
+  for (UPackage *package in self.dependentPackages)
+  {
+    NSString *n = [package name];
+    if ([n isEqualToString:packageName])
+    {
+      return [package objectForPath:objectPath];
+    }
+  }
+  
+  NSArray *items = DirCache[path];
+  if (!items)
+  {
+    int cnt = 0;
+    items = enumerateDirectory([NSURL fileURLWithPath:path], &cnt);
+    DirCache[path] = items;
+  }
+
+  for (NSURL *itemURL in items)
+  {
+    NSString *a = [[[itemURL.path lastPathComponent] stringByDeletingPathExtension] lowercaseString];
+    NSString *b = [packageName lowercaseString];
+    if ([a hasPrefix:b])
+    {
+      BOOL addedToCache = NO;
+      UPackage *package = [GPackageCache packgeForPath:itemURL.path];
+      if (!package)
+      {
+        package = [UPackage readFromURL:itemURL];
+        [package preheat];
+        if (!package)
+          continue;
+        addedToCache = YES;
+      }
+      [GPackageCache retainPackage:package];
+      [self.dependentPackages addObject:package];
+      UObject *result = [package objectForPath:objectPath];
+      if ([result isKindOfClass:[ObjectRedirector class]])
+      {
+        result = [(ObjectRedirector*)result reference];
+        if (result.importObject)
+        {
+          result = [self resolveImport:result.importObject];
+        }
+      }
+      if (!result)
+      {
+        if (addedToCache)
+        {
+          [self.dependentPackages removeObject:package];
+          [GPackageCache releasePackage:package];
+        }
+        continue;
+      }
+      return result;
+    }
+  }
+  return nil;
+}
+
 - (UObject *)objectForPath:(NSString *)path
 {
   NSArray *components = [path componentsSeparatedByString:@"."];
@@ -1137,7 +1219,7 @@ unsigned int CRCForString( const char *Data , int Length)
     {
       for (UObject *o in children)
       {
-        if ([o.objectName isEqualToString:itemName])
+        if ([[o.objectName lowercaseString] isEqualToString:[itemName lowercaseString]])
         {
           obj = o;
           found = YES;
@@ -1152,7 +1234,7 @@ unsigned int CRCForString( const char *Data , int Length)
     {
       for (UObject *o in allExports)
       {
-        if ([o.objectName isEqualToString:itemName])
+        if ([[o.objectName lowercaseString] isEqualToString:[itemName lowercaseString]])
         {
           obj = o;
           break;
