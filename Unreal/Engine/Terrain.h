@@ -19,11 +19,16 @@
 @property (strong) FArray *cachedTerrainMaterials;
 @property (strong) FArray *cachedMaterialsDummy;
 
-@property (assign) int numVerticesX;
-@property (assign) int numVerticesY;
-
 - (void)exportToT3D:(NSMutableString*)result padding:(unsigned)padding index:(unsigned)index;
 - (CGImageRef)heightMap;
+- (CGImageRef)visibilityMap;
 - (NSString *)info;
+- (int)numPatchesX;
+- (int)numPatchesY;
+- (int)numVerticesX;
+- (int)numVerticesY;
+- (int)numSectionsX;
+- (int)numSectionsY;
+- (int)maxTesselationLevel;
 
 @end

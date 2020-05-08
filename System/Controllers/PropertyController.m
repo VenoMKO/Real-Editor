@@ -17,6 +17,7 @@
 #import "FRotator.h"
 #import "FString.h"
 #import "FColor.h"
+#import "FMatrix.h"
 
 @interface PropertyController ()
 
@@ -151,6 +152,164 @@
 {
   UObject *object = [self.property.package objectForIndex:[self.property.value integerValue]];
   [self.property.package.controller selectObject:object];
+}
+
+- (id)formattedM0
+{
+  FMatrix *m = self.property.value;
+  return m[0];
+}
+
+- (id)formattedM1
+{
+  FMatrix *m = self.property.value;
+  return m[1];
+}
+- (id)formattedM2
+{
+  FMatrix *m = self.property.value;
+  return m[2];
+}
+- (id)formattedM3
+{
+  FMatrix *m = self.property.value;
+  return m[3];
+}
+- (id)formattedM4
+{
+  FMatrix *m = self.property.value;
+  return m[4];
+}
+- (id)formattedM5
+{
+  FMatrix *m = self.property.value;
+  return m[5];
+}
+- (id)formattedM6
+{
+  FMatrix *m = self.property.value;
+  return m[6];
+}
+- (id)formattedM7
+{
+  FMatrix *m = self.property.value;
+  return m[7];
+}
+- (id)formattedM8
+{
+  FMatrix *m = self.property.value;
+  return m[8];
+}
+- (id)formattedM9
+{
+  FMatrix *m = self.property.value;
+  return m[9];
+}
+- (id)formattedM10
+{
+  FMatrix *m = self.property.value;
+  return m[10];
+}
+- (id)formattedM11
+{
+  FMatrix *m = self.property.value;
+  return m[11];
+}
+- (id)formattedM12
+{
+  FMatrix *m = self.property.value;
+  return m[12];
+}
+- (id)formattedM13
+{
+  FMatrix *m = self.property.value;
+  return m[13];
+}
+- (id)formattedM14
+{
+  FMatrix *m = self.property.value;
+  return m[14];
+}
+- (id)formattedM15
+{
+  FMatrix *m = self.property.value;
+  return m[15];
+}
+
+- (void)setFormattedM1:(NSNumber*)v
+{
+  FMatrix *m = self.property.value;
+  m[1] = v;
+}
+- (void)setFormattedM2:(NSNumber*)v
+{
+  FMatrix *m = self.property.value;
+  m[2] = v;
+}
+- (void)setFormattedM3:(NSNumber*)v
+{
+  FMatrix *m = self.property.value;
+  m[3] = v;
+}
+- (void)setFormattedM4:(NSNumber*)v
+{
+  FMatrix *m = self.property.value;
+  m[4] = v;
+}
+- (void)setFormattedM5:(NSNumber*)v
+{
+  FMatrix *m = self.property.value;
+  m[5] = v;
+}
+- (void)setFormattedM6:(NSNumber*)v
+{
+  FMatrix *m = self.property.value;
+  m[6] = v;
+}
+- (void)setFormattedM7:(NSNumber*)v
+{
+  FMatrix *m = self.property.value;
+  m[7] = v;
+}
+- (void)setFormattedM8:(NSNumber*)v
+{
+  FMatrix *m = self.property.value;
+  m[8] = v;
+}
+- (void)setFormattedM9:(NSNumber*)v
+{
+  FMatrix *m = self.property.value;
+  m[9] = v;
+}
+- (void)setFormattedM10:(NSNumber*)v
+{
+  FMatrix *m = self.property.value;
+  m[10] = v;
+}
+- (void)setFormattedM11:(NSNumber*)v
+{
+  FMatrix *m = self.property.value;
+  m[11] = v;
+}
+- (void)setFormattedM12:(NSNumber*)v
+{
+  FMatrix *m = self.property.value;
+  m[12] = v;
+}
+- (void)setFormattedM13:(NSNumber*)v
+{
+  FMatrix *m = self.property.value;
+  m[13] = v;
+}
+- (void)setFormattedM14:(NSNumber*)v
+{
+  FMatrix *m = self.property.value;
+  m[14] = v;
+}
+- (void)setFormattedM15:(NSNumber*)v
+{
+  FMatrix *m = self.property.value;
+  m[15] = v;
 }
 
 - (NSString *)formattedName

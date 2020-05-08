@@ -13,17 +13,46 @@
 #import <SceneKit/SceneKit.h>
 #import "T3DUtils.h"
 #import "FTerrain.h"
+#import "Texture2D.h"
 
-#define TERRAIN_ZSCALE				(1.0f/128.0f)
+#define TERRAIN_ZSCALE        (1.0f/128.0f)
 #define MAX_HEIGHTMAP_TEXTURE_SIZE 512
-#define HEIGHTDATA(X,Y) (heightData[ MIN(Y, MAX(0,vertsY)) * vertsX + MIN(X,MAX(0,vertsX)) ])
+#define HEIGHTDATA(X,Y) (heightData[ CLAMP(Y, 0, vertsY) * vertsX + CLAMP(X, 0, vertsX) ])
 
 uint16_t *ExpandTerrainData(const uint16_t *Data, int OldMinX, int OldMinY, int OldMaxX, int OldMaxY, int NewMinX, int NewMinY, int NewMaxX, int NewMaxY, int *newWidth, int *newHeight);
+uint8_t *ExpandTerrainInfoData(const uint8_t *Data, int OldMinX, int OldMinY, int OldMaxX, int OldMaxY, int NewMinX, int NewMinY, int NewMaxX, int NewMaxY, int *newWidth, int *newHeight);
+
+
+// a(x1, y1)            b(x2, y1)
+//         return (x, y)
+// c(x1, y2)            c(x2, y2)
+static inline float blerpf(float a, float c, float b, float d, float x1, float x2, float y1, float y2, float x, float y)
+{
+    float x2x1, y2y1, x2x, y2y, yy1, xx1;
+    x2x1 = x2 - x1;
+    y2y1 = y2 - y1;
+    x2x = x2 - x;
+    y2y = y2 - y;
+    yy1 = y - y1;
+    xx1 = x - x1;
+    return 1.0 / (x2x1 * y2y1) * (
+        a * x2x * y2y +
+        c * xx1 * y2y +
+        b * x2x * yy1 +
+        d * xx1 * yy1
+    );
+}
+
+inline float lerpf(float a, float b, float t)
+{
+    return a + (b - a) * t;
+}
 
 @interface FHeightmapInfo : NSObject
 @property float HeightmapSizeU;
 @property float HeightmapSizeV;
 @property NSMutableData *HeightmapTexture;
+@property NSMutableData *VisibilityTexture;
 @end
 
 @implementation FHeightmapInfo
@@ -67,26 +96,79 @@ id EnsureValue(id value, id def)
 @interface Terrain()
 {
   short *rawHeights;
+  uint8_t *rawInfoData;
   SCNVector3 *verts;
 }
 @end
 
 @implementation Terrain
 
+- (int)maxTesselationLevel
+{
+  NSNumber *v = [self propertyValue:@"MaxTesselationLevel"];
+  return v ? [v intValue] : 1;
+}
+
+- (int)numPatchesX
+{
+  return [[self propertyValue:@"NumPatchesX"] intValue];
+}
+
+- (int)numPatchesY
+{
+  return [[self propertyValue:@"NumPatchesY"] intValue];
+}
+
+- (int)numVerticesX
+{
+  return [[self propertyValue:@"NumVerticesX"] intValue];
+}
+
+- (int)numVerticesY
+{
+  return [[self propertyValue:@"NumVerticesY"] intValue];
+}
+
+- (int)numSectionsX
+{
+  return [[self propertyValue:@"NumSectionsX"] intValue];
+}
+
+- (int)numSectionsY
+{
+  return [[self propertyValue:@"NumSectionsY"] intValue];
+}
+
+- (NSArray *)components
+{
+  return [self propertyValue:@"TerrainComponents"];
+}
+
 - (void)dealloc
 {
   if (rawHeights)
+  {
     free(rawHeights);
+  }
+  if (rawInfoData)
+  {
+    free(rawInfoData);
+  }
 }
 
 - (FIStream *)postProperties
 {
-  FPropertyTag *t = [self propertyForName:@"NumVerticesX"];
-  self.numVerticesX = [t.value intValue];
-  t = [self propertyForName:@"NumVerticesY"];
-  self.numVerticesY = [t.value intValue];
-  FIStream *s = [self.package.stream copy];
-  [s setPosition:self.rawDataOffset];
+  FIStream *s = [super postProperties];
+  FPropertyTag *prop = [self propertyForName:@"DrawScale3D"];
+  if (!prop)
+  {
+    self.drawScale3D = GLKVector3Make(256, 256, 256);
+  }
+  else
+  {
+    FVector3 *v = (FVector3 *)prop.value;
+    self.drawScale3D = GLKVector3Make(v.x, v.y, v.z);
+  }
   self.heights = [FArray readFrom:s type:[FTerrainHeight class]];
   self.infoData = [FArray readFrom:s type:[FTerrainInfoData class]];
   self.alphaMaps = [s readData:[s readInt:0]];
@@ -108,6 +190,14 @@ id EnsureValue(id value, id def)
       rawHeights[[self.heights indexOfObject:th]] = th.value;
     }
   }
+  if (!rawInfoData)
+  {
+    rawInfoData = calloc(self.infoData.count, sizeof(uint8_t));
+    for (FTerrainInfoData *d in self.infoData)
+    {
+      rawInfoData[[self.infoData indexOfObject:d]] = d.data;
+    }
+  }
   
   int sectionSizes[] = {7, 15, 31, 63, 127, 255};
   int numSections[] = {1, 2};
@@ -118,6 +208,8 @@ id EnsureValue(id value, id def)
   int sectionsPerComponent = 0;
   int componentCountX = 0;
   int componentCountY = 0;
+  int numVerticesX = self.numVerticesX;
+  int numVerticesY = self.numVerticesY;
   
   // Find matching size for UE4
   BOOL foundSize = NO;
@@ -128,13 +220,13 @@ id EnsureValue(id value, id def)
       int ss = sectionSizes[sectionSizesIdx];
       int ns = numSections[numSectionsIdx];
       
-      if(((_numVerticesX - 1) % (ss * ns)) == 0 && ((_numVerticesX - 1) / (ss * ns)) <= 32 &&
-        ((_numVerticesY - 1) % (ss * ns)) == 0 && ((_numVerticesY - 1) / (ss * ns)) <= 32)
+      if(((numVerticesX - 1) % (ss * ns)) == 0 && ((numVerticesX - 1) / (ss * ns)) <= 32 &&
+        ((numVerticesY - 1) % (ss * ns)) == 0 && ((numVerticesY - 1) / (ss * ns)) <= 32)
       {
         quadsPerSection = ss;
         sectionsPerComponent = ns;
-        componentCountX = CLAMP((_numVerticesX - 1) / (ss * ns), 1, MIN(32, floor(8191. / (sectionsPerComponent * quadsPerSection))));
-        componentCountY = CLAMP((_numVerticesY - 1) / (ss * ns), 1, MIN(32, floor(8191. / (sectionsPerComponent * quadsPerSection))));
+        componentCountX = CLAMP((numVerticesX - 1) / (ss * ns), 1, MIN(32, floor(8191. / (sectionsPerComponent * quadsPerSection))));
+        componentCountY = CLAMP((numVerticesY - 1) / (ss * ns), 1, MIN(32, floor(8191. / (sectionsPerComponent * quadsPerSection))));
         foundSize = YES;
         break;
       }
@@ -156,8 +248,8 @@ id EnsureValue(id value, id def)
         continue;
       }
       
-      const int ComponentsX = DivideAndRoundUp((_numVerticesX - 1), sectionSizes[SectionSizesIdx] * CurrentNumSections);
-      const int ComponentsY = DivideAndRoundUp((_numVerticesY - 1), sectionSizes[SectionSizesIdx] * CurrentNumSections);
+      const int ComponentsX = DivideAndRoundUp((numVerticesX - 1), sectionSizes[SectionSizesIdx] * CurrentNumSections);
+      const int ComponentsY = DivideAndRoundUp((numVerticesY - 1), sectionSizes[SectionSizesIdx] * CurrentNumSections);
       if(ComponentsX <= 32 && ComponentsY <= 32)
       {
         foundSize = true;
@@ -174,8 +266,8 @@ id EnsureValue(id value, id def)
   {
     const int MaxSectionSize = sectionSizes[sectionSizesCount - 1];
     const int MaxNumSubSections = numSections[numSectionsCount - 1];
-    const int ComponentsX = DivideAndRoundUp((_numVerticesX - 1), MaxSectionSize * MaxNumSubSections);
-    const int ComponentsY = DivideAndRoundUp((_numVerticesY - 1), MaxSectionSize * MaxNumSubSections);
+    const int ComponentsX = DivideAndRoundUp((numVerticesX - 1), MaxSectionSize * MaxNumSubSections);
+    const int ComponentsY = DivideAndRoundUp((numVerticesY - 1), MaxSectionSize * MaxNumSubSections);
 
     foundSize = true;
     quadsPerSection = MaxSectionSize;
@@ -196,8 +288,8 @@ id EnsureValue(id value, id def)
   const int quadsPerComponent = quadsPerSection * sectionsPerComponent;
   const int sizeX = componentCountX * quadsPerComponent + 1;
   const int sizeY = componentCountY * quadsPerComponent + 1;
-  const int offsetX = (int)(sizeX - _numVerticesX) / 2;
-  const int offsetY = (int)(sizeY - _numVerticesY) / 2;
+  const int offsetX = (int)(sizeX - numVerticesX) / 2;
+  const int offsetY = (int)(sizeY - numVerticesY) / 2;
   
   int newWidth = 0;
   int newHeight = 0;
@@ -207,7 +299,10 @@ id EnsureValue(id value, id def)
     heightData[i] = 32768;
   }
   
-  heightData = ExpandTerrainData((uint16_t *)rawHeights, minX, minY, _numVerticesX - 1, _numVerticesY - 1, -offsetX, -offsetY, sizeX - offsetX - 1, sizeY - offsetY - 1, &newWidth, &newHeight);
+  heightData = ExpandTerrainData((uint16_t *)rawHeights, minX, minY, numVerticesX - 1, numVerticesY - 1, -offsetX, -offsetY, sizeX - offsetX - 1, sizeY - offsetY - 1, &newWidth, &newHeight);
+  
+  uint8_t *infoData = calloc(sizeX * sizeY, sizeof(uint8_t));
+  infoData = ExpandTerrainInfoData(rawInfoData, minX, minY, numVerticesX - 1, numVerticesY - 1, -offsetX, -offsetY, sizeX - offsetX - 1, sizeY - offsetY - 1, &newWidth, &newHeight);
   
   const int vertsX = (sizeX - 1) - minX + 1;
   const int vertsY = (sizeY - 1) - minY + 1;
@@ -221,42 +316,42 @@ id EnsureValue(id value, id def)
   
   GLKVector3 *vertexNormals = calloc(vertsX * vertsY, sizeof(GLKVector3));
   
-  const int ComponentSizeVerts = numSubsections * (subsectionSizeQuads + 1);
-  const int ComponentsPerHeightmap = MIN(MAX_HEIGHTMAP_TEXTURE_SIZE / ComponentSizeVerts, 1 << (5 - 2));
+  const int componentSizeVerts = numSubsections * (subsectionSizeQuads + 1);
+  const int componentsPerHeightmap = MIN(MAX_HEIGHTMAP_TEXTURE_SIZE / componentSizeVerts, 1 << (5 - 2));
 
   // Count how many heightmaps we need and the X dimension of the final heightmap
-  int NumHeightmapsX = 1;
-  int FinalComponentsX = numComponentsX;
-  while (FinalComponentsX > ComponentsPerHeightmap)
+  int numHeightmapsX = 1;
+  int finalComponentsX = numComponentsX;
+  while (finalComponentsX > componentsPerHeightmap)
   {
-    FinalComponentsX -= ComponentsPerHeightmap;
-    NumHeightmapsX++;
+    finalComponentsX -= componentsPerHeightmap;
+    numHeightmapsX++;
   }
   // Count how many heightmaps we need and the Y dimension of the final heightmap
-  int NumHeightmapsY = 1;
-  int FinalComponentsY = numComponentsY;
-  while (FinalComponentsY > ComponentsPerHeightmap)
+  int numHeightmapsY = 1;
+  int finalComponentsY = numComponentsY;
+  while (finalComponentsY > componentsPerHeightmap)
   {
-    FinalComponentsY -= ComponentsPerHeightmap;
-    NumHeightmapsY++;
+    finalComponentsY -= componentsPerHeightmap;
+    numHeightmapsY++;
   }
 
-  NSMutableArray *HeightmapInfos = [NSMutableArray new];
+  NSMutableArray *heightmapInfos = [NSMutableArray new];
 
-  for (int HmY = 0; HmY < NumHeightmapsY; HmY++)
+  for (int HmY = 0; HmY < numHeightmapsY; HmY++)
   {
-    for (int HmX = 0; HmX < NumHeightmapsX; HmX++)
+    for (int HmX = 0; HmX < numHeightmapsX; HmX++)
     {
-      [HeightmapInfos addObject:[FHeightmapInfo new]];
-      FHeightmapInfo *HeightmapInfo = [HeightmapInfos lastObject];
+      [heightmapInfos addObject:[FHeightmapInfo new]];
+      FHeightmapInfo *heightmapInfo = [heightmapInfos lastObject];
 
       // make sure the heightmap UVs are powers of two.
-      HeightmapInfo.HeightmapSizeU = ((HmX == NumHeightmapsX - 1) ? FinalComponentsX : ComponentsPerHeightmap) * ComponentSizeVerts;
-      HeightmapInfo.HeightmapSizeV = ((HmY == NumHeightmapsY - 1) ? FinalComponentsY : ComponentsPerHeightmap) * ComponentSizeVerts;
+      heightmapInfo.HeightmapSizeU = ((HmX == numHeightmapsX - 1) ? finalComponentsX : componentsPerHeightmap) * componentSizeVerts;
+      heightmapInfo.HeightmapSizeV = ((HmY == numHeightmapsY - 1) ? finalComponentsY : componentsPerHeightmap) * componentSizeVerts;
 
       // Construct the heightmap textures
-      //HeightmapInfo.HeightmapTexture = CreateLandscapeTexture(HeightmapInfo.HeightmapSizeU, HeightmapInfo.HeightmapSizeV, TEXTUREGROUP_Terrain_Heightmap, TSF_BGRA8);
-      HeightmapInfo.HeightmapTexture = [NSMutableData dataWithLength:HeightmapInfo.HeightmapSizeU * HeightmapInfo.HeightmapSizeV * sizeof(int)];
+      heightmapInfo.HeightmapTexture = [NSMutableData dataWithLength:heightmapInfo.HeightmapSizeU * heightmapInfo.HeightmapSizeV * sizeof(int)];
+      heightmapInfo.VisibilityTexture = [NSMutableData dataWithLength:heightmapInfo.HeightmapSizeU * heightmapInfo.HeightmapSizeV];
     }
   }
   
@@ -300,16 +395,16 @@ id EnsureValue(id value, id def)
   for (int componentY = 0; componentY < numComponentsY; componentY++)
   {
     const int baseY = minY + componentY * componentSizeQuads;
-    const int HmY = componentY / ComponentsPerHeightmap;
-    const int HeightmapOffsetY = (componentY - ComponentsPerHeightmap*HmY) * numSubsections * (subsectionSizeQuads + 1);
+    const int HmY = componentY / componentsPerHeightmap;
+    const int heightmapOffsetY = (componentY - componentsPerHeightmap*HmY) * numSubsections * (subsectionSizeQuads + 1);
     
     for (int componentX = 0; componentX < numComponentsX; componentX++)
     {
       const int baseX = minX + componentX * componentSizeQuads;
-      const int HmX = componentX / ComponentsPerHeightmap;
-      const int HeightmapOffsetX = (componentX - ComponentsPerHeightmap*HmX) * numSubsections * (subsectionSizeQuads + 1);
+      const int HmX = componentX / componentsPerHeightmap;
+      const int heightmapOffsetX = (componentX - componentsPerHeightmap*HmX) * numSubsections * (subsectionSizeQuads + 1);
       T3DLandscapeComponent *lc = components[componentX + componentY * numComponentsX];
-      FHeightmapInfo *HeightmapInfo = HeightmapInfos[HmX + HmY * NumHeightmapsX];
+      FHeightmapInfo *heightmapInfo = heightmapInfos[HmX + HmY * numHeightmapsX];
       if (!lc.heightData)
       {
         lc.baseX = baseX;
@@ -317,10 +412,10 @@ id EnsureValue(id value, id def)
         lc.componentSizeQuads = componentSizeQuads;
         lc.subsectionSizeQuads = subsectionSizeQuads;
         lc.numSubsections = sectionsPerComponent;
-        lc.HeightmapScaleBiasX = 1. / (float)HeightmapInfo.HeightmapSizeU;
-        lc.HeightmapScaleBiasY = 1. / (float)HeightmapInfo.HeightmapSizeV;
-        lc.HeightmapScaleBiasZ = ((float)(HeightmapOffsetX)) / (float)HeightmapInfo.HeightmapSizeU;
-        lc.HeightmapScaleBiasW = ((float)(HeightmapOffsetY)) / (float)HeightmapInfo.HeightmapSizeV;
+        lc.HeightmapScaleBiasX = 1. / (float)heightmapInfo.HeightmapSizeU;
+        lc.HeightmapScaleBiasY = 1. / (float)heightmapInfo.HeightmapSizeV;
+        lc.HeightmapScaleBiasZ = ((float)(heightmapOffsetX)) / (float)heightmapInfo.HeightmapSizeU;
+        lc.HeightmapScaleBiasW = ((float)(heightmapOffsetY)) / (float)heightmapInfo.HeightmapSizeV;
       }
       
       for (int subsectionY = 0; subsectionY < numSubsections; subsectionY++)
@@ -335,22 +430,33 @@ id EnsureValue(id value, id def)
               const int compY = subsectionSizeQuads * subsectionY + SubY;
               const int TexX = (subsectionSizeQuads + 1) * subsectionX + SubX;
               const int TexY = (subsectionSizeQuads + 1) * subsectionY + SubY;
-              const int HeightTexDataIdx = ((HeightmapOffsetX + TexX) + (HeightmapOffsetY + TexY) * (HeightmapInfo.HeightmapSizeU)) * 4;
-              
-              const uint16_t heightValue = HEIGHTDATA(compX + baseX - minX, compY + baseY - minY);
+              const int VisibilityTexDataIdx = (heightmapOffsetX + TexX) + (heightmapOffsetY + TexY) * heightmapInfo.HeightmapSizeU;
+              const int HeightTexDataIdx = VisibilityTexDataIdx * 4;
+              int x = compX + baseX - minX;
+              int y = compY + baseY - minY;
+              const uint16_t heightValue = HEIGHTDATA( x, y);
 
-              GLKVector3 normal = vertexNormals[compX + baseX - minX + vertsX * (compY + baseY - minY)];
+              GLKVector3 normal = vertexNormals[y * vertsX + x];
               normal = GLKVector3MultiplyScalar(normal,  1.0f / sqrtf((normal.x * normal.x) + (normal.y * normal.y) + (normal.z * normal.z)));
               
               uint8_t r = heightValue >> 8;
               uint8_t g = heightValue & 255;
-              uint8_t b = (int)round(127.5 * (normal.x + 1.));
-              uint8_t a = (int)round(127.5 * (normal.y + 1.));
+              uint8_t b = (uint8_t)round(127.5 * (normal.x + 1.));
+              uint8_t a = (uint8_t)round(127.5 * (normal.y + 1.));
               
-              [HeightmapInfo.HeightmapTexture replaceBytesInRange:NSMakeRange(HeightTexDataIdx+0, 1) withBytes:&b];
-              [HeightmapInfo.HeightmapTexture replaceBytesInRange:NSMakeRange(HeightTexDataIdx+1, 1) withBytes:&g];
-              [HeightmapInfo.HeightmapTexture replaceBytesInRange:NSMakeRange(HeightTexDataIdx+2, 1) withBytes:&r];
-              [HeightmapInfo.HeightmapTexture replaceBytesInRange:NSMakeRange(HeightTexDataIdx+3, 1) withBytes:&a];
+              [heightmapInfo.HeightmapTexture replaceBytesInRange:NSMakeRange(HeightTexDataIdx+0, 1) withBytes:&b];
+              [heightmapInfo.HeightmapTexture replaceBytesInRange:NSMakeRange(HeightTexDataIdx+1, 1) withBytes:&g];
+              [heightmapInfo.HeightmapTexture replaceBytesInRange:NSMakeRange(HeightTexDataIdx+2, 1) withBytes:&r];
+              [heightmapInfo.HeightmapTexture replaceBytesInRange:NSMakeRange(HeightTexDataIdx+3, 1) withBytes:&a];
+              
+              // fixme: ATW_4952. Visibility mask has 1px borders.
+              // This leads to a 1 row and 1 column of visible quads that should be hidden
+              // Maybe after terrain tesselation the visibility layer scales up and fixes this issue??
+              x = CLAMP(x, 0, vertsX - 1);
+              y = CLAMP(y, 0, vertsY - 1);
+              
+              Byte hidden = infoData[y * vertsX + x] & TID_Visibility_Off ? 0xff : 0;
+              [heightmapInfo.VisibilityTexture replaceBytesInRange:NSMakeRange(VisibilityTexDataIdx, 1) withBytes:&hidden];
             }
           }
         }
@@ -363,22 +469,25 @@ id EnsureValue(id value, id def)
     for (int componentX = 0; componentX < numComponentsX; componentX++)
     {
       T3DLandscapeComponent *lc = components[componentX + componentY * numComponentsX];
-      const int HmX = componentX / ComponentsPerHeightmap;
-      const int HmY = componentY / ComponentsPerHeightmap;
-      FHeightmapInfo *HeightmapInfo = HeightmapInfos[HmX + HmY * NumHeightmapsX];
+      const int HmX = componentX / componentsPerHeightmap;
+      const int HmY = componentY / componentsPerHeightmap;
+      FHeightmapInfo *HeightmapInfo = heightmapInfos[HmX + HmY * numHeightmapsX];
 
       int HeightmapSizeU = HeightmapInfo.HeightmapSizeU;
       int HeightmapSizeV = HeightmapInfo.HeightmapSizeV;
-      int HeightmapOffsetX = round(lc.HeightmapScaleBiasZ * (float)HeightmapSizeU);
-      int HeightmapOffsetY = round(lc.HeightmapScaleBiasW * (float)HeightmapSizeV);
+      int heightmapOffsetX = round(lc.HeightmapScaleBiasZ * (float)HeightmapSizeU);
+      int heightmapOffsetY = round(lc.HeightmapScaleBiasW * (float)HeightmapSizeV);
       int HeightmapSize = ((lc.subsectionSizeQuads + 1) * lc.numSubsections);
       lc.heightData = [NSMutableData dataWithLength:HeightmapSize*HeightmapSize*4];
+      lc.visibilityData = [NSMutableData dataWithLength:HeightmapSize*HeightmapSize];
       for (int SubY = 0; SubY < HeightmapSize; SubY++)
       {
         int CompY = SubY;
-        int TexV = SubY + HeightmapOffsetY;
+        int TexV = SubY + heightmapOffsetY;
         uint8_t *HeightData = (uint8_t*)HeightmapInfo.HeightmapTexture.bytes;
-        [lc.heightData replaceBytesInRange:NSMakeRange(CompY * HeightmapSize * sizeof(int), HeightmapSize * sizeof(int)) withBytes:&HeightData[(HeightmapOffsetX + TexV * HeightmapSizeU) * sizeof(int)]];
+        [lc.heightData replaceBytesInRange:NSMakeRange(CompY * HeightmapSize * sizeof(int), HeightmapSize * sizeof(int)) withBytes:&HeightData[(heightmapOffsetX + TexV * HeightmapSizeU) * sizeof(int)]];
+        uint8_t *VisData = (uint8_t*)HeightmapInfo.VisibilityTexture.bytes;
+        [lc.visibilityData replaceBytesInRange:NSMakeRange(CompY * HeightmapSize, HeightmapSize) withBytes:&VisData[heightmapOffsetX + TexV * HeightmapSizeU]];
       }
     }
   }
@@ -390,9 +499,9 @@ id EnsureValue(id value, id def)
       T3DLandscapeComponent *lc = components[componentX + componentY * numComponentsX];
       T3DLandscapeCollisionComponent *lcc = lc.collisionComponent;
       
-      const int HmX = componentX / ComponentsPerHeightmap;
-      const int HmY = componentY / ComponentsPerHeightmap;
-      FHeightmapInfo *HeightmapInfo = HeightmapInfos[HmX + HmY * NumHeightmapsX];
+      const int HmX = componentX / componentsPerHeightmap;
+      const int HmY = componentY / componentsPerHeightmap;
+      FHeightmapInfo *HeightmapInfo = heightmapInfos[HmX + HmY * numHeightmapsX];
       
       int ComponentX1 = 0;
       int ComponentY1 = 0;
@@ -404,6 +513,10 @@ id EnsureValue(id value, id def)
       {
         lcc.collisionData = [NSMutableData dataWithLength:collisionSize.SizeVertsSquare * sizeof(uint16_t)];
       }
+      if (!lcc.visibilityData)
+      {
+        lcc.visibilityData = [NSMutableData dataWithLength:collisionSize.SizeVertsSquare];
+      }
       
       const float CollisionQuadRatio = (float)collisionSize.SubsectionSizeQuads / (float)lc.subsectionSizeQuads;
       
@@ -414,8 +527,8 @@ id EnsureValue(id value, id def)
       int MipSizeU = HeightmapInfo.HeightmapSizeU;
       int MipSizeV = HeightmapInfo.HeightmapSizeV;
       
-      const int HeightmapOffsetX = (lc.HeightmapScaleBiasZ * (float)MipSizeU);
-      const int HeightmapOffsetY = (lc.HeightmapScaleBiasW * (float)MipSizeV);
+      const int heightmapOffsetX = (lc.HeightmapScaleBiasZ * (float)MipSizeU);
+      const int heightmapOffsetY = (lc.HeightmapScaleBiasW * (float)MipSizeV);
       
       for (int SubsectionY = SubSectionY1; SubsectionY < SubSectionY2; ++SubsectionY)
       {
@@ -449,15 +562,20 @@ id EnsureValue(id value, id def)
               const int CompVertY = collisionSize.SubsectionSizeQuads * SubsectionY + VertY;
 
               // X/Y of the vertex we're looking indexed into the texture data
-              const int TexX = HeightmapOffsetX + collisionSize.SubsectionSizeVerts * SubsectionX + VertX;
-              const int TexY = HeightmapOffsetY + collisionSize.SubsectionSizeVerts * SubsectionY + VertY;
+              const int TexX = heightmapOffsetX + collisionSize.SubsectionSizeVerts * SubsectionX + VertX;
+              const int TexY = heightmapOffsetY + collisionSize.SubsectionSizeVerts * SubsectionY + VertY;
               const uint8_t *texBytes = (const uint8_t *)[HeightmapInfo.HeightmapTexture bytes];
+              const uint8_t *visBytes = (const uint8_t *)[HeightmapInfo.VisibilityTexture bytes];
               uint16_t r = (uint16_t)texBytes[(TexX + TexY * MipSizeU) * sizeof(int) + 2];
               uint16_t g = (uint16_t)texBytes[(TexX + TexY * MipSizeU) * sizeof(int) + 1];
               const uint16_t NewHeight = r << 8 | g;
               NSUInteger pos = (CompVertX + CompVertY * collisionSize.SizeVerts) * sizeof(uint16_t);
               [lcc.collisionData replaceBytesInRange:NSMakeRange(pos, sizeof(uint16_t))
                                            withBytes:&NewHeight];
+              pos = CompVertX + CompVertY * collisionSize.SizeVerts;
+              uint8_t v = visBytes[TexX + TexY * MipSizeU];
+              [lcc.visibilityData replaceBytesInRange:NSMakeRange(pos, 1)
+                                            withBytes:&v];
             }
           }
         }
@@ -466,6 +584,7 @@ id EnsureValue(id value, id def)
   }
   
   free(heightData);
+  free(infoData);
   free(vertexNormals);
   
   
@@ -570,8 +689,8 @@ id EnsureValue(id value, id def)
       rawHeights[[self.heights indexOfObject:th]] = th.value;
     }
   }
-  int width = _numVerticesX;
-  int height = _numVerticesY;
+  int width = self.numVerticesX;
+  int height = self.numVerticesY;
   
   CGDataProviderRef provider = CGDataProviderCreateWithData(NULL, (Byte*)rawHeights, width * height * 2, NULL);
   CGColorSpaceRef colorSpaceRef = CGColorSpaceCreateDeviceGray();
@@ -594,51 +713,53 @@ id EnsureValue(id value, id def)
   return imageRef;
 }
 
+- (CGImageRef)visibilityMap
+{
+  if (!self.properties)
+    [self readProperties];
+  
+  int width = self.numVerticesX;
+  int height = self.numVerticesY;
+  
+  uint16_t *visibilityData = (uint16_t *)calloc(width * height, 2);
+  
+  for (int i =0; i < self.infoData.count; ++i)
+  {
+    visibilityData[i] = [(FTerrainInfoData*)self.infoData[i] data] & 1 ? 0xffff : 0;
+  }
+  
+  CGDataProviderRef provider = CGDataProviderCreateWithData(NULL, (Byte*)visibilityData, width * height * 2, NULL);
+  CGColorSpaceRef colorSpaceRef = CGColorSpaceCreateDeviceGray();
+  CGBitmapInfo bitmapInfo = kCGBitmapByteOrder16Little | kCGImageAlphaNone;
+  CGColorRenderingIntent renderingIntent = kCGRenderingIntentDefault;
+  
+  CGImageRef imageRef = CGImageCreate(width,
+                                      height,
+                                      16 /*bitsPerComponent*/,
+                                      16 /*bitsPerPixel*/,
+                                      2 * width /*bytesPerRow*/,
+                                      colorSpaceRef,
+                                      bitmapInfo,
+                                      provider,
+                                      NULL /*decode*/,
+                                      NO /*shouldInterpolate*/,
+                                      renderingIntent);
+  CGDataProviderRelease(provider);
+  CGColorSpaceRelease(colorSpaceRef);
+  return imageRef;
+}
+
 - (NSString *)info
 {
-  float drawScale = 1.;
-  int sectionsX = 1;
-  int sectionsY = 1;
-  int x = 0;
-  int y = 0;
-  int z = 0;
-  FPropertyTag *p = [self propertyForName:@"DrawScale"];
-  if (p)
-  {
-    drawScale = [[p value] floatValue];
-  }
-  p = [self propertyForName:@"NumSectionsX"];
-  if (p)
-  {
-    sectionsX = [[p value] intValue];
-  }
-  p = [self propertyForName:@"NumSectionsY"];
-  if (p)
-  {
-    sectionsY = [[p value] intValue];
-  }
-  p = [self propertyForName:@"Location"];
-  if (p)
-  {
-    FVector3 *v = [p value];
-    x = (int)[v x];
-    y = (int)[v y];
-    z = (int)[v z];
-  }
+  float drawScale = [self drawScale];
+  GLKVector3 drawScale3D = [self drawScale3D];
+  int sectionsX = [self numSectionsX];
+  int sectionsY = [self numSectionsY];
+  GLKVector3 pos = [self position];
   
   NSString *terrainInfo = [NSString stringWithFormat:@"Scale: %f Sections: %d x %d\n", drawScale, sectionsX, sectionsY];
-  terrainInfo = [terrainInfo stringByAppendingFormat:@"Position: %d %d %d", x, y, z];
-  
-  p = [self propertyForName:@"DrawScale3D"];
-  if (p)
-  {
-    FVector3 *v = [p value];
-    terrainInfo = [terrainInfo stringByAppendingFormat:@"\nScale3D: %f %f %f", v.x, v.y, v.z];
-  }
-  else
-  {
-    terrainInfo = [terrainInfo stringByAppendingString:@"\nScale3D: 256 256 256"];
-  }
+  terrainInfo = [terrainInfo stringByAppendingFormat:@"Position: %f %f %f", pos.x, pos.y, pos.z];
+  terrainInfo = [terrainInfo stringByAppendingFormat:@"\nScale3D: %f %f %f", drawScale3D.x, drawScale3D.y, drawScale3D.z];
   return terrainInfo;
 }
 
@@ -657,7 +778,7 @@ void _ExpandTerrainData(uint16_t* OutData, const uint16_t* InData, int OldMinX, 
   
   for (int Y = 0; Y < NewHeight; ++Y)
   {
-    const int OldY = MAX(0, MIN(Y + OffsetY, OldHeight - 1));
+    const int OldY = CLAMP(Y + OffsetY, 0, OldHeight - 1);
     // Pad anything to the left
     const uint16_t PadLeft = InData[OldY * OldWidth + 0];
     for (int X = 0; X < -OffsetX; ++X)
@@ -668,7 +789,7 @@ void _ExpandTerrainData(uint16_t* OutData, const uint16_t* InData, int OldMinX, 
     // Copy one row of the old data
     {
       const int X = MAX(0, -OffsetX);
-      const int OldX = MAX(0, MIN(X + OffsetX, OldWidth - 1));
+      const int OldX = CLAMP(X + OffsetX, 0, OldWidth - 1);
       memcpy(&OutData[Y * NewWidth + X], &InData[OldY * OldWidth + OldX], MIN(OldWidth, NewWidth) * sizeof(uint16_t));
     }
 
@@ -688,6 +809,55 @@ uint16_t *ExpandTerrainData(const uint16_t *Data, int OldMinX, int OldMinY, int 
   *newHeight = NewHeight;
   uint16_t *Result = calloc(NewWidth * NewHeight, sizeof(uint16_t));
   _ExpandTerrainData(Result, Data,
+  OldMinX, OldMinY, OldMaxX, OldMaxY,
+  NewMinX, NewMinY, NewMaxX, NewMaxY, newWidth, newHeight);
+  return Result;
+}
+
+void _ExpandTerrainInfoData(uint8_t* OutData, const uint8_t* InData, int OldMinX, int OldMinY, int OldMaxX, int OldMaxY, int NewMinX, int NewMinY, int NewMaxX, int NewMaxY, int *newWidth, int *newHeight)
+{
+  const int OldWidth = OldMaxX - OldMinX + 1;
+  const int OldHeight = OldMaxY - OldMinY + 1;
+  const int NewWidth = NewMaxX - NewMinX + 1;
+  const int NewHeight = NewMaxY - NewMinY + 1;
+  const int OffsetX = NewMinX - OldMinX;
+  const int OffsetY = NewMinY - OldMinY;
+  *newWidth = NewWidth;
+  *newHeight = NewHeight;
+  
+  for (int Y = 0; Y < NewHeight; ++Y)
+  {
+    const int OldY = CLAMP(Y + OffsetY, 0, OldHeight - 1);
+    // Pad anything to the left
+    const uint16_t PadLeft = InData[OldY * OldWidth + 0];
+    for (int X = 0; X < -OffsetX; ++X)
+    {
+      OutData[Y * NewWidth + X] = PadLeft;
+    }
+
+    // Copy one row of the old data
+    {
+      const int X = MAX(0, -OffsetX);
+      const int OldX = CLAMP(X + OffsetX, 0, OldWidth - 1);
+      memcpy(&OutData[Y * NewWidth + X], &InData[OldY * OldWidth + OldX], MIN(OldWidth, NewWidth) * sizeof(uint16_t));
+    }
+
+    const uint16_t PadRight = InData[OldY * OldWidth + OldWidth - 1];
+    for (int X = -OffsetX + OldWidth; X < NewWidth; ++X)
+    {
+      OutData[Y * NewWidth + X] = PadRight;
+    }
+  }
+}
+
+uint8_t *ExpandTerrainInfoData(const uint8_t *Data, int OldMinX, int OldMinY, int OldMaxX, int OldMaxY, int NewMinX, int NewMinY, int NewMaxX, int NewMaxY, int *newWidth, int *newHeight)
+{
+  const int NewWidth = NewMaxX - NewMinX + 1;
+  const int NewHeight = NewMaxY - NewMinY + 1;
+  *newWidth = NewWidth;
+  *newHeight = NewHeight;
+  uint8_t *Result = calloc(NewWidth * NewHeight, sizeof(uint8_t));
+  _ExpandTerrainInfoData(Result, Data,
   OldMinX, OldMinY, OldMaxX, OldMaxY,
   NewMinX, NewMinY, NewMaxX, NewMaxY, newWidth, newHeight);
   return Result;

@@ -69,6 +69,20 @@ NSString *T3DEndObject(NSString *objectType)
       [landscapeHeightData appendFormat:@"%x%02x%02x%02x ", data[idx+3], data[idx+2], data[idx+1], data[idx]];
     }
     
+    NSMutableString *visiblityLayer = [NSMutableString new];
+    [visiblityLayer appendFormat:@"LayerNum=1 LayerInfo=/Engine/EditorLandscapeResources/DataLayer.DataLayer "];
+    data = (uint8_t*)[self.visibilityData bytes];
+    BOOL hasData = NO;
+    for (NSUInteger idx = 0; idx < self.visibilityData.length; ++idx)
+    {
+      if (data[idx])
+      {
+        hasData = YES;
+      }
+      [visiblityLayer appendFormat:@"%x ", (uint8_t)data[idx]];
+    }
+    
+    [landscapeHeightData appendString:hasData ? visiblityLayer : @"LayerNum=0"];
     T3DAddLine(result, padding, @"CustomProperties LandscapeHeightData %@", landscapeHeightData);
   }
   padding--;
@@ -113,14 +127,30 @@ NSString *T3DEndObject(NSString *objectType)
     
     
     NSMutableString *collisionHeightData = [NSMutableString new];
-    uint16_t *data = (uint16_t*)[self.collisionData bytes];
+    uint16_t *cdata = (uint16_t*)[self.collisionData bytes];
     for (NSUInteger idx = 0; idx < self.collisionData.length / sizeof(uint16_t); idx++)
     {
-      uint16_t v = data[idx];
+      uint16_t v = cdata[idx];
       [collisionHeightData appendFormat:@"%u ", v];
     }
     
     T3DAddLine(result, padding, @"CustomProperties CollisionHeightData %@", collisionHeightData);
+    
+    uint8_t *vdata = (uint8_t*)[self.visibilityData bytes];
+    NSMutableString *visibilityData = [NSMutableString new];
+    bool hasData = NO;
+    for (NSUInteger idx = 0; idx < self.visibilityData.length; idx++)
+    {
+      if (vdata[idx])
+      {
+        hasData = YES;
+      }
+      [visibilityData appendString:vdata[idx] ? @"00" : @"ff"];
+    }
+    if (hasData)
+    {
+      T3DAddLine(result, padding, @"CustomProperties DominantLayerData %@", visibilityData);
+    }
   }
   padding--;
   T3DAddLine(result, padding, T3DEndObject(@"Object"));

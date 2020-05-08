@@ -35,6 +35,7 @@ NSString *const kPropTypeStructLinearColor = @"LinearColor";
 NSString *const kPropTypeStructGuid = @"Guid";
 NSString *const kPropTypeStructRotator = @"Rotator";
 NSString *const kPropTypeStructMatrix = @"Matrix";
+NSString *const kPropTypeStructProperty = @"Property";
 
 @implementation FPropertyTag
 
@@ -1138,7 +1139,9 @@ NSString *const kPropTypeStructMatrix = @"Matrix";
       return @"Vector3Property";
     if ([self.structName isEqualToString:kPropTypeStructRotator])
       return @"Vector3Property";
-    if ([self.arrayType isEqualToString:@"Property"])
+    if ([self.structName isEqualToString:kPropTypeStructMatrix])
+      return @"MatrixProperty";
+    if ([self.arrayType isEqualToString:kPropTypeStructProperty])
       return @"ArrayProperty";
   }
   

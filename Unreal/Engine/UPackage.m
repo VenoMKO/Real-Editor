@@ -1110,8 +1110,16 @@ unsigned int CRCForString( const char *Data , int Length)
   UObject *obj = nil;
   @try
   {
-    obj = [self objectForIndex:index+1];
-    if (obj && ![obj.objectName isEqualToString:name])
+    for (FObjectExport *export in self.exports)
+    {
+      [export.object properties];
+      if (export.object.netIndex == index && [[export.objectName lowercaseString] isEqualToString:[name lowercaseString]])
+      {
+        obj = export.object;
+        break;
+      }
+    }
+    if (obj && ![[obj.objectName lowercaseString] isEqualToString:[name lowercaseString]])
     {
       DThrow(@"Failed to get object: [%d]%@", index, name);
     }

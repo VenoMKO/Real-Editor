@@ -2,6 +2,11 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>Terrain</key>
+	<dict>
+		<key>TerrainComponents</key>
+		<string>Object</string>
+	</dict>
 	<key>SkeletalMeshActorMAT</key>
 	<dict>
 		<key>Attached</key>

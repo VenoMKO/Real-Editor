@@ -26,6 +26,7 @@ NSString *T3DEndObject(NSString *objectType);
 @property float HeightmapScaleBiasW;
 @property (weak) T3DLandscapeCollisionComponent *collisionComponent;
 @property NSMutableData *heightData;
+@property NSMutableData *visibilityData;
 
 - (void)t3dForward:(NSMutableString*)result padding:(unsigned)padding;
 - (void)t3d:(NSMutableString*)result padding:(unsigned)padding;
@@ -36,6 +37,7 @@ NSString *T3DEndObject(NSString *objectType);
 @property int index;
 @property (weak) T3DLandscapeComponent *renderComponent;
 @property NSMutableData *collisionData;
+@property NSMutableData *visibilityData;
 
 - (void)t3dForward:(NSMutableString*)result padding:(unsigned)padding;
 - (void)t3d:(NSMutableString*)result padding:(unsigned)padding;

@@ -27,6 +27,7 @@ FOUNDATION_EXPORT NSString *const kPropTypeStructLinearColor;
 FOUNDATION_EXPORT NSString *const kPropTypeStructGuid;
 FOUNDATION_EXPORT NSString *const kPropTypeStructRotator;
 FOUNDATION_EXPORT NSString *const kPropTypeStructMatrix;
+FOUNDATION_EXPORT NSString *const kPropTypeStructProperty;
 
 @class UObject, FGUID, FName;
 @interface FPropertyTag : FReadable 

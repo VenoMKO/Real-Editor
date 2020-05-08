@@ -87,7 +87,9 @@
   {
     self.drawScale = [prop.value doubleValue];
   }
-  return nil;
+  FIStream *s = [self.package.stream copy];
+  s.position = [self rawDataOffset];
+  return s;
 }
 
 - (NSString *)displayName

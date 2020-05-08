@@ -11,6 +11,7 @@
 #import "TextureView.h"
 #import "TextureUtils.h"
 #import "FPropertyTag.h"
+#import "UPackage.h"
 
 @interface Texture2DEditor () <NSOpenSavePanelDelegate>
 @property (weak) IBOutlet TextureView *imageView;
@@ -117,9 +118,24 @@
   [panel beginSheetModalForWindow:self.view.window completionHandler:^(NSInteger result) {
     if (result == NSModalResponseOK)
     {
-      NSData *export = [self.object exportWithOptions:@{@"mode" : @(self.exportType.selectedTag),
-                                                        @"path" : panel.URL.path,
-                                                        @"swizzle" : @(_exportSwizzleY)}];
+      NSData *export = nil;
+      if (self.object.exportObject.exportFlags & EF_ForcedExport)
+      {
+        UObject *tmp = [self.object.package resolveForcedExport:self.object.exportObject];
+        if (tmp)
+        {
+          export = [tmp exportWithOptions:@{@"mode" : @(self.exportType.selectedTag),
+                                          @"path" : panel.URL.path,
+                                          @"swizzle" : @(_exportSwizzleY)}];
+        }
+      }
+      else
+      {
+        export = [self.object exportWithOptions:@{@"mode" : @(self.exportType.selectedTag),
+                                                  @"path" : panel.URL.path,
+                                                  @"swizzle" : @(_exportSwizzleY)}];
+      }
+      
       if (!export)
         return;
       NSString *path = [[panel.URL.path stringByDeletingPathExtension] stringByAppendingPathExtension:@"dds"];

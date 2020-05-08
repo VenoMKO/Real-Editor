@@ -27,18 +27,6 @@ enum InfoFlags
      *	The vertices can no longer be edited.
      */
 		TID_Locked				= 0x0008,
-  //		TID_	= 0x0010,
-  //		TID_	= 0x0020,
-  //		TID_	= 0x0040,
-  //		TID_	= 0x0080,
-  //		TID_	= 0x0100,
-  //		TID_	= 0x0200,
-  //		TID_	= 0x0400,
-  //		TID_	= 0x0800,
-  //		TID_	= 0x1000,
-  //		TID_	= 0x2000,
-  //		TID_	= 0x4000,
-  //		TID_	= 0x8000,
 };
 
 

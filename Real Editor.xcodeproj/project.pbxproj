@@ -32,6 +32,7 @@
 		F1170EE71D60D8EC00262974 /* PackageController.m in Sources */ = {isa = PBXBuildFile; fileRef = F1170EE61D60D8EC00262974 /* PackageController.m */; };
 		F117F0EB1E3523AA005A4950 /* UComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = F117F0EA1E3523AA005A4950 /* UComponent.m */; };
 		F117F0EF1E35F3AE005A4950 /* Brush.m in Sources */ = {isa = PBXBuildFile; fileRef = F117F0EE1E35F3AE005A4950 /* Brush.m */; };
+		F11CECAA24600C760031A0D9 /* MatrixProperty.xib in Resources */ = {isa = PBXBuildFile; fileRef = F11CECA924600C760031A0D9 /* MatrixProperty.xib */; };
 		F12695AB1D5FAA8C004A1B3B /* TextButton.m in Sources */ = {isa = PBXBuildFile; fileRef = F12695AA1D5FAA8C004A1B3B /* TextButton.m */; };
 		F12B17361DD730E000226E73 /* DDSUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = F12B17351DD730E000226E73 /* DDSUtils.mm */; };
 		F132E17C1E0FB6DC001CDB47 /* TextureCubeEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = F132E17B1E0FB6DC001CDB47 /* TextureCubeEditor.m */; };
@@ -206,6 +207,7 @@
 		F117F0EA1E3523AA005A4950 /* UComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UComponent.m; sourceTree = "<group>"; };
 		F117F0ED1E35F3AE005A4950 /* Brush.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Brush.h; sourceTree = "<group>"; };
 		F117F0EE1E35F3AE005A4950 /* Brush.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Brush.m; sourceTree = "<group>"; };
+		F11CECA924600C760031A0D9 /* MatrixProperty.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MatrixProperty.xib; sourceTree = "<group>"; };
 		F12695A91D5FAA8C004A1B3B /* TextButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextButton.h; sourceTree = "<group>"; };
 		F12695AA1D5FAA8C004A1B3B /* TextButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextButton.m; sourceTree = "<group>"; };
 		F12B17341DD730E000226E73 /* DDSUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DDSUtils.h; path = System/Utils/DDSUtils.h; sourceTree = SOURCE_ROOT; };
@@ -637,6 +639,7 @@
 				F1B31FF91D75BA8100C0DDD6 /* ArrayProperty.xib */,
 				F1B31FF71D75B9E200C0DDD6 /* GeneralProperty.xib */,
 				F1B31FF11D75B03900C0DDD6 /* NoneProperty.xib */,
+				F11CECA924600C760031A0D9 /* MatrixProperty.xib */,
 				F1B31FE51D7587B900C0DDD6 /* BoolProperty.xib */,
 				F13585DF1D76CF9E00E7EEA3 /* ObjectProperty.xib */,
 				F100B6081D8BBBE5001B15F1 /* Vector3Property.xib */,
@@ -894,6 +897,7 @@
 				F1B31FE31D731D7C00C0DDD6 /* UObject.xib in Resources */,
 				F17ED125245A274C00243981 /* Prefab.xib in Resources */,
 				F13585E01D76CF9E00E7EEA3 /* ObjectProperty.xib in Resources */,
+				F11CECAA24600C760031A0D9 /* MatrixProperty.xib in Resources */,
 				F186180E1D881946004B3F4F /* SkeletalMesh.xib in Resources */,
 				F186181B1D895DCA004B3F4F /* tex0.png in Resources */,
 				F1B31FE61D7587B900C0DDD6 /* BoolProperty.xib in Resources */,
