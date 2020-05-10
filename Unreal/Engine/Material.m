@@ -159,19 +159,19 @@ static void GetWarpModesFromTexture(Texture2D *tex, SCNWrapMode *wrapX, SCNWrapM
     CGFloat r = 1,g = 1,b = 1,a = 1;
     @try {
       t = [o propertyForName:@"R"];
-      if (t)
+      if (t && [t.value isKindOfClass:[NSNumber class]])
         r = [t.value doubleValue];
       
       t = [o propertyForName:@"G"];
-      if (t)
+      if (t && [t.value isKindOfClass:[NSNumber class]])
         g = [t.value doubleValue];
       
       t = [o propertyForName:@"B"];
-      if (t)
+      if (t && [t.value isKindOfClass:[NSNumber class]])
         b = [t.value doubleValue];
       
       t = [o propertyForName:@"A"];
-      if (t)
+      if (t && [t.value isKindOfClass:[NSNumber class]])
         a = [t.value doubleValue];
     } @catch (NSException *exception)
     {

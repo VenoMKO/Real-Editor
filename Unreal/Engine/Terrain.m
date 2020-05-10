@@ -19,77 +19,14 @@
 #define MAX_HEIGHTMAP_TEXTURE_SIZE 512
 #define HEIGHTDATA(X,Y) (heightData[ CLAMP(Y, 0, vertsY) * vertsX + CLAMP(X, 0, vertsX) ])
 
-//uint16_t *ExpandTerrainData(const uint16_t *Data, int OldMinX, int OldMinY, int OldMaxX, int OldMaxY, int NewMinX, int NewMinY, int NewMaxX, int NewMaxY, int *newWidth, int *newHeight);
-//uint8_t *ExpandTerrainInfoData(const uint8_t *Data, int OldMinX, int OldMinY, int OldMaxX, int OldMaxY, int NewMinX, int NewMinY, int NewMaxX, int NewMaxY, int *newWidth, int *newHeight);
+static inline float lerpf(float a, float b, float alpha);
+static inline float bilerpf(float a, float b, float c, float d, float x, float y);
+uint16_t *ResampleHeightData(int width, int height, int newWidth, int newHeight, uint16_t *heightData);
+uint8_t *ResampleVisibilityData(int width, int height, int newWidth, int newHeight, uint8_t *visibilityData);
 
-static inline float lerpf(float a, float b, float alpha)
+void ReleaseCGDataCallback(void *info, const void *data, size_t size)
 {
-  return (a * (1.0f - alpha)) + (b * alpha);
-}
-
-static inline float bilerpf(float a, float b, float c, float d, float x, float y)
-{
-  return lerpf(lerpf(a, b, x), lerpf(c, d, x), y);
-}
-
-uint16_t *ResampleHeightData(int width, int height, int newWidth, int newHeight, uint16_t *heightData)
-{
-  uint16_t *newHeightData = calloc(newWidth * newHeight, sizeof(uint16_t));
-  
-  float scaleX = (float)(width - 1) / (newWidth - 1);
-  float scaleY = (float)(height - 1) / (newHeight - 1);
-  
-  for (int newY = 0; newY < newHeight; ++newY)
-  {
-    for (int newX = 0; newX < newWidth; ++newX)
-    {
-      float x = newX * scaleX;
-      float y = newY * scaleY;
-      
-      int x0 = floorf(x);
-      int x1 = MIN(floorf(x + 1), width - 1);
-      int y0 = floorf(y);
-      int y1 = MIN(floorf(y + 1), height - 1);
-      
-      uint16_t a = heightData[y0 * width + x0];
-      uint16_t b = heightData[y0 * width + x1];
-      uint16_t c = heightData[y1 * width + x0];
-      uint16_t d = heightData[y1 * width + x1];
-      
-      newHeightData[newY * newWidth + newX] = bilerpf(a, b, c, d, (float)(x - floorf(x)), (float)(y - floorf(y)));
-    }
-  }
-  return newHeightData;
-}
-
-uint8_t *ResampleVisibilityData(int width, int height, int newWidth, int newHeight, uint8_t *visibilityData)
-{
-  uint8_t *newVisibilityData = calloc(newWidth * newHeight, sizeof(uint8_t));
-  
-  float scaleX = (float)(width - 1) / (newWidth - 1);
-  float scaleY = (float)(height - 1) / (newHeight - 1);
-  
-  for (int newY = 0; newY < newHeight; ++newY)
-  {
-    for (int newX = 0; newX < newWidth; ++newX)
-    {
-      float x = newX * scaleX;
-      float y = newY * scaleY;
-      
-      int x0 = floorf(x);
-      int x1 = MIN(floorf(x + 1), width - 1);
-      int y0 = floorf(y);
-      int y1 = MIN(floorf(y + 1), height - 1);
-      
-      uint8_t a = visibilityData[y0 * width + x0];
-      uint8_t b = visibilityData[y0 * width + x1];
-      uint8_t c = visibilityData[y1 * width + x0];
-      uint8_t d = visibilityData[y1 * width + x1];
-      
-      newVisibilityData[newY * newWidth + newX] = bilerpf(a, b, c, d, (float)(x - floorf(x)), (float)(y - floorf(y)));
-    }
-  }
-  return newVisibilityData;
+  free((void*)data);
 }
 
 @interface FHeightmapInfo : NSObject
@@ -217,20 +154,7 @@ id EnsureValue(id value, id def)
   self.infoData = [FArray readFrom:s type:[FTerrainInfoData class]];
   self.alphaMaps = [s readData:[s readInt:0]];
   self.weightedTextureMaps = [FArray readFrom:s type:[UObject class]];
-  return s;
-}
-
-- (void)exportToT3D:(NSMutableString*)result padding:(unsigned)padding index:(unsigned)index
-{
-  return [self exportToT3D:result padding:padding index:index resample:YES];
-}
-
-- (void)exportToT3D:(NSMutableString*)result padding:(unsigned)padding index:(unsigned)index resample:(BOOL)resample
-{
-  if (!self.properties)
-  {
-    [self readProperties];
-  }
+  
   if (!rawHeights)
   {
     rawHeights = calloc(self.heights.count, sizeof(short));
@@ -242,10 +166,31 @@ id EnsureValue(id value, id def)
   if (!rawInfoData)
   {
     rawInfoData = calloc(self.infoData.count, sizeof(uint8_t));
-    for (FTerrainInfoData *d in self.infoData)
+    int maxX = [self numVerticesX];
+    int maxY = [self numVerticesY];
+    for (int y = 0; y < maxY; ++y)
     {
-      rawInfoData[[self.infoData indexOfObject:d]] = d.data & TID_Visibility_Off ? 0xFF : 0;
+      for (int x = 0; x < maxX; ++x)
+      {
+        int safeX = CLAMP(x, 0, maxX - 2);
+        int safeY = CLAMP(y, 0, maxY - 2);
+        rawInfoData[y * maxX + x] = [(FTerrainInfoData*)self.infoData[safeY * maxX + safeX] data] & TID_Visibility_Off ? 0xff : 0;
+      }
     }
+  }
+  return s;
+}
+
+- (void)exportToT3D:(NSMutableString*)result padding:(unsigned)padding index:(unsigned)index
+{
+  return [self exportToT3D:result padding:padding index:index resample:NO];
+}
+
+- (void)exportToT3D:(NSMutableString*)result padding:(unsigned)padding index:(unsigned)index resample:(BOOL)resample
+{
+  if (!self.properties)
+  {
+    [self readProperties];
   }
   
   int newWidth = 0;
@@ -507,9 +452,6 @@ id EnsureValue(id value, id def)
               [heightmapInfo.HeightmapTexture replaceBytesInRange:NSMakeRange(HeightTexDataIdx+2, 1) withBytes:&r];
               [heightmapInfo.HeightmapTexture replaceBytesInRange:NSMakeRange(HeightTexDataIdx+3, 1) withBytes:&a];
               
-              // fixme: ATW_4952. Visibility mask has 1px borders.
-              // This leads to a 1 row and 1 column of visible quads that should be hidden
-              // Maybe after terrain tesselation the visibility layer scales up and fixes this issue??
               x = CLAMP(x, 0, vertsX - 1);
               y = CLAMP(y, 0, vertsY - 1);
               
@@ -763,7 +705,7 @@ id EnsureValue(id value, id def)
 
 - (CGImageRef)heightMap
 {
-  return [self renderResampledHeightMap:YES];
+  return [self renderResampledHeightMap:NO];
 }
 
 - (CGImageRef)visibilityMap
@@ -774,14 +716,6 @@ id EnsureValue(id value, id def)
 - (CGImageRef)renderResampledHeightMap:(BOOL)resample
 {
   [self properties];
-  if (!rawHeights)
-  {
-    rawHeights = calloc(self.heights.count, sizeof(short));
-    for (FTerrainHeight *th in self.heights)
-    {
-      rawHeights[[self.heights indexOfObject:th]] = th.value;
-    }
-  }
   int width = self.numVerticesX;
   int height = self.numVerticesY;
   BOOL resamplePossible = [self resamplePossible];
@@ -796,10 +730,11 @@ id EnsureValue(id value, id def)
   }
   else
   {
-    data = rawHeights;
+    data = malloc(width * height * sizeof(uint16_t));
+    memcpy(data, rawHeights, width * height * sizeof(uint16_t));
   }
   
-  CGDataProviderRef provider = CGDataProviderCreateWithData(NULL, (Byte*)data, width * height * sizeof(uint16_t), NULL);
+  CGDataProviderRef provider = CGDataProviderCreateWithData(NULL, (Byte*)data, width * height * sizeof(uint16_t), ReleaseCGDataCallback);
   CGColorSpaceRef colorSpaceRef = CGColorSpaceCreateDeviceGray();
   CGBitmapInfo bitmapInfo = kCGBitmapByteOrder16Little | kCGImageAlphaNone;
   CGColorRenderingIntent renderingIntent = kCGRenderingIntentDefault;
@@ -828,11 +763,11 @@ id EnsureValue(id value, id def)
   int height = self.numVerticesY;
   BOOL resamplePossible = [self resamplePossible];
   
-  uint16_t *rawData = (uint16_t *)calloc(width * height, 2);
+  uint16_t *rawData = (uint16_t *)malloc(width * height * sizeof(uint16_t));
   
-  for (int i =0; i < self.infoData.count; ++i)
+  for (int i = 0; i < width * height; ++i)
   {
-    rawData[i] = [(FTerrainInfoData*)self.infoData[i] data] & 1 ? 0xffff : 0;
+    rawData[i] = rawInfoData[i] ? 0xFFFF : 0;
   }
   
   uint16_t *visibilityData = NULL;
@@ -844,14 +779,14 @@ id EnsureValue(id value, id def)
     visibilityData = ResampleHeightData(width, height, newWidth, newHeight, rawData);
     width = newWidth;
     height = newHeight;
+    free(rawData);
   }
   else
   {
-    visibilityData = calloc(width * height, sizeof(uint16_t));
-    memcpy(visibilityData, rawData, width * height * sizeof(uint16_t));
+    visibilityData = rawData;
   }
   
-  CGDataProviderRef provider = CGDataProviderCreateWithData(NULL, (Byte*)visibilityData, width * height * 2, NULL);
+  CGDataProviderRef provider = CGDataProviderCreateWithData(NULL, (Byte*)visibilityData, width * height * sizeof(uint16_t), ReleaseCGDataCallback);
   CGColorSpaceRef colorSpaceRef = CGColorSpaceCreateDeviceGray();
   CGBitmapInfo bitmapInfo = kCGBitmapByteOrder16Little | kCGImageAlphaNone;
   CGColorRenderingIntent renderingIntent = kCGRenderingIntentDefault;
@@ -887,102 +822,73 @@ id EnsureValue(id value, id def)
 }
 
 @end
-/*
-void _ExpandTerrainData(uint16_t* OutData, const uint16_t* InData, int OldMinX, int OldMinY, int OldMaxX, int OldMaxY, int NewMinX, int NewMinY, int NewMaxX, int NewMaxY, int *newWidth, int *newHeight)
+
+uint16_t *ResampleHeightData(int width, int height, int newWidth, int newHeight, uint16_t *heightData)
 {
-  const int OldWidth = OldMaxX - OldMinX + 1;
-  const int OldHeight = OldMaxY - OldMinY + 1;
-  const int NewWidth = NewMaxX - NewMinX + 1;
-  const int NewHeight = NewMaxY - NewMinY + 1;
-  const int OffsetX = NewMinX - OldMinX;
-  const int OffsetY = NewMinY - OldMinY;
-  *newWidth = NewWidth;
-  *newHeight = NewHeight;
+  uint16_t *newHeightData = calloc(newWidth * newHeight, sizeof(uint16_t));
   
-  for (int Y = 0; Y < NewHeight; ++Y)
+  float scaleX = (float)(width - 1) / (newWidth - 1);
+  float scaleY = (float)(height - 1) / (newHeight - 1);
+  
+  for (int newY = 0; newY < newHeight; ++newY)
   {
-    const int OldY = CLAMP(Y + OffsetY, 0, OldHeight - 1);
-    // Pad anything to the left
-    const uint16_t PadLeft = InData[OldY * OldWidth + 0];
-    for (int X = 0; X < -OffsetX; ++X)
+    for (int newX = 0; newX < newWidth; ++newX)
     {
-      OutData[Y * NewWidth + X] = PadLeft;
-    }
-
-    // Copy one row of the old data
-    {
-      const int X = MAX(0, -OffsetX);
-      const int OldX = CLAMP(X + OffsetX, 0, OldWidth - 1);
-      memcpy(&OutData[Y * NewWidth + X], &InData[OldY * OldWidth + OldX], MIN(OldWidth, NewWidth) * sizeof(uint16_t));
-    }
-
-    const uint16_t PadRight = InData[OldY * OldWidth + OldWidth - 1];
-    for (int X = -OffsetX + OldWidth; X < NewWidth; ++X)
-    {
-      OutData[Y * NewWidth + X] = PadRight;
+      float x = newX * scaleX;
+      float y = newY * scaleY;
+      
+      int x0 = floorf(x);
+      int x1 = MIN(floorf(x + 1), width - 1);
+      int y0 = floorf(y);
+      int y1 = MIN(floorf(y + 1), height - 1);
+      
+      uint16_t a = heightData[y0 * width + x0];
+      uint16_t b = heightData[y0 * width + x1];
+      uint16_t c = heightData[y1 * width + x0];
+      uint16_t d = heightData[y1 * width + x1];
+      
+      newHeightData[newY * newWidth + newX] = bilerpf(a, b, c, d, (float)(x - floorf(x)), (float)(y - floorf(y)));
     }
   }
+  return newHeightData;
 }
 
-uint16_t *ExpandTerrainData(const uint16_t *Data, int OldMinX, int OldMinY, int OldMaxX, int OldMaxY, int NewMinX, int NewMinY, int NewMaxX, int NewMaxY, int *newWidth, int *newHeight)
+uint8_t *ResampleVisibilityData(int width, int height, int newWidth, int newHeight, uint8_t *visibilityData)
 {
-  const int NewWidth = NewMaxX - NewMinX + 1;
-  const int NewHeight = NewMaxY - NewMinY + 1;
-  *newWidth = NewWidth;
-  *newHeight = NewHeight;
-  uint16_t *Result = calloc(NewWidth * NewHeight, sizeof(uint16_t));
-  _ExpandTerrainData(Result, Data,
-  OldMinX, OldMinY, OldMaxX, OldMaxY,
-  NewMinX, NewMinY, NewMaxX, NewMaxY, newWidth, newHeight);
-  return Result;
-}
-
-void _ExpandTerrainInfoData(uint8_t* OutData, const uint8_t* InData, int OldMinX, int OldMinY, int OldMaxX, int OldMaxY, int NewMinX, int NewMinY, int NewMaxX, int NewMaxY, int *newWidth, int *newHeight)
-{
-  const int OldWidth = OldMaxX - OldMinX + 1;
-  const int OldHeight = OldMaxY - OldMinY + 1;
-  const int NewWidth = NewMaxX - NewMinX + 1;
-  const int NewHeight = NewMaxY - NewMinY + 1;
-  const int OffsetX = NewMinX - OldMinX;
-  const int OffsetY = NewMinY - OldMinY;
-  *newWidth = NewWidth;
-  *newHeight = NewHeight;
+  uint8_t *newVisibilityData = calloc(newWidth * newHeight, sizeof(uint8_t));
   
-  for (int Y = 0; Y < NewHeight; ++Y)
+  float scaleX = (float)(width - 1) / (newWidth - 1);
+  float scaleY = (float)(height - 1) / (newHeight - 1);
+  
+  for (int newY = 0; newY < newHeight; ++newY)
   {
-    const int OldY = CLAMP(Y + OffsetY, 0, OldHeight - 1);
-    // Pad anything to the left
-    const uint16_t PadLeft = InData[OldY * OldWidth + 0];
-    for (int X = 0; X < -OffsetX; ++X)
+    for (int newX = 0; newX < newWidth; ++newX)
     {
-      OutData[Y * NewWidth + X] = PadLeft;
-    }
-
-    // Copy one row of the old data
-    {
-      const int X = MAX(0, -OffsetX);
-      const int OldX = CLAMP(X + OffsetX, 0, OldWidth - 1);
-      memcpy(&OutData[Y * NewWidth + X], &InData[OldY * OldWidth + OldX], MIN(OldWidth, NewWidth) * sizeof(uint16_t));
-    }
-
-    const uint16_t PadRight = InData[OldY * OldWidth + OldWidth - 1];
-    for (int X = -OffsetX + OldWidth; X < NewWidth; ++X)
-    {
-      OutData[Y * NewWidth + X] = PadRight;
+      float x = newX * scaleX;
+      float y = newY * scaleY;
+      
+      int x0 = floorf(x);
+      int x1 = MIN(floorf(x + 1), width - 1);
+      int y0 = floorf(y);
+      int y1 = MIN(floorf(y + 1), height - 1);
+      
+      uint8_t a = visibilityData[y0 * width + x0];
+      uint8_t b = visibilityData[y0 * width + x1];
+      uint8_t c = visibilityData[y1 * width + x0];
+      uint8_t d = visibilityData[y1 * width + x1];
+      
+      newVisibilityData[newY * newWidth + newX] = bilerpf(a, b, c, d, (float)(x - floorf(x)), (float)(y - floorf(y)));
     }
   }
+  return newVisibilityData;
 }
 
-uint8_t *ExpandTerrainInfoData(const uint8_t *Data, int OldMinX, int OldMinY, int OldMaxX, int OldMaxY, int NewMinX, int NewMinY, int NewMaxX, int NewMaxY, int *newWidth, int *newHeight)
+static inline float lerpf(float a, float b, float alpha)
 {
-  const int NewWidth = NewMaxX - NewMinX + 1;
-  const int NewHeight = NewMaxY - NewMinY + 1;
-  *newWidth = NewWidth;
-  *newHeight = NewHeight;
-  uint8_t *Result = calloc(NewWidth * NewHeight, sizeof(uint8_t));
-  _ExpandTerrainInfoData(Result, Data,
-  OldMinX, OldMinY, OldMaxX, OldMaxY,
-  NewMinX, NewMinY, NewMaxX, NewMaxY, newWidth, newHeight);
-  return Result;
+  return (a * (1.0f - alpha)) + (b * alpha);
 }
-*/
+
+static inline float bilerpf(float a, float b, float c, float d, float x, float y)
+{
+  return lerpf(lerpf(a, b, x), lerpf(c, d, x), y);
+}

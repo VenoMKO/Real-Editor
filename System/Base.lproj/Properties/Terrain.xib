@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15705" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16096" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15705"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16096"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="TerrainEditor">
             <connections>
+                <outlet property="exportOptionsView" destination="vRT-aE-kP1" id="hNq-NF-J1A"/>
+                <outlet property="heightSwitch" destination="O4t-X3-2ho" id="xru-tL-nnz"/>
                 <outlet property="imageView" destination="Re0-Nt-OUa" id="MJe-o9-Jvr"/>
                 <outlet property="toolBarView" destination="Xiv-vM-MhN" id="y1D-T6-Qfh"/>
                 <outlet property="view" destination="OEU-YH-pbN" id="0fp-sm-WXO"/>
@@ -26,7 +28,7 @@
                     </constraints>
                     <buttonCell key="cell" type="smallSquare" title="Export RAW" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="f8Q-KE-eTN">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="label" size="11"/>
+                        <font key="font" metaFont="controlContent" size="11"/>
                     </buttonCell>
                     <connections>
                         <action selector="exportRaw:" target="-2" id="PMd-VF-gbw"/>
@@ -39,11 +41,8 @@
                     </constraints>
                     <buttonCell key="cell" type="smallSquare" title="Import" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="fz7-CX-rVQ">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="label" size="11"/>
+                        <font key="font" metaFont="controlContent" size="11"/>
                     </buttonCell>
-                    <connections>
-                        <action selector="importData:" target="-2" id="K4p-DK-fmZ"/>
-                    </connections>
                 </button>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2mL-O6-MW4">
                     <rect key="frame" x="-1" y="-2" width="69" height="23"/>
@@ -52,7 +51,7 @@
                     </constraints>
                     <buttonCell key="cell" type="smallSquare" title="Import RAW" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Rwu-zJ-1dj">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="label" size="11"/>
+                        <font key="font" metaFont="controlContent" size="11"/>
                     </buttonCell>
                 </button>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6rM-07-MW0">
@@ -62,24 +61,48 @@
                     </constraints>
                     <buttonCell key="cell" type="smallSquare" title="Export" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="kRU-1o-fxv">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="label" size="11"/>
+                        <font key="font" metaFont="controlContent" size="11"/>
                     </buttonCell>
                     <connections>
                         <action selector="exportData:" target="-2" id="HHX-aa-IlB"/>
+                    </connections>
+                </button>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="O4t-X3-2ho">
+                    <rect key="frame" x="144" y="21" width="80" height="18"/>
+                    <buttonCell key="cell" type="radio" title="Heightmap" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="EeA-lR-noC">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="controlContent" size="11"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="setRenderMode:" target="-2" id="rq7-zb-wAd"/>
+                    </connections>
+                </button>
+                <button verticalHuggingPriority="750" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="vRT-aE-kP1">
+                    <rect key="frame" x="144" y="1" width="89" height="18"/>
+                    <buttonCell key="cell" type="radio" title="Visibilitymap" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" inset="2" id="NTn-sh-kdj">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="controlContent" size="11"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="setRenderMode:" target="-2" id="aXw-8h-eom"/>
                     </connections>
                 </button>
             </subviews>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="2mL-O6-MW4" secondAttribute="bottom" constant="-1" id="1fF-Gl-y1U"/>
                 <constraint firstItem="8t1-b8-KBn" firstAttribute="top" secondItem="Xiv-vM-MhN" secondAttribute="top" constant="-1" id="2c2-xg-hKK"/>
+                <constraint firstItem="O4t-X3-2ho" firstAttribute="centerY" secondItem="6rM-07-MW0" secondAttribute="centerY" id="7Zv-E4-6fZ"/>
                 <constraint firstItem="6rM-07-MW0" firstAttribute="width" secondItem="8t1-b8-KBn" secondAttribute="width" id="9dZ-BX-k75"/>
                 <constraint firstItem="2mL-O6-MW4" firstAttribute="leading" secondItem="Xiv-vM-MhN" secondAttribute="leading" constant="-1" id="JzB-6z-0at"/>
                 <constraint firstItem="6rM-07-MW0" firstAttribute="leading" secondItem="8t1-b8-KBn" secondAttribute="trailing" constant="-1" id="KOr-Cj-Ebh"/>
+                <constraint firstItem="vRT-aE-kP1" firstAttribute="centerY" secondItem="xGv-Ho-vwi" secondAttribute="centerY" id="LbA-mS-0c1"/>
+                <constraint firstItem="O4t-X3-2ho" firstAttribute="leading" secondItem="6rM-07-MW0" secondAttribute="trailing" constant="10" id="Skx-2F-hf3"/>
                 <constraint firstItem="8t1-b8-KBn" firstAttribute="leading" secondItem="Xiv-vM-MhN" secondAttribute="leading" constant="-1" id="ZnY-te-dfY"/>
                 <constraint firstItem="xGv-Ho-vwi" firstAttribute="leading" secondItem="2mL-O6-MW4" secondAttribute="trailing" constant="-1" id="a4r-ML-jwo"/>
                 <constraint firstItem="6rM-07-MW0" firstAttribute="top" secondItem="Xiv-vM-MhN" secondAttribute="top" constant="-1" id="bsI-9Z-up3"/>
                 <constraint firstItem="2mL-O6-MW4" firstAttribute="width" secondItem="8t1-b8-KBn" secondAttribute="width" id="dwi-WB-qDu"/>
                 <constraint firstAttribute="bottom" secondItem="xGv-Ho-vwi" secondAttribute="bottom" constant="-1" id="j1Q-gP-MUn"/>
+                <constraint firstItem="vRT-aE-kP1" firstAttribute="leading" secondItem="xGv-Ho-vwi" secondAttribute="trailing" constant="10" id="n8P-QT-CtU"/>
                 <constraint firstItem="xGv-Ho-vwi" firstAttribute="width" secondItem="8t1-b8-KBn" secondAttribute="width" id="uDR-EX-ORZ"/>
             </constraints>
             <point key="canvasLocation" x="321" y="665.5"/>

@@ -14,6 +14,9 @@
 
 @interface TerrainEditor ()
 @property (weak) IBOutlet TextureView *imageView;
+@property IBOutlet NSButton *visibilitySwitch;
+@property IBOutlet NSButton *heightSwitch;
+@property BOOL renderVisibilityData;
 @end
 
 @implementation TerrainEditor
@@ -27,7 +30,14 @@
 
 - (void)updateImage
 {
-  self.imageView.image = [self.object heightMap];
+  if (self.renderVisibilityData)
+  {
+    self.imageView.image = [self.object visibilityMap];
+  }
+  else
+  {
+    self.imageView.image = [self.object heightMap];
+  }
 }
 
 - (IBAction)exportData:(id)sender
@@ -70,6 +80,14 @@
 - (NSString*)exportName
 {
   return [self.object.package.name stringByAppendingFormat:@"_%@", self.object.objectName];
+}
+
+- (IBAction)setRenderMode:(id)sender
+{
+  self.renderVisibilityData = [sender tag];
+  self.visibilitySwitch.state = self.renderVisibilityData;
+  self.heightSwitch.state = !self.renderVisibilityData;
+  [self updateImage];
 }
 
 @end

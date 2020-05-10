@@ -1112,11 +1112,26 @@ unsigned int CRCForString( const char *Data , int Length)
   {
     for (FObjectExport *export in self.exports)
     {
-      [export.object properties];
-      if (export.object.netIndex == index && [[export.objectName lowercaseString] isEqualToString:[name lowercaseString]])
+      if (name)
       {
-        obj = export.object;
-        break;
+        if ([[export.objectName lowercaseString] isEqualToString:[name lowercaseString]])
+        {
+          [export.object properties];
+          if (export.object.netIndex == index)
+          {
+            obj = export.object;
+            break;
+          }
+        }
+      }
+      else
+      {
+        [export.object properties];
+        if (export.object.netIndex == index)
+        {
+          obj = export.object;
+          break;
+        }
       }
     }
     if (obj && ![[obj.objectName lowercaseString] isEqualToString:[name lowercaseString]])

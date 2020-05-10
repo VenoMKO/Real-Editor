@@ -115,6 +115,7 @@ NSString *T3DEndObject(NSString *objectType)
   T3DAddLine(result, padding, T3DBeginObject(@"Object", [self objectName], nil));
   padding++;
   {
+    T3DAddLine(result, padding, @"ComponentLayerInfos(0)=LandscapeLayerInfoObject'\"/Engine/EditorLandscapeResources/DataLayer.DataLayer\"'");
     T3DAddLine(result, padding, @"SectionBaseX=%d", self.renderComponent.baseX);
     T3DAddLine(result, padding, @"SectionBaseY=%d", self.renderComponent.baseY);
     T3DAddLine(result, padding, @"CollisionSizeQuads=%d", self.renderComponent.componentSizeQuads);
