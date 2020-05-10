@@ -19,33 +19,77 @@
 #define MAX_HEIGHTMAP_TEXTURE_SIZE 512
 #define HEIGHTDATA(X,Y) (heightData[ CLAMP(Y, 0, vertsY) * vertsX + CLAMP(X, 0, vertsX) ])
 
-uint16_t *ExpandTerrainData(const uint16_t *Data, int OldMinX, int OldMinY, int OldMaxX, int OldMaxY, int NewMinX, int NewMinY, int NewMaxX, int NewMaxY, int *newWidth, int *newHeight);
-uint8_t *ExpandTerrainInfoData(const uint8_t *Data, int OldMinX, int OldMinY, int OldMaxX, int OldMaxY, int NewMinX, int NewMinY, int NewMaxX, int NewMaxY, int *newWidth, int *newHeight);
+//uint16_t *ExpandTerrainData(const uint16_t *Data, int OldMinX, int OldMinY, int OldMaxX, int OldMaxY, int NewMinX, int NewMinY, int NewMaxX, int NewMaxY, int *newWidth, int *newHeight);
+//uint8_t *ExpandTerrainInfoData(const uint8_t *Data, int OldMinX, int OldMinY, int OldMaxX, int OldMaxY, int NewMinX, int NewMinY, int NewMaxX, int NewMaxY, int *newWidth, int *newHeight);
 
-
-// a(x1, y1)            b(x2, y1)
-//         return (x, y)
-// c(x1, y2)            c(x2, y2)
-static inline float blerpf(float a, float c, float b, float d, float x1, float x2, float y1, float y2, float x, float y)
+static inline float lerpf(float a, float b, float alpha)
 {
-    float x2x1, y2y1, x2x, y2y, yy1, xx1;
-    x2x1 = x2 - x1;
-    y2y1 = y2 - y1;
-    x2x = x2 - x;
-    y2y = y2 - y;
-    yy1 = y - y1;
-    xx1 = x - x1;
-    return 1.0 / (x2x1 * y2y1) * (
-        a * x2x * y2y +
-        c * xx1 * y2y +
-        b * x2x * yy1 +
-        d * xx1 * yy1
-    );
+  return (a * (1.0f - alpha)) + (b * alpha);
 }
 
-inline float lerpf(float a, float b, float t)
+static inline float bilerpf(float a, float b, float c, float d, float x, float y)
 {
-    return a + (b - a) * t;
+  return lerpf(lerpf(a, b, x), lerpf(c, d, x), y);
+}
+
+uint16_t *ResampleHeightData(int width, int height, int newWidth, int newHeight, uint16_t *heightData)
+{
+  uint16_t *newHeightData = calloc(newWidth * newHeight, sizeof(uint16_t));
+  
+  float scaleX = (float)(width - 1) / (newWidth - 1);
+  float scaleY = (float)(height - 1) / (newHeight - 1);
+  
+  for (int newY = 0; newY < newHeight; ++newY)
+  {
+    for (int newX = 0; newX < newWidth; ++newX)
+    {
+      float x = newX * scaleX;
+      float y = newY * scaleY;
+      
+      int x0 = floorf(x);
+      int x1 = MIN(floorf(x + 1), width - 1);
+      int y0 = floorf(y);
+      int y1 = MIN(floorf(y + 1), height - 1);
+      
+      uint16_t a = heightData[y0 * width + x0];
+      uint16_t b = heightData[y0 * width + x1];
+      uint16_t c = heightData[y1 * width + x0];
+      uint16_t d = heightData[y1 * width + x1];
+      
+      newHeightData[newY * newWidth + newX] = bilerpf(a, b, c, d, (float)(x - floorf(x)), (float)(y - floorf(y)));
+    }
+  }
+  return newHeightData;
+}
+
+uint8_t *ResampleVisibilityData(int width, int height, int newWidth, int newHeight, uint8_t *visibilityData)
+{
+  uint8_t *newVisibilityData = calloc(newWidth * newHeight, sizeof(uint8_t));
+  
+  float scaleX = (float)(width - 1) / (newWidth - 1);
+  float scaleY = (float)(height - 1) / (newHeight - 1);
+  
+  for (int newY = 0; newY < newHeight; ++newY)
+  {
+    for (int newX = 0; newX < newWidth; ++newX)
+    {
+      float x = newX * scaleX;
+      float y = newY * scaleY;
+      
+      int x0 = floorf(x);
+      int x1 = MIN(floorf(x + 1), width - 1);
+      int y0 = floorf(y);
+      int y1 = MIN(floorf(y + 1), height - 1);
+      
+      uint8_t a = visibilityData[y0 * width + x0];
+      uint8_t b = visibilityData[y0 * width + x1];
+      uint8_t c = visibilityData[y1 * width + x0];
+      uint8_t d = visibilityData[y1 * width + x1];
+      
+      newVisibilityData[newY * newWidth + newX] = bilerpf(a, b, c, d, (float)(x - floorf(x)), (float)(y - floorf(y)));
+    }
+  }
+  return newVisibilityData;
 }
 
 @interface FHeightmapInfo : NSObject
@@ -95,7 +139,7 @@ id EnsureValue(id value, id def)
 
 @interface Terrain()
 {
-  short *rawHeights;
+  uint16_t *rawHeights;
   uint8_t *rawInfoData;
   SCNVector3 *verts;
 }
@@ -178,6 +222,11 @@ id EnsureValue(id value, id def)
 
 - (void)exportToT3D:(NSMutableString*)result padding:(unsigned)padding index:(unsigned)index
 {
+  return [self exportToT3D:result padding:padding index:index resample:YES];
+}
+
+- (void)exportToT3D:(NSMutableString*)result padding:(unsigned)padding index:(unsigned)index resample:(BOOL)resample
+{
   if (!self.properties)
   {
     [self readProperties];
@@ -195,8 +244,34 @@ id EnsureValue(id value, id def)
     rawInfoData = calloc(self.infoData.count, sizeof(uint8_t));
     for (FTerrainInfoData *d in self.infoData)
     {
-      rawInfoData[[self.infoData indexOfObject:d]] = d.data;
+      rawInfoData[[self.infoData indexOfObject:d]] = d.data & TID_Visibility_Off ? 0xFF : 0;
     }
+  }
+  
+  int newWidth = 0;
+  int newHeight = 0;
+  
+  uint16_t *heightData = NULL;
+  uint8_t *infoData = NULL;
+  BOOL resampled = NO;
+  
+  if (resample && [self resamplePossible])
+  {
+    resampled = YES;
+    newWidth = [(Texture2D*)self.weightedTextureMaps[0] size].width;
+    newHeight = [(Texture2D*)self.weightedTextureMaps[0] size].height;
+    heightData = ResampleHeightData(self.numVerticesX, self.numVerticesY, newWidth, newHeight, rawHeights);
+    infoData = ResampleVisibilityData(self.numVerticesX, self.numVerticesY, newWidth, newHeight, rawInfoData);
+  }
+  else
+  {
+    newWidth = self.numVerticesX;
+    newHeight = self.numVerticesY;
+    int size = newWidth * newHeight;
+    heightData = malloc(size * sizeof(uint16_t));
+    memcpy(heightData, rawHeights, size * sizeof(uint16_t));
+    infoData = malloc(size * sizeof(uint8_t));
+    memcpy(infoData, rawInfoData, size * sizeof(uint8_t));
   }
   
   int sectionSizes[] = {7, 15, 31, 63, 127, 255};
@@ -208,8 +283,8 @@ id EnsureValue(id value, id def)
   int sectionsPerComponent = 0;
   int componentCountX = 0;
   int componentCountY = 0;
-  int numVerticesX = self.numVerticesX;
-  int numVerticesY = self.numVerticesY;
+  int numVerticesX = newWidth;
+  int numVerticesY = newHeight;
   
   // Find matching size for UE4
   BOOL foundSize = NO;
@@ -282,28 +357,11 @@ id EnsureValue(id value, id def)
     return;
   }
   
-  // Resize rawHeights to new size(UE4 size)
   const int minX = 0;
   const int minY = 0;
   const int quadsPerComponent = quadsPerSection * sectionsPerComponent;
   const int sizeX = componentCountX * quadsPerComponent + 1;
   const int sizeY = componentCountY * quadsPerComponent + 1;
-  const int offsetX = (int)(sizeX - numVerticesX) / 2;
-  const int offsetY = (int)(sizeY - numVerticesY) / 2;
-  
-  int newWidth = 0;
-  int newHeight = 0;
-  uint16_t *heightData = calloc(sizeX * sizeY, sizeof(uint16_t));
-  for(int i = 0; i < sizeX * sizeY; i++)
-  {
-    heightData[i] = 32768;
-  }
-  
-  heightData = ExpandTerrainData((uint16_t *)rawHeights, minX, minY, numVerticesX - 1, numVerticesY - 1, -offsetX, -offsetY, sizeX - offsetX - 1, sizeY - offsetY - 1, &newWidth, &newHeight);
-  
-  uint8_t *infoData = calloc(sizeX * sizeY, sizeof(uint8_t));
-  infoData = ExpandTerrainInfoData(rawInfoData, minX, minY, numVerticesX - 1, numVerticesY - 1, -offsetX, -offsetY, sizeX - offsetX - 1, sizeY - offsetY - 1, &newWidth, &newHeight);
-  
   const int vertsX = (sizeX - 1) - minX + 1;
   const int vertsY = (sizeY - 1) - minY + 1;
   const int componentSizeQuads = sectionsPerComponent * quadsPerSection;
@@ -455,8 +513,7 @@ id EnsureValue(id value, id def)
               x = CLAMP(x, 0, vertsX - 1);
               y = CLAMP(y, 0, vertsY - 1);
               
-              Byte hidden = infoData[y * vertsX + x] & TID_Visibility_Off ? 0xff : 0;
-              [heightmapInfo.VisibilityTexture replaceBytesInRange:NSMakeRange(VisibilityTexDataIdx, 1) withBytes:&hidden];
+              [heightmapInfo.VisibilityTexture replaceBytesInRange:NSMakeRange(VisibilityTexDataIdx, 1) withBytes:&infoData[y * vertsX + x]];
             }
           }
         }
@@ -593,14 +650,6 @@ id EnsureValue(id value, id def)
   {
     T3DAddLine(result, padding, T3DBeginObject(@"Object", @"RootComponent0", @"/Script/Engine.SceneComponent"));
     T3DAddLine(result, padding, T3DEndObject(@"Object"));
-    T3DAddLine(result, padding, T3DBeginObject(@"Object", @"Texture2D_0", @"/Script/Engine.Texture2D"));
-    padding++;
-    {
-      T3DAddLine(result, padding, T3DBeginObject(@"Object", @"AssetImportData", @"/Script/Engine.AssetImportData"));
-      T3DAddLine(result, padding, T3DEndObject(@"Object"));
-    }
-    padding--;
-    T3DAddLine(result, padding, T3DEndObject(@"Object"));
     
     for (T3DLandscapeComponent *lc in components)
     {
@@ -611,31 +660,21 @@ id EnsureValue(id value, id def)
       [lcc t3dForward:result padding:padding];
     }
     
-    T3DAddLine(result, padding, T3DBeginObject(@"Object", @"Texture2D_0", nil));
-    padding++;
-    {
-      T3DAddLine(result, padding, T3DBeginObject(@"Object", @"AssetImportData", nil));
-      T3DAddLine(result, padding, T3DEndObject(@"Object"));
-      T3DAddLine(result, padding, @"AddressX=TA_Clamp");
-      T3DAddLine(result, padding, @"AddressY=TA_Clamp");
-      T3DAddLine(result, padding, @"Source=(Id=D120ED20469622CA5F8009A18D6DAAB5,SizeX=512,SizeY=512,NumSlices=1,NumMips=10,Format=TSF_BGRA8,LayerFormat=(TSF_BGRA8))");
-      T3DAddLine(result, padding, @"AssetImportData=AssetImportData'\"AssetImportData\"'");
-      T3DAddLine(result, padding, @"CompressionNone=True");
-      T3DAddLine(result, padding, @"MipGenSettings=TMGS_LeaveExistingMips");
-      T3DAddLine(result, padding, @"LODGroup=TEXTUREGROUP_Terrain_Heightmap");
-      T3DAddLine(result, padding, @"SRGB=False");
-    }
-    padding--;
-    T3DAddLine(result, padding, T3DEndObject(@"Object"));
-    
     T3DAddLine(result, padding, T3DBeginObject(@"Object", @"RootComponent0", nil));
     padding++;
     {
-      FVector3 *v = EnsureValue([self propertyValue:@"Location"], [FVector3 vectorX:0 y:0 z:0]);
+      GLKVector3 v = [self position];
       T3DAddLine(result, padding, @"RelativeLocation=(X=%.6f,Y=%.6f,Z=%.6f)", v.x, v.y, v.z);
-      v = EnsureValue([self propertyValue:@"DrawScale3D"], [FVector3 vectorX:256 y:256 z:256]);
-      float scale = [EnsureValue([self propertyValue:@"DrawScale"], @1) floatValue];
-      T3DAddLine(result, padding, @"RelativeScale3D=(X=%.6f,Y=%.6f,Z=%.6f)", v.x * scale, v.y * scale, v.z * scale);
+      v = [self drawScale3D];
+      float scale = [self drawScale];
+      float resampleX = 1.;
+      float resampleY = 1.;
+      if (resampled)
+      {
+        resampleX = [self resampleScaleX];
+        resampleY = [self resampleScaleY];
+      }
+      T3DAddLine(result, padding, @"RelativeScale3D=(X=%.6f,Y=%.6f,Z=%.6f)", v.x * scale / resampleX, v.y * scale / resampleY, v.z * scale);
     }
     padding--;
     T3DAddLine(result, padding, T3DEndObject(@"Object"));
@@ -671,16 +710,70 @@ id EnsureValue(id value, id def)
     T3DAddLine(result, padding, @"SubsectionSizeQuads=%d", subsectionSizeQuads);
     T3DAddLine(result, padding, @"NumSubsections=%d", numSubsections);
     T3DAddLine(result, padding, @"RootComponent=\"RootComponent0\"");
-    T3DAddLine(result, padding, @"ActorLabel=\"%@\"", [NSString stringWithFormat:@"Landscape_%@",[self.package name]]);
+    if (resample)
+    {
+      float x = [self resampleScaleX];
+      float y = [self resampleScaleY];
+      if (x == y)
+      {
+        T3DAddLine(result, padding, @"ActorLabel=\"%@\"", [NSString stringWithFormat:@"Landscape_%@_%@",[self.package name],@(x)]);
+      }
+      else
+      {
+        T3DAddLine(result, padding, @"ActorLabel=\"%@\"", [NSString stringWithFormat:@"Landscape_%@_%@x%@",[self.package name],@(x),@(y)]);
+      }
+    }
+    else
+    {
+      T3DAddLine(result, padding, @"ActorLabel=\"%@\"", [NSString stringWithFormat:@"Landscape_%@_",[self.package name]]);
+    }
   }
   padding--;
   T3DAddLine(result, padding, T3DEndObject(@"Actor"));
 }
 
+- (BOOL)resamplePossible
+{
+  if (self.weightedTextureMaps.count)
+  {
+    int newWidth = [(Texture2D*)self.weightedTextureMaps[0] size].width;
+    int newHeight = [(Texture2D*)self.weightedTextureMaps[0] size].height;
+    return (newWidth && newHeight) && (newWidth != self.numVerticesX || newHeight != self.numVerticesY);
+  }
+  return NO;
+}
+
+- (float)resampleScaleX
+{
+  if ([self resamplePossible])
+  {
+    return ([(Texture2D*)self.weightedTextureMaps[0] size].width - 1.) / (float)([self numVerticesX] - 1.);
+  }
+  return 1.;
+}
+
+- (float)resampleScaleY
+{
+  if ([self resamplePossible])
+  {
+    return ([(Texture2D*)self.weightedTextureMaps[0] size].height - 1.) / (float)([self numVerticesY] - 1.);
+  }
+  return 1.;
+}
+
 - (CGImageRef)heightMap
 {
-  if (!self.properties)
-    [self readProperties];
+  return [self renderResampledHeightMap:YES];
+}
+
+- (CGImageRef)visibilityMap
+{
+  return [self renderResampledVisibilityMap:NO];
+}
+
+- (CGImageRef)renderResampledHeightMap:(BOOL)resample
+{
+  [self properties];
   if (!rawHeights)
   {
     rawHeights = calloc(self.heights.count, sizeof(short));
@@ -691,8 +784,22 @@ id EnsureValue(id value, id def)
   }
   int width = self.numVerticesX;
   int height = self.numVerticesY;
+  BOOL resamplePossible = [self resamplePossible];
+  uint16_t *data = NULL;
+  if (resample && resamplePossible)
+  {
+    int newWidth = [(Texture2D*)self.weightedTextureMaps[0] size].width;
+    int newHeight = [(Texture2D*)self.weightedTextureMaps[0] size].height;
+    data = ResampleHeightData(width, height, newWidth, newHeight, rawHeights);
+    width = newWidth;
+    height = newHeight;
+  }
+  else
+  {
+    data = rawHeights;
+  }
   
-  CGDataProviderRef provider = CGDataProviderCreateWithData(NULL, (Byte*)rawHeights, width * height * 2, NULL);
+  CGDataProviderRef provider = CGDataProviderCreateWithData(NULL, (Byte*)data, width * height * sizeof(uint16_t), NULL);
   CGColorSpaceRef colorSpaceRef = CGColorSpaceCreateDeviceGray();
   CGBitmapInfo bitmapInfo = kCGBitmapByteOrder16Little | kCGImageAlphaNone;
   CGColorRenderingIntent renderingIntent = kCGRenderingIntentDefault;
@@ -713,19 +820,35 @@ id EnsureValue(id value, id def)
   return imageRef;
 }
 
-- (CGImageRef)visibilityMap
+- (CGImageRef)renderResampledVisibilityMap:(BOOL)resample
 {
-  if (!self.properties)
-    [self readProperties];
+  [self properties];
   
   int width = self.numVerticesX;
   int height = self.numVerticesY;
+  BOOL resamplePossible = [self resamplePossible];
   
-  uint16_t *visibilityData = (uint16_t *)calloc(width * height, 2);
+  uint16_t *rawData = (uint16_t *)calloc(width * height, 2);
   
   for (int i =0; i < self.infoData.count; ++i)
   {
-    visibilityData[i] = [(FTerrainInfoData*)self.infoData[i] data] & 1 ? 0xffff : 0;
+    rawData[i] = [(FTerrainInfoData*)self.infoData[i] data] & 1 ? 0xffff : 0;
+  }
+  
+  uint16_t *visibilityData = NULL;
+  
+  if (resample && resamplePossible)
+  {
+    int newWidth = [(Texture2D*)self.weightedTextureMaps[0] size].width;
+    int newHeight = [(Texture2D*)self.weightedTextureMaps[0] size].height;
+    visibilityData = ResampleHeightData(width, height, newWidth, newHeight, rawData);
+    width = newWidth;
+    height = newHeight;
+  }
+  else
+  {
+    visibilityData = calloc(width * height, sizeof(uint16_t));
+    memcpy(visibilityData, rawData, width * height * sizeof(uint16_t));
   }
   
   CGDataProviderRef provider = CGDataProviderCreateWithData(NULL, (Byte*)visibilityData, width * height * 2, NULL);
@@ -764,7 +887,7 @@ id EnsureValue(id value, id def)
 }
 
 @end
-
+/*
 void _ExpandTerrainData(uint16_t* OutData, const uint16_t* InData, int OldMinX, int OldMinY, int OldMaxX, int OldMaxY, int NewMinX, int NewMinY, int NewMaxX, int NewMaxY, int *newWidth, int *newHeight)
 {
   const int OldWidth = OldMaxX - OldMinX + 1;
@@ -862,3 +985,4 @@ uint8_t *ExpandTerrainInfoData(const uint8_t *Data, int OldMinX, int OldMinY, in
   NewMinX, NewMinY, NewMaxX, NewMaxY, newWidth, newHeight);
   return Result;
 }
+*/
