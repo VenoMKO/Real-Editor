@@ -112,10 +112,26 @@
   self.coverListStart = [UObject readFrom:s];
   self.coverListEnd = [UObject readFrom:s];
   self.crossLevelActors = [FArray readFrom:s type:[UObject class]];
+  if (self.crossLevelActors.count)
+  {
+    DThrow(@"Cross level actors found!");
+  }
   self.unk = [s readInt:NULL];
   if (self.exportObject.originalOffset + self.exportObject.serialSize != s.position)
     DThrow(@"Found unexpected data!");
   return s;
+}
+
+- (WorldInfo *)worldInfo
+{
+  for (id obj in self.actors)
+  {
+    if ([obj isKindOfClass:[WorldInfo class]])
+    {
+      return obj;
+    }
+  }
+  return nil;
 }
 
 - (void)exportT3D:(NSString *)path
@@ -192,6 +208,15 @@
   self.extraReferencedObjects = [FArray readFrom:s type:[UObject class]];
   [self.persistentLevel readProperties];
   return s;
+}
+
+@end
+
+@implementation WorldInfo
+
+- (NSArray *)streamingLevels
+{
+  return [self propertyValue:@"StreamingLevels"];
 }
 
 @end

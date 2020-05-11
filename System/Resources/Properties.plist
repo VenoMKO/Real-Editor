@@ -2,6 +2,16 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>LevelStreamingKismet</key>
+	<dict>
+		<key>EditorStreamingVolumes</key>
+		<string>Object</string>
+	</dict>
+	<key>LevelStreamingVolume</key>
+	<dict>
+		<key>StreamingLevels</key>
+		<string>Object</string>
+	</dict>
 	<key>WorldInfo</key>
 	<dict>
 		<key>StreamingLevels</key>

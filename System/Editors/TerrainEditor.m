@@ -45,7 +45,7 @@
   NSSavePanel *panel = [NSSavePanel savePanel];
   panel.canCreateDirectories = YES;
   panel.nameFieldStringValue = self.exportName;
-  panel.accessoryView = self.exportOptionsView;
+  panel.allowedFileTypes = @[@"png"];
   panel.prompt = @"Export";
   NSString *path = [[NSUserDefaults standardUserDefaults] objectForKey:[kSettingsExportPath stringByAppendingFormat:@".%@",self.object.objectClass]];
   if (path)
@@ -54,27 +54,33 @@
   [panel beginSheetModalForWindow:self.view.window completionHandler:^(NSInteger result) {
     if (result == NSModalResponseOK)
     {
-      CFURLRef url = (__bridge CFURLRef)[NSURL fileURLWithPath:[panel.URL.path stringByAppendingPathExtension:@"png"]];
-      CGImageDestinationRef destination = CGImageDestinationCreateWithURL(url, kUTTypePNG, 1, NULL);
-      if (!destination)
-      {
-        return;
-      }
-
-      CGImageDestinationAddImage(destination, self.imageView.image, nil);
-
-      if (!CGImageDestinationFinalize(destination))
-      {
-        CFRelease(destination);
-        return;
-      }
-
-      CFRelease(destination);
-      [[NSUserDefaults standardUserDefaults] setObject:[panel.URL path] forKey:[kSettingsExportPath stringByAppendingFormat:@".%@",self.object.objectClass]];
-      
+      [self writeCGImage:[self.object heightMap] to:panel.URL.path];
+      [self writeCGImage:[self.object visibilityMap] to:[panel.URL.path.stringByDeletingPathExtension stringByAppendingString:@"_vis"]];
       [self.object.info writeToFile:[panel.URL.path stringByAppendingPathExtension:@"txt"] atomically:YES encoding:NSUTF8StringEncoding error:nil];
+      [[NSUserDefaults standardUserDefaults] setObject:[panel.URL path] forKey:[kSettingsExportPath stringByAppendingFormat:@".%@",self.object.objectClass]];
     }
   }];
+}
+
+- (void)writeCGImage:(CGImageRef)image to:(NSString *)path
+{
+  if (![path.pathExtension isEqualToString:@"png"])
+  {
+    path = [[path stringByDeletingPathExtension] stringByAppendingPathExtension:@"png"];
+  }
+  CFURLRef url = (__bridge CFURLRef)[NSURL fileURLWithPath:path];
+  CGImageDestinationRef destination = CGImageDestinationCreateWithURL(url, kUTTypePNG, 1, NULL);
+  if (!destination)
+  {
+    return;
+  }
+  CGImageDestinationAddImage(destination, self.imageView.image, nil);
+  if (!CGImageDestinationFinalize(destination))
+  {
+    CFRelease(destination);
+    return;
+  }
+  CFRelease(destination);
 }
 
 - (NSString*)exportName

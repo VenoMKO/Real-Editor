@@ -342,8 +342,7 @@
 {
   @synchronized (self)
   {
-    if (!self.properties)
-      [self readProperties];
+    [self properties];
     FPropertyTag *prop = [FPropertyTag propertyForName:aName from:self.properties];
     if (!prop && self.archetype)
     {

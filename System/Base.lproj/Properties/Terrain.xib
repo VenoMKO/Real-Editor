@@ -13,6 +13,7 @@
                 <outlet property="imageView" destination="Re0-Nt-OUa" id="MJe-o9-Jvr"/>
                 <outlet property="toolBarView" destination="Xiv-vM-MhN" id="y1D-T6-Qfh"/>
                 <outlet property="view" destination="OEU-YH-pbN" id="0fp-sm-WXO"/>
+                <outlet property="visibilitySwitch" destination="vRT-aE-kP1" id="crB-Nh-d2g"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
@@ -28,7 +29,7 @@
                     </constraints>
                     <buttonCell key="cell" type="smallSquare" title="Export RAW" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="f8Q-KE-eTN">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="controlContent" size="11"/>
+                        <font key="font" metaFont="label" size="11"/>
                     </buttonCell>
                     <connections>
                         <action selector="exportRaw:" target="-2" id="PMd-VF-gbw"/>
@@ -41,7 +42,7 @@
                     </constraints>
                     <buttonCell key="cell" type="smallSquare" title="Import" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="fz7-CX-rVQ">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="controlContent" size="11"/>
+                        <font key="font" metaFont="label" size="11"/>
                     </buttonCell>
                 </button>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2mL-O6-MW4">
@@ -51,7 +52,7 @@
                     </constraints>
                     <buttonCell key="cell" type="smallSquare" title="Import RAW" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Rwu-zJ-1dj">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="controlContent" size="11"/>
+                        <font key="font" metaFont="label" size="11"/>
                     </buttonCell>
                 </button>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6rM-07-MW0">
@@ -61,7 +62,7 @@
                     </constraints>
                     <buttonCell key="cell" type="smallSquare" title="Export" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="kRU-1o-fxv">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="controlContent" size="11"/>
+                        <font key="font" metaFont="label" size="11"/>
                     </buttonCell>
                     <connections>
                         <action selector="exportData:" target="-2" id="HHX-aa-IlB"/>
@@ -71,7 +72,7 @@
                     <rect key="frame" x="144" y="21" width="80" height="18"/>
                     <buttonCell key="cell" type="radio" title="Heightmap" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="EeA-lR-noC">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                        <font key="font" metaFont="controlContent" size="11"/>
+                        <font key="font" metaFont="label" size="11"/>
                     </buttonCell>
                     <connections>
                         <action selector="setRenderMode:" target="-2" id="rq7-zb-wAd"/>
@@ -81,7 +82,7 @@
                     <rect key="frame" x="144" y="1" width="89" height="18"/>
                     <buttonCell key="cell" type="radio" title="Visibilitymap" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" inset="2" id="NTn-sh-kdj">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                        <font key="font" metaFont="controlContent" size="11"/>
+                        <font key="font" metaFont="label" size="11"/>
                     </buttonCell>
                     <connections>
                         <action selector="setRenderMode:" target="-2" id="aXw-8h-eom"/>
@@ -144,7 +145,7 @@
                 <rect key="frame" x="363" y="0.0" width="16" height="354"/>
                 <autoresizingMask key="autoresizingMask"/>
             </scroller>
-            <point key="canvasLocation" x="589.5" y="283"/>
+            <point key="canvasLocation" x="382" y="258"/>
         </scrollView>
     </objects>
 </document>

@@ -119,6 +119,7 @@
 		F1BAB8BF1D70BF240035ED58 /* ObjectController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F1BAB8BD1D70BF240035ED58 /* ObjectController.xib */; };
 		F1BE35EE1D65F5B2009940F1 /* UObject.m in Sources */ = {isa = PBXBuildFile; fileRef = F1BE35ED1D65F5B2009940F1 /* UObject.m */; };
 		F1CA74D01E12AB6D00D1A507 /* Structs.plist in Resources */ = {isa = PBXBuildFile; fileRef = F1CA74CF1E12AB6D00D1A507 /* Structs.plist */; };
+		F1CCD66F2469752300310EE0 /* LevelStreaming.m in Sources */ = {isa = PBXBuildFile; fileRef = F1CCD66E2469752300310EE0 /* LevelStreaming.m */; };
 		F1D96B0F1D5FA02900071E45 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F1D96B091D5FA02900071E45 /* AppDelegate.m */; };
 		F1D96B111D5FA02900071E45 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = F1D96B0B1D5FA02900071E45 /* MainMenu.xib */; };
 		F1D96B131D5FA02900071E45 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F1D96B0E1D5FA02900071E45 /* main.m */; };
@@ -350,6 +351,8 @@
 		F1BE35EC1D65F5B2009940F1 /* UObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UObject.h; sourceTree = "<group>"; };
 		F1BE35ED1D65F5B2009940F1 /* UObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UObject.m; sourceTree = "<group>"; };
 		F1CA74CF1E12AB6D00D1A507 /* Structs.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Structs.plist; sourceTree = "<group>"; };
+		F1CCD66D2469752300310EE0 /* LevelStreaming.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LevelStreaming.h; sourceTree = "<group>"; };
+		F1CCD66E2469752300310EE0 /* LevelStreaming.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LevelStreaming.m; sourceTree = "<group>"; };
 		F1D96AF21D5F9F7100071E45 /* Real Editor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Real Editor.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F1D96B081D5FA02900071E45 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		F1D96B091D5FA02900071E45 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -521,6 +524,8 @@
 				F117F0EE1E35F3AE005A4950 /* Brush.m */,
 				F17ED11E245999E600243981 /* PrefabInstance.h */,
 				F17ED11F245999E600243981 /* PrefabInstance.m */,
+				F1CCD66D2469752300310EE0 /* LevelStreaming.h */,
+				F1CCD66E2469752300310EE0 /* LevelStreaming.m */,
 			);
 			name = GMP;
 			sourceTree = "<group>";
@@ -949,6 +954,7 @@
 				F1FCB6251D9122550063FB54 /* FBXUtils.mm in Sources */,
 				F1B31FEE1D75AB8800C0DDD6 /* FlippedView.m in Sources */,
 				F1BAB8B21D703FB10035ED58 /* ObjectController.m in Sources */,
+				F1CCD66F2469752300310EE0 /* LevelStreaming.m in Sources */,
 				F1B999F41D69944300AFAC80 /* FColor.m in Sources */,
 				F191C0041E27874300EC5600 /* FMaterialUniformExpression.m in Sources */,
 				F15372141DCCAE7D0044F3DE /* UIExtensions.m in Sources */,

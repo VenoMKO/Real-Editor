@@ -34,6 +34,8 @@
 @interface FCachedPerTriPhysSMData : FCachedPhysSMData
 @end
 
+@class WorldInfo;
+
 @interface Level : UObject
 @property (strong) TransFArray *actors;
 @property (strong) FURL *url;
@@ -56,6 +58,7 @@
 @property (weak) UObject *coverListEnd;
 @property (strong) FArray *crossLevelActors;
 @property (assign) int unk;
+- (WorldInfo *)worldInfo;
 - (void)exportT3D:(NSString *)path;
 @end
 
@@ -63,4 +66,8 @@
 @property (weak) Level *persistentLevel;
 @property (weak) UObject *gameSummary;
 @property (strong) FArray *extraReferencedObjects;
+@end
+
+@interface WorldInfo : UObject
+- (NSArray *)streamingLevels;
 @end
