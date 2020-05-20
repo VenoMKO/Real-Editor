@@ -408,6 +408,202 @@ static void GetWarpModesFromTexture(Texture2D *tex, SCNWrapMode *wrapX, SCNWrapM
 
 @implementation MaterialInstance
 
+- (NSString *)exportIncluding:(BOOL)textures to:(NSString *)dataPath
+{
+  NSMutableString *result = [NSMutableString new];
+  [result appendFormat:@"%@(%@)\n", self.objectName, self.objectClass];
+  
+  {
+    NSNumber *p = [self propertyValue:@"Parent"];
+    if (p)
+    {
+      UObject *parent = [self.package objectForIndex:p.intValue];
+      [result appendFormat:@"Parent: %@(%@)\n", parent.objectName, parent.objectClass];
+    }
+  }
+   
+  
+  NSArray *parameters = [self propertyValue:@"TextureParameterValues"];
+  NSMutableString *s = [NSMutableString new];
+  for (NSArray *paramterSet in parameters)
+  {
+    for (FPropertyTag *parameter in paramterSet)
+    {
+      if ([parameter.name isEqualToString:kPropNameNone])
+      {
+        [s appendString:@"\n"];
+      }
+      else if ([parameter.name isEqualToString:@"ParameterName"])
+      {
+        id v = parameter.value;
+        if ([v isKindOfClass:[NSNumber class]])
+        {
+          [s appendFormat:@"\t%@: ", [parameter.package nameForIndex:[v intValue]]];
+        }
+        else
+        {
+          [s appendFormat:@"\t%@: ", v];
+        }
+      }
+      else if ([parameter.name isEqualToString:@"ParameterValue"])
+      {
+        if (![parameter.type isEqualToString:kPropTypeObj])
+        {
+          [s appendString:parameter.value];
+          DThrow(@"Unknow texture parameter value type '%@'!", parameter.type);
+        }
+        else
+        {
+          NSString *contentPath = nil;
+          UObject *obj = [parameter.package objectForIndex:[parameter.value intValue]];
+          if (obj.importObject)
+          {
+            obj = [obj.package resolveImport:obj.importObject];
+            if (!obj)
+            {
+              obj = [parameter.package objectForIndex:[parameter.value intValue]];
+              [s appendFormat:@"[IMP]%@(Failed to resolve!)", [obj objectPath]];
+              continue;
+            }
+            contentPath = [obj objectNetPath];
+            if (!contentPath)
+            {
+              NSArray *pathComponents = [[[parameter.package objectForIndex:[parameter.value intValue]] objectPath] componentsSeparatedByString:@"."];
+              contentPath = [pathComponents componentsJoinedByString:@"/"];
+            }
+            else
+            {
+              NSArray *pathComponents = [contentPath componentsSeparatedByString:@"."];
+              NSString *objectPath = [[pathComponents subarrayWithRange:NSMakeRange(1, pathComponents.count - 1)] componentsJoinedByString:@"/"];
+              pathComponents = [[[parameter.package objectForIndex:[parameter.value intValue]] objectPath] componentsSeparatedByString:@"."];
+              NSString *packageName = pathComponents[1];
+              contentPath = [packageName stringByAppendingPathComponent:objectPath];
+            }
+          }
+          else if (obj.exportObject)
+          {
+            if (obj && obj.exportObject.exportFlags | EF_ForcedExport)
+            {
+              Texture2D *externalObj = (Texture2D*)[obj.package resolveForcedExport:obj.exportObject];
+              if (externalObj)
+              {
+                obj = externalObj;
+              }
+              else
+              {
+                DThrow(@"Failed to find: %@", obj.objectPath);
+              }
+            }
+            contentPath = [obj objectNetPath];
+            if (!contentPath)
+            {
+              NSArray *pathComponents = [[[parameter.package objectForIndex:[parameter.value intValue]] objectPath] componentsSeparatedByString:@"."];
+              contentPath = [[pathComponents subarrayWithRange:NSMakeRange(1, pathComponents.count-1)] componentsJoinedByString:@"/"];
+            }
+            else
+            {
+              NSArray *pathComponents = [contentPath componentsSeparatedByString:@"."];
+              NSString *objectPath = [[pathComponents subarrayWithRange:NSMakeRange(1, pathComponents.count - 1)] componentsJoinedByString:@"/"];
+              pathComponents = [[[parameter.package objectForIndex:[parameter.value intValue]] objectPath] componentsSeparatedByString:@"."];
+              NSString *packageName = pathComponents[1];
+              contentPath = [packageName stringByAppendingPathComponent:objectPath];
+            }
+          }
+          [s appendString:contentPath];
+          
+          if (textures)
+          {
+            NSString *exportPath = [[dataPath stringByAppendingPathComponent:@"Textures/S1Data"] stringByAppendingFormat:@"/%@.tga", contentPath];
+            if (![[NSFileManager defaultManager] fileExistsAtPath:exportPath])
+            {
+              [[NSFileManager defaultManager] createDirectoryAtPath:[exportPath stringByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:NULL];
+              [obj properties];
+              [(Texture2D*)obj exportWithOptions:@{@"path" : exportPath, @"mode" : @(Texture2DExportOptionsTGA)}];
+            }
+          }
+        }
+      }
+    }
+  }
+  if (s.length)
+  {
+    [result appendFormat:@"Texture Parameters:\n%@",s];
+  }
+  
+  parameters = [self propertyValue:@"ScalarParameterValues"];
+  s = [NSMutableString new];
+  
+  for (NSArray *paramterSet in parameters)
+  {
+    for (FPropertyTag *parameter in paramterSet)
+    {
+      if ([parameter.name isEqualToString:kPropNameNone])
+      {
+        [s appendString:@"\n"];
+      }
+      else if ([parameter.name isEqualToString:@"ParameterName"])
+      {
+        id v = parameter.value;
+        if ([v isKindOfClass:[NSNumber class]])
+        {
+          [s appendFormat:@"\t%@: ", [parameter.package nameForIndex:[v intValue]]];
+        }
+        else
+        {
+          [s appendFormat:@"\t%@: ", v];
+        }
+      }
+      else if ([parameter.name isEqualToString:@"ParameterValue"])
+      {
+        [s appendFormat:@"%@", parameter.value];
+      }
+    }
+  }
+  
+  if (s.length)
+  {
+    [result appendFormat:@"Scalar Parameters:\n%@",s];
+  }
+  
+  parameters = [self propertyValue:@"VectorParameterValues"];
+  s = [NSMutableString new];
+  
+  for (NSArray *paramterSet in parameters)
+  {
+    for (FPropertyTag *parameter in paramterSet)
+    {
+      if ([parameter.name isEqualToString:kPropNameNone])
+      {
+        [s appendString:@"\n"];
+      }
+      else if ([parameter.name isEqualToString:@"ParameterName"])
+      {
+        id v = parameter.value;
+        if ([v isKindOfClass:[NSNumber class]])
+        {
+          [s appendFormat:@"\t%@: ", [parameter.package nameForIndex:[v intValue]]];
+        }
+        else
+        {
+          [s appendFormat:@"\t%@: ", v];
+        }
+      }
+      else if ([parameter.name isEqualToString:@"ParameterValue"])
+      {
+        [s appendFormat:@"%@", parameter.value];
+      }
+    }
+  }
+  
+  if (s.length)
+  {
+    [result appendFormat:@"Vector Parameters:\n%@",s];
+  }
+  
+  return result;
+}
+
+
 @end
 
 
@@ -438,6 +634,54 @@ static void GetWarpModesFromTexture(Texture2D *tex, SCNWrapMode *wrapX, SCNWrapM
   if (self.staticPermutationResource)
     [d appendData:[self.staticPermutationResource cooked:offset + d.length]];
   return d;
+}
+
+- (NSString *)exportIncluding:(BOOL)textures to:(NSString *)dataPath
+{
+  [self properties];
+  NSMutableString *result = [NSMutableString new];
+  [result appendString:[super exportIncluding:textures to:dataPath]];
+  if (self.staticPermutationResource)
+  {
+    if (self.staticPermutationResource.staticSwitchParameters.count)
+    {
+      [result appendFormat:@"Static Switch Parameters:\n"];
+    }
+    for (FStaticSwitchParameter *p in self.staticPermutationResource.staticSwitchParameters)
+    {
+      [result appendFormat:@"\t%@: %@\n", p.parameterName.string, p.value ? @"True" : @"False"];
+    }
+    if (self.staticPermutationResource.staticComponentMaskParameters.count)
+    {
+      [result appendFormat:@"Static Component Mask Parameters:\n"];
+    }
+    for (FStaticComponentMaskParameter *p in self.staticPermutationResource.staticComponentMaskParameters)
+    {
+      NSString *components = @"";
+      if (p.r)
+      {
+        components = [components stringByAppendingString:@"R "];
+      }
+      if (p.g)
+      {
+        components = [components stringByAppendingString:@"G "];
+      }
+      if (p.b)
+      {
+        components = [components stringByAppendingString:@"B "];
+      }
+      if (p.a)
+      {
+        components = [components stringByAppendingString:@"A "];
+      }
+      if (!components.length)
+      {
+        components = @"None";
+      }
+      [result appendFormat:@"\t%@: %@\n", p.parameterName.string, components];
+    }
+  }
+  return result;
 }
 
 

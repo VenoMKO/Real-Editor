@@ -57,7 +57,7 @@
   panel.nameFieldStringValue = [self.exportName stringByAppendingPathExtension:self.rawExportExtension];
   panel.accessoryView = self.rawExportOptions.view;
   panel.prompt = @"Export";
-  NSString *path = [[NSUserDefaults standardUserDefaults] objectForKey:kSettingsExportPath];
+  NSString *path = [[NSUserDefaults standardUserDefaults] objectForKey:[kSettingsExportPath stringByAppendingFormat:@".%@",self.object.objectClass]];
   if (path)
     panel.directoryURL = [NSURL fileURLWithPath:path];
   
@@ -88,7 +88,7 @@
     {
       NSData *export = [self.object exportWithOptions:@{@"mode" : @(self.saveMode), @"raw" : @(YES)}];
       [export writeToURL:panel.URL atomically:YES];
-      [[NSUserDefaults standardUserDefaults] setObject:[panel.URL.path stringByDeletingLastPathComponent] forKey:kSettingsExportPath];
+      [[NSUserDefaults standardUserDefaults] setObject:[panel.URL.path stringByDeletingLastPathComponent] forKey:[kSettingsExportPath stringByAppendingFormat:@".%@",self.object.objectClass]];
       [[NSUserDefaults standardUserDefaults] setObject:@(self.saveMode) forKey:kSettingsExportMode];
     }
   }];

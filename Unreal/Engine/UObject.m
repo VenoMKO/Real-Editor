@@ -110,6 +110,11 @@
     
     self.netIndex = [s readInt:0];
     
+    if (self.netIndex)
+    {
+      self.package.netIndexLookup[@(self.netIndex)] = self;
+    }
+    
     if ([self.class isNative])
     {
       self.native = [self.class readFrom:s];
@@ -514,6 +519,33 @@
     p = [self.package.name stringByAppendingFormat:@".%@",p];
   }
   return p;
+}
+
+- (NSString *)objectNetPath
+{
+  [self properties];
+  if (!self.netIndex)
+  {
+    return nil;
+  }
+  NSArray *packageObject = self.package.allExports;
+  
+  BOOL unique = YES;
+  for (UObject *obj in packageObject)
+  {
+    if (obj != self && [obj.objectName.lowercaseString isEqualToString:self.objectName.lowercaseString])
+    {
+      unique = NO;
+      break;
+    }
+  }
+  
+  if (unique)
+  {
+    return nil;
+  }
+  
+  return [self.objectPath stringByAppendingFormat:@"_NX%d", self.netIndex];
 }
 
 @end

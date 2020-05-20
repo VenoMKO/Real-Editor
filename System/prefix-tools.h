@@ -44,8 +44,17 @@ FOUNDATION_EXPORT NSString *const kSettingsLevelExportTerrain;
 FOUNDATION_EXPORT NSString *const kSettingsLevelExportLights;
 FOUNDATION_EXPORT NSString *const kSettingsLevelExportInterp;
 FOUNDATION_EXPORT NSString *const kSettingsLevelExportTrees;
+FOUNDATION_EXPORT NSString *const kSettingsLevelExportBlockingVolumes;
+FOUNDATION_EXPORT NSString *const kSettingsLevelExportAero;
+FOUNDATION_EXPORT NSString *const kSettingsLevelExportMaterials;
+FOUNDATION_EXPORT NSString *const kSettingsLevelExportTextures;
+FOUNDATION_EXPORT NSString *const kSettingsLevelExportLODs;
+FOUNDATION_EXPORT NSString *const kSettingsLevelExportAnimations;
+FOUNDATION_EXPORT NSString *const kSettingsLevelExportTerrainResample;
+FOUNDATION_EXPORT NSString *const kSettingsLevelExportWeightMapResample;
 FOUNDATION_EXPORT NSString *const kSettingsLevelExportOther;
 FOUNDATION_EXPORT NSString *const kSettingsLevelExportAddIndex;
+FOUNDATION_EXPORT NSString *const kSettingsLevelExportActorsPerFile;
 
 FOUNDATION_EXPORT NSString *const kSettingsSkelMeshCalcTangents;
 FOUNDATION_EXPORT NSString *const kSettingsSkelMeshFlipTangents;

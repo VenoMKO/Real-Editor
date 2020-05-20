@@ -34,6 +34,11 @@
   return value ? [value boolValue] : NO;
 }
 
+- (BOOL)exportToT3D:(NSMutableString *)result padding:(unsigned)padding index:(int)index contentPath:(NSString *)contentPath
+{
+  return NO;
+}
+
 @end
 
 @implementation StaticMeshActor
@@ -49,11 +54,11 @@
   return nil;
 }
 
-- (BOOL)exportToT3D:(NSMutableString *)result padding:(unsigned)padding index:(int)index
+- (BOOL)exportToT3D:(NSMutableString *)result padding:(unsigned)padding index:(int)index contentPath:(NSString *)contentPath
 {
   [self properties];
   
-  if (![(MeshComponent *)self.component mesh])
+  if (!self.component.mesh)
   {
     return NO;
   }
@@ -65,10 +70,7 @@
     T3DAddLine(result, padding, T3DBeginObject(@"Object", @"StaticMeshComponent0", nil));
     {
       padding++;
-      NSMutableArray *targetPathComps = [[[[(MeshComponent*)[self component] mesh] objectPath] componentsSeparatedByString:@"."] mutableCopy];
-      [targetPathComps removeObjectAtIndex:0];
-      NSString *targetPath = [targetPathComps componentsJoinedByString:@"/"];
-      T3DAddLine(result, padding, @"StaticMesh=StaticMesh'\"%@\"'", [@"/Game/S1Data/" stringByAppendingString:targetPath]);
+      T3DAddLine(result, padding, @"StaticMesh=StaticMesh'\"%@\"'", contentPath);
       
       GLKVector3 pos = [self absolutePostion];
       T3DAddLine(result, padding, @"RelativeLocation=(X=%.6f,Y=%.6f,Z=%.6f)", pos.x, pos.y, pos.z);
@@ -117,7 +119,7 @@
   return nil;
 }
 
-- (BOOL)exportToT3D:(NSMutableString *)result padding:(unsigned)padding index:(int)index
+- (BOOL)exportToT3D:(NSMutableString *)result padding:(unsigned)padding index:(int)index contentPath:(NSString *)contentPath
 {
   [self properties];
   if (![self.component isKindOfClass:[MeshComponent class]])
@@ -133,11 +135,8 @@
       T3DAddLine(result, padding, T3DBeginObject(@"Object", @"SkeletalMeshComponent0", nil));
       {
         padding++;
-        NSMutableArray *targetPathComps = [[[[(MeshComponent*)[self component] mesh] objectPath] componentsSeparatedByString:@"."] mutableCopy];
-        [targetPathComps removeObjectAtIndex:0];
-        NSString *targetPath = [targetPathComps componentsJoinedByString:@"/"];
         T3DAddLine(result, padding, @"ClothingSimulationFactory=Class'\"/Script/ClothingSystemRuntimeNv.ClothingSimulationFactoryNv\"'");
-        T3DAddLine(result, padding, @"SkeletalMesh=SkeletalMesh'\"%@\"'", [@"/Game/S1Data/" stringByAppendingString:targetPath]);
+        T3DAddLine(result, padding, @"SkeletalMesh=SkeletalMesh'\"%@\"'", contentPath);
         
         GLKVector3 pos = [self absolutePostion];
         T3DAddLine(result, padding, @"RelativeLocation=(X=%.6f,Y=%.6f,Z=%.6f)", pos.x, pos.y, pos.z);
@@ -200,7 +199,7 @@
   return name ? name : self.objectName;
 }
 
-- (BOOL)exportToT3D:(NSMutableString *)result padding:(unsigned)padding index:(int)index
+- (BOOL)exportToT3D:(NSMutableString *)result padding:(unsigned)padding index:(int)index contentPath:(NSString *)contentPath
 {
   [self properties];
   if (![self.component isKindOfClass:[MeshComponent class]])
@@ -216,10 +215,7 @@
       T3DAddLine(result, padding, T3DBeginObject(@"Object", @"StaticMeshComponent0", nil));
       {
         padding++;
-        NSMutableArray *targetPathComps = [[[[(MeshComponent*)[self component] mesh] objectPath] componentsSeparatedByString:@"."] mutableCopy];
-        [targetPathComps removeObjectAtIndex:0];
-        NSString *targetPath = [targetPathComps componentsJoinedByString:@"/"];
-        T3DAddLine(result, padding, @"StaticMesh=StaticMesh'\"%@\"'", [@"/Game/S1Data/" stringByAppendingString:targetPath]);
+        T3DAddLine(result, padding, @"StaticMesh=StaticMesh'\"%@\"'", contentPath);
         
         GLKVector3 pos = [self absolutePostion];
         T3DAddLine(result, padding, @"RelativeLocation=(X=%.6f,Y=%.6f,Z=%.6f)", pos.x, pos.y, pos.z);

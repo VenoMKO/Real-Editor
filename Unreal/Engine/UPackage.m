@@ -25,10 +25,9 @@
 #define CRC32_POLY                  0x04C11DB7
 
 unsigned int CRCLookUpTable[256];
-static BOOL crcInit = NO;
 
 @class PackageCache;
-NSMutableDictionary *DirCache;
+NSArray *DirCache;
 PackageCache *GPackageCache;
 
 void InitCRCTable()
@@ -40,9 +39,6 @@ void InitCRCTable()
 
 unsigned int CRCForString( const char *Data , int Length)
 {
-  if (!crcInit)
-    InitCRCTable();
-  
   unsigned int CRC = 0xFFFFFFFF;
   
   for( int i=0; i<Length; i++ )
@@ -103,6 +99,59 @@ unsigned int CRCForString( const char *Data , int Length)
   {
     return [self.cache[path] package];
   }
+}
+
+- (UPackage *)packgeForName:(NSString *)name
+{
+  @synchronized (self)
+  {
+    __block PackageRef *ref = nil;
+    [self.cache enumerateKeysAndObjectsUsingBlock:^(NSString *path, PackageRef *obj, BOOL *stop) {
+      NSString *testName = path.lastPathComponent.stringByDeletingPathExtension.lowercaseString;
+      if ([testName isEqualToString:name.lowercaseString])
+      {
+        ref = obj;
+        *stop = YES;
+        return;
+      }
+    }];
+    if (ref)
+    {
+      return ref.package;
+    }
+    
+    if (!DirCache || !DirCache.count)
+    {
+      NSString *path = nil;
+      for (NSString *key in self.cache.allKeys)
+      {
+        NSArray *components = [key pathComponents];
+        NSUInteger index = [components indexOfObject:@"S1Game"];
+        if (index != NSNotFound)
+        {
+          path = [[components subarrayWithRange:NSMakeRange(0, index)] componentsJoinedByString:@"/"];
+          int cnt = 0;
+          DirCache = enumerateDirectory([NSURL fileURLWithPath:path], &cnt);
+          break;
+        }
+      }
+    }
+    
+    for (NSURL *url in DirCache)
+    {
+      NSString *testName = url.path.lastPathComponent.stringByDeletingPathExtension.lowercaseString;
+      if ([testName isEqualToString:name.lowercaseString])
+      {
+        UPackage *p = [UPackage readFromURL:url];
+        if (p)
+        {
+          [p preheat];
+        }
+        return p;
+      }
+    }
+  }
+  return nil;
 }
 
 - (void)retainPackage:(UPackage *)package
@@ -218,12 +267,17 @@ unsigned int CRCForString( const char *Data , int Length)
 
 @implementation UPackage
 
++ (id)package:(NSString *)name
+{
+  return [GPackageCache packgeForName:name];
+}
+
 + (void)initialize
 {
   [super initialize];
   static dispatch_once_t token;
   dispatch_once(&token, ^{
-    DirCache = [NSMutableDictionary new];
+    InitCRCTable();
     GPackageCache = [PackageCache new];
   });
 }
@@ -234,7 +288,9 @@ unsigned int CRCForString( const char *Data , int Length)
   {
     [GPackageCache releasePackage:package];
   }
+  [GPackageCache releasePackage:self];
   self.dependentPackages = nil;
+  self.netIndexLookup = nil;
   if (self.originalURL)
     [[NSFileManager defaultManager] removeItemAtPath:self.stream.url.path error:NULL];
 }
@@ -257,6 +313,7 @@ unsigned int CRCForString( const char *Data , int Length)
 {
   UPackage *p = [UPackage new];
   NSString *error = [p readFrom:stream];
+  [GPackageCache retainPackage:p];
   
   if (error)
   {
@@ -338,6 +395,7 @@ unsigned int CRCForString( const char *Data , int Length)
     self.game = UGameTera;
   }
   s.game = self.game;
+  self.netIndexLookup = [NSMutableDictionary new];
   self.headerSize = [s readInt:&err];
   self.folderName = [FString readFrom:s];
   self.flags = [s readInt:&err];
@@ -915,12 +973,12 @@ unsigned int CRCForString( const char *Data , int Length)
       }
     }
     
-    NSArray *items = DirCache[url.path];
+    NSArray *items = DirCache;
     if (!items)
     {
       int cnt = 0;
       items = enumerateDirectory(url, &cnt);
-      DirCache[url.path] = items;
+      DirCache = items;
     }
     
     for (NSURL *itemURl in items)
@@ -972,6 +1030,10 @@ unsigned int CRCForString( const char *Data , int Length)
   if (object.exportFlags | EF_ForcedExport)
   {
     UObject *uobj = object.object;
+    if (uobj.externalObject)
+    {
+      return uobj.externalObject;
+    }
     [uobj properties];
     NSString *objectPath = [uobj objectPath];
     if (objectPath)
@@ -1003,6 +1065,7 @@ unsigned int CRCForString( const char *Data , int Length)
         }
         if (result)
         {
+          uobj.externalObject = result;
           return result;
         }
       }
@@ -1020,12 +1083,12 @@ unsigned int CRCForString( const char *Data , int Length)
       path = [[components subarrayWithRange:NSMakeRange(0, index)] componentsJoinedByString:@"/"];
     }
     
-    NSArray *items = DirCache[path];
+    NSArray *items = DirCache;
     if (!items)
     {
       int cnt = 0;
       items = enumerateDirectory([NSURL fileURLWithPath:path], &cnt);
-      DirCache[path] = items;
+      DirCache = items;
     }
     
     for (NSURL *itemURL in items)
@@ -1064,6 +1127,7 @@ unsigned int CRCForString( const char *Data , int Length)
           }
           continue;
         }
+        uobj.externalObject = result;
         return result;
       }
     }
@@ -1108,6 +1172,10 @@ unsigned int CRCForString( const char *Data , int Length)
 - (id)objectForNetIndex:(int)index name:(NSString *)name
 {
   UObject *obj = nil;
+  if (name.length && [[self.netIndexLookup[@(index)] objectName].lowercaseString isEqualToString:name.lowercaseString])
+  {
+    return self.netIndexLookup[@(index)];
+  }
   @try
   {
     for (FObjectExport *export in self.exports)
@@ -1178,12 +1246,12 @@ unsigned int CRCForString( const char *Data , int Length)
     }
   }
   
-  NSArray *items = DirCache[path];
+  NSArray *items = DirCache;
   if (!items)
   {
     int cnt = 0;
     items = enumerateDirectory([NSURL fileURLWithPath:path], &cnt);
-    DirCache[path] = items;
+    DirCache = items;
   }
 
   for (NSURL *itemURL in items)
@@ -1223,6 +1291,32 @@ unsigned int CRCForString( const char *Data , int Length)
         continue;
       }
       return result;
+    }
+  }
+  return nil;
+}
+
+- (void)addDependentPackage:(UPackage *)package
+{
+  if (!package)
+  {
+    return;
+  }
+  if ([self.depends indexOfObject:package] == NSNotFound)
+  {
+    [GPackageCache retainPackage:package];
+    [self.depends addObject:package];
+  }
+}
+
+- (id)objectForName:(NSString *)name
+{
+  for (UObject *exp in self.allExports)
+  {
+    if ([exp.objectName.lowercaseString isEqualToString:name.lowercaseString])
+    {
+      [exp properties];
+      return exp;
     }
   }
   return nil;

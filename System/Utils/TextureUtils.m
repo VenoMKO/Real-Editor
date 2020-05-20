@@ -600,3 +600,24 @@ NSMutableData *DDSHeader(EPixelFormat fmt, NSSize size,int mipmaps)
   
   return imageData;
 }
+
+void WriteImageRef(CGImageRef img, NSString *path)
+{
+  if (!path.pathExtension.length)
+  {
+    path = [path stringByAppendingPathExtension:@"png"];
+  }
+  CFURLRef url = (__bridge CFURLRef)[NSURL fileURLWithPath:path];
+  CGImageDestinationRef destination = CGImageDestinationCreateWithURL(url, kUTTypePNG, 1, NULL);
+  if (!destination)
+  {
+    return;
+  }
+  CGImageDestinationAddImage(destination, img, nil);
+  if (!CGImageDestinationFinalize(destination))
+  {
+    CFRelease(destination);
+    return;
+  }
+  CFRelease(destination);
+}

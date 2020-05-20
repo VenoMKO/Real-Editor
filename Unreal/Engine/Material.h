@@ -23,6 +23,7 @@
 @end
 
 @interface MaterialInstance : Material
+- (NSString *)exportIncluding:(BOOL)textures to:(NSString *)dataPath;
 @end
 
 @interface MaterialInstanceConstant : MaterialInstance

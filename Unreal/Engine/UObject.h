@@ -31,6 +31,7 @@ typedef NS_ENUM(int, UObjectExportOptions)
 @property (nonatomic,strong) UObjectEditor   *editor;
 @property (strong) NSData         *customData;
 @property (assign) BOOL isZero;
+@property (weak) id externalObject;
 
 @property (strong) FStateFrame     *stateFrame;
 
@@ -61,6 +62,7 @@ typedef NS_ENUM(int, UObjectExportOptions)
 - (NSMutableData *)cookedIndex;
 - (NSInteger)objectIndex;
 - (NSString *)objectPath;
+- (NSString *)objectNetPath;
 
 - (FPropertyTag *)propertyForName:(NSString *)aName;
 - (id)propertyValue:(NSString *)name;

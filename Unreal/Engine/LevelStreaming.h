@@ -8,7 +8,7 @@
 
 #import "UObject.h"
 
-@interface LevelStreaminDistance : UObject
+@interface LevelStreamingDistance : UObject
 
 - (NSString *)streamingPackageName;
 - (int)zoneX;
@@ -17,14 +17,14 @@
 
 @end
 
-@interface KismetStreamingDistance : LevelStreaminDistance
+@interface LevelStreamingKismet : LevelStreamingDistance
 @end
 
-@interface S1LevelStreamingBaseLevel : LevelStreaminDistance
+@interface S1LevelStreamingBaseLevel : LevelStreamingDistance
 @end
 
-@interface S1LevelStreamingVOID : LevelStreaminDistance
+@interface S1LevelStreamingVOID : LevelStreamingDistance
 @end
 
-@interface S1LevelStreamingSound : LevelStreaminDistance
+@interface S1LevelStreamingSound : LevelStreamingDistance
 @end

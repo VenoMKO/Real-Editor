@@ -11,4 +11,7 @@
 
 @interface SpeedTreeActor : Actor
 @property SpeedTreeComponent *component;
+
+- (BOOL)exportToT3D:(NSMutableString *)result padding:(unsigned)padding index:(int)index contentPath:(NSString *)contentPath;
+
 @end

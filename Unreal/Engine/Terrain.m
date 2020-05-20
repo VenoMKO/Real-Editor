@@ -14,6 +14,8 @@
 #import "T3DUtils.h"
 #import "FTerrain.h"
 #import "Texture2D.h"
+#import "FMipMap.h"
+#import "Material.h"
 
 #define TERRAIN_ZSCALE        (1.0f/128.0f)
 #define MAX_HEIGHTMAP_TEXTURE_SIZE 512
@@ -819,6 +821,184 @@ id EnsureValue(id value, id def)
   terrainInfo = [terrainInfo stringByAppendingFormat:@"Position: %f %f %f", pos.x, pos.y, pos.z];
   terrainInfo = [terrainInfo stringByAppendingFormat:@"\nScale3D: %f %f %f", drawScale3D.x, drawScale3D.y, drawScale3D.z];
   return terrainInfo;
+}
+
+- (NSArray *)weightMaps
+{
+  return [self renderResampledWeightMaps:NO];
+}
+
+- (NSArray *)renderResampledWeightMaps:(BOOL)resample
+{
+  NSMutableArray *result = [NSMutableArray new];
+  int newWidth = self.numVerticesX;
+  int newHeight = self.numVerticesY;
+  int newSize = newWidth * newHeight;
+  for (Texture2D *map in self.weightedTextureMaps)
+  {
+    FMipMap *mip = [map bestMipMap];
+    
+    int width = map.size.width;
+    int height = map.size.height;
+    
+    uint8_t *sa = calloc(width * height, 1);
+    uint8_t *sr = calloc(width * height, 1);
+    uint8_t *sg = calloc(width * height, 1);
+    uint8_t *sb = calloc(width * height, 1);
+    
+    int stride = sizeof(uint8_t);
+    int components = 1;
+    
+    if ([map pixelFormat] == PF_A8R8G8B8)
+    {
+      stride = sizeof(uint32_t);
+      components = 4;
+    }
+    else
+    {
+      DThrow(@"WeightMap %@[%d] has unexpected pixel format: %d", map.objectName, [map.package indexForObject:map], [map pixelFormat]);
+      continue;
+    }
+    
+    uint8_t *sourceChannelData[] = {sa, sr, sg, sb};
+    const uint8_t *compositeSource = [[mip rawData] bytes];
+    int sourceSize = (int)[mip rawData].length;
+    for (int i = 0, k = 0; i < sourceSize; i+=stride, k++)
+    {
+      for (int j = 0; j < components; ++j)
+      {
+        sourceChannelData[j][k] = compositeSource[i+j];
+      }
+    }
+    
+    if (resample)
+    {
+      for (int i = 0; i < components; ++i)
+      {
+        uint8_t *output8bit = ResampleVisibilityData(width, height, newWidth, newHeight, sourceChannelData[i]);
+        CGDataProviderRef provider = CGDataProviderCreateWithData(NULL, (Byte*)output8bit, newSize, ReleaseCGDataCallback);
+        CGColorSpaceRef colorSpaceRef = CGColorSpaceCreateDeviceGray();
+        CGImageRef imageRef = CGImageCreate(newWidth,
+                                            newHeight,
+                                            8 /*bitsPerComponent*/,
+                                            8 /*bitsPerPixel*/,
+                                            newWidth /*bytesPerRow*/,
+                                            colorSpaceRef,
+                                            (CGBitmapInfo)kCGImageAlphaNone,
+                                            provider,
+                                            NULL /*decode*/,
+                                            NO /*shouldInterpolate*/,
+                                            kCGRenderingIntentDefault);
+        CGDataProviderRelease(provider);
+        CGColorSpaceRelease(colorSpaceRef);
+        [result addObject:[[NSImage alloc] initWithCGImage:imageRef size:NSMakeSize(newWidth, newHeight)]];
+      }
+    }
+    else
+    {
+      for (int i = 0; i < components; ++i)
+      {
+        uint8_t *output8bit = malloc(width * height);
+        memcpy(output8bit, sourceChannelData[i], width * height);
+        CGDataProviderRef provider = CGDataProviderCreateWithData(NULL, (Byte*)output8bit, width * height, ReleaseCGDataCallback);
+        CGColorSpaceRef colorSpaceRef = CGColorSpaceCreateDeviceGray();
+        
+        CGImageRef imageRef = CGImageCreate(width,
+                                            height,
+                                            8 /*bitsPerComponent*/,
+                                            8 /*bitsPerPixel*/,
+                                            width /*bytesPerRow*/,
+                                            colorSpaceRef,
+                                            (CGBitmapInfo)kCGImageAlphaNone,
+                                            provider,
+                                            NULL /*decode*/,
+                                            NO /*shouldInterpolate*/,
+                                            kCGRenderingIntentDefault);
+        CGDataProviderRelease(provider);
+        CGColorSpaceRelease(colorSpaceRef);
+        [result addObject:[[NSImage alloc] initWithCGImage:imageRef size:NSMakeSize(width, height)]];
+      }
+    }
+    free(sa);
+    free(sr);
+    free(sg);
+    free(sb);
+  }
+  return result;
+}
+
+- (NSArray *)layers
+{
+  NSMutableArray *result = [NSMutableArray new];
+  
+  NSArray *tmp = [self propertyValue:@"Layers"];
+  
+  for (NSArray *params in tmp)
+  {
+    NSString *layerName = nil;
+    int layerIndex = 0;
+    float mappingScale = 1;
+    MaterialInstanceConstant *materialConstant = nil;
+    for (FPropertyTag *param in params)
+    {
+      if ([param.name isEqualToString:@"Name"])
+      {
+        layerName = param.value;
+      }
+      else if ([param.name isEqualToString:@"AlphaMapIndex"])
+      {
+        layerIndex = [param.value intValue];
+      }
+      else if ([param.name isEqualToString:@"Setup"])
+      {
+        UObject *layerSetup = [param.package objectForIndex:[param.value intValue]];
+        if (layerSetup)
+        {
+          [layerSetup properties];
+          NSArray *materials = [layerSetup propertyValue:@"Materials"];
+          if (materials.count != 1)
+          {
+            DThrow(@"%@ - Invalid materials count: %d", layerSetup.objectName, materials.count);
+          }
+          else
+          {
+            UObject *layerMaterial = nil;
+            for (FPropertyTag *prop in materials[0])
+            {
+              if ([prop.name isEqualToString:@"Material"])
+              {
+                layerMaterial = [prop.package objectForIndex:[prop.value intValue]];
+                [layerMaterial properties];
+                break;
+              }
+            }
+            
+            if (!layerMaterial)
+            {
+              DThrow(@"%@ - Failed to find layer material!", layerSetup.objectName);
+            }
+            else
+            {
+              materialConstant = [param.package objectForIndex:[[layerMaterial propertyValue:@"Material"] intValue]];
+              mappingScale = [[layerMaterial propertyValue:@"MappingScale"] floatValue];
+              [materialConstant properties];
+            }
+          }
+        }
+      }
+    }
+    
+    if (materialConstant)
+    {
+      [result addObject:@{@"name" : layerName, @"index" : @(layerIndex), @"scale" : @(mappingScale), @"material" : materialConstant}];
+    }
+    else
+    {
+      [result addObject:@{@"name" : layerName, @"index" : @(layerIndex), @"scale" : @(mappingScale)}];
+    }
+  }
+  
+  return result;
 }
 
 @end

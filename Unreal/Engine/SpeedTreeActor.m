@@ -23,11 +23,11 @@
   return nil;
 }
 
-- (BOOL)exportToT3D:(NSMutableString *)result padding:(unsigned)padding index:(int)index
+- (BOOL)exportToT3D:(NSMutableString *)result padding:(unsigned)padding index:(int)index contentPath:(NSString *)contentPath
 {
   [self properties];
   
-  if (!self.component)
+  if (!self.component || ![self.component speedTree])
   {
     return NO;
   }

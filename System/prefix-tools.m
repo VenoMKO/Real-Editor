@@ -13,46 +13,55 @@
 
 NSString *const kErrorUnexpectedEnd = @"Unexpected end of file!";
 
-NSString *const kSettingsSaveAsPath = @"com.VenoMKO.Real-Editor.SettingsSaveAsPath";
-NSString *const kSettingsLoadTextures = @"com.VenoMKO.Real-Editor.SettingsLoadTextures";
-NSString *const kSettingsLoadLights = @"com.VenoMKO.Real-Editor.SettingsLoadLights";
-NSString *const kSettingsShowObjectInfo = @"com.VenoMKO.Real-Editor.SettingsShowObjectInfo";
-NSString *const kSettingsCacheSize = @"com.VenoMKO.Real-Editor.SettingsCacheSize";
-NSString *const kSettingsAAMode = @"com.VenoMKO.Real-Editor.AA-Mode";
-NSString *const kSettingsFov = @"com.VenoMKO.Real-Editor.FoV";
-NSString *const kSettings3DControls = @"com.VenoMKO.Real-Editor.3DControlsMode";
-NSString *const kSettingsExportMode = @"com.VenoMKO.Real-Editor.SettingsExportMode";
-NSString *const kSettingsTextureRenderR = @"com.VenoMKO.Real-Editor.SettingsRenderRed";
-NSString *const kSettingsTextureRenderG = @"com.VenoMKO.Real-Editor.SettingsRenderGreen";
-NSString *const kSettingsTextureRenderB = @"com.VenoMKO.Real-Editor.SettingsRenderBlue";
-NSString *const kSettingsTextureRenderA = @"com.VenoMKO.Real-Editor.SettingsRenderAlpha";
-NSString *const kSettingsTextureIsNormalMap = @"com.VenoMKO.Real-Editor.SettingsImportIsNormalMap";
-NSString *const kSettingsTextureGenMipMap = @"com.VenoMKO.Real-Editor.SettingsImportGenMipMap";
-NSString *const kSettingsTextureSaveMode = @"com.VenoMKO.Real-Editor.SettingsSaveMode";
-NSString *const kSettingsTextureFormat = @"com.VenoMKO.Real-Editor.SettingsImportTextureFormat";
-NSString *const kSettingsLevelExportStaticMeshes = @"com.VenoMKO.Real-Editor.SettingsExportLevelSM";
-NSString *const kSettingsLevelExportSkeletalMeshes = @"com.VenoMKO.Real-Editor.SettingsExportLevelSkel";
-NSString *const kSettingsLevelExportTerrain = @"com.VenoMKO.Real-Editor.SettingsExportLevelTerrain";
-NSString *const kSettingsLevelExportLights = @"com.VenoMKO.Real-Editor.SettingsExportLevelLights";
-NSString *const kSettingsLevelExportInterp = @"com.VenoMKO.Real-Editor.SettingsExportLevelInterp";
-NSString *const kSettingsLevelExportTrees = @"com.VenoMKO.Real-Editor.SettingsExportLevelTrees";
-NSString *const kSettingsLevelExportOther = @"com.VenoMKO.Real-Editor.SettingsExportLevelOther";
-NSString *const kSettingsLevelExportAddIndex = @"com.VenoMKO.Real-Editor.SettingsExportLevelAddIndex";
+NSString *const kSettingsSaveAsPath = @"SettingsSaveAsPath";
+NSString *const kSettingsLoadTextures = @"SettingsLoadTextures";
+NSString *const kSettingsLoadLights = @"SettingsLoadLights";
+NSString *const kSettingsShowObjectInfo = @"SettingsShowObjectInfo";
+NSString *const kSettingsCacheSize = @"SettingsCacheSize";
+NSString *const kSettingsAAMode = @"AA-Mode";
+NSString *const kSettingsFov = @"FoV";
+NSString *const kSettings3DControls = @"3DControlsMode";
+NSString *const kSettingsExportMode = @"SettingsExportMode";
+NSString *const kSettingsTextureRenderR = @"SettingsRenderRed";
+NSString *const kSettingsTextureRenderG = @"SettingsRenderGreen";
+NSString *const kSettingsTextureRenderB = @"SettingsRenderBlue";
+NSString *const kSettingsTextureRenderA = @"SettingsRenderAlpha";
+NSString *const kSettingsTextureIsNormalMap = @"SettingsImportIsNormalMap";
+NSString *const kSettingsTextureGenMipMap = @"SettingsImportGenMipMap";
+NSString *const kSettingsTextureSaveMode = @"SettingsSaveMode";
+NSString *const kSettingsTextureFormat = @"SettingsImportTextureFormat";
+NSString *const kSettingsLevelExportStaticMeshes = @"SettingsExportLevelSM";
+NSString *const kSettingsLevelExportSkeletalMeshes = @"SettingsExportLevelSkel";
+NSString *const kSettingsLevelExportTerrain = @"SettingsExportLevelTerrain";
+NSString *const kSettingsLevelExportLights = @"SettingsExportLevelLights";
+NSString *const kSettingsLevelExportInterp = @"SettingsExportLevelInterp";
+NSString *const kSettingsLevelExportTrees = @"SettingsExportLevelTrees";
+NSString *const kSettingsLevelExportBlockingVolumes = @"SettingsExportLevelBlockingVolumes";
+NSString *const kSettingsLevelExportAero = @"SettingsExportLevelAero";
+NSString *const kSettingsLevelExportMaterials = @"SettingsExportLevelMaterials";
+NSString *const kSettingsLevelExportTextures = @"SettingsExportLevelTextures";
+NSString *const kSettingsLevelExportLODs = @"SettingsExportLevelLODs";
+NSString *const kSettingsLevelExportAnimations = @"SettingsExportLevelAnimations";
+NSString *const kSettingsLevelExportTerrainResample = @"SettingsExportLevelTerrainResample";
+NSString *const kSettingsLevelExportWeightMapResample = @"SettingsExportLevelWeightMapResample";
+NSString *const kSettingsLevelExportOther = @"SettingsExportLevelOther";
+NSString *const kSettingsLevelExportAddIndex = @"SettingsExportLevelAddIndex";
+NSString *const kSettingsLevelExportActorsPerFile = @"SettingsExportLevelActorsPerFile";
 
-NSString *const kSettingsSkelMeshCalcTangents = @"com.VenoMKO.Real-Editor.SettingsImportSkelMeshCalculateTangents";
-NSString *const kSettingsSkelMeshFlipTangents = @"com.VenoMKO.Real-Editor.SettingsImportSkelMeshFlipTangents";
-NSString *const kSettingsSkelMeshImportSkeleton = @"com.VenoMKO.Real-Editor.SettingsImportSkelMeshImportSkeleton";
-NSString *const kSettingsSkelMeshIgnoreBPrefix = @"com.VenoMKO.Real-Editor.SettingsImportSkelMeshIgonrePrefix";
+NSString *const kSettingsSkelMeshCalcTangents = @"SettingsImportSkelMeshCalculateTangents";
+NSString *const kSettingsSkelMeshFlipTangents = @"SettingsImportSkelMeshFlipTangents";
+NSString *const kSettingsSkelMeshImportSkeleton = @"SettingsImportSkelMeshImportSkeleton";
+NSString *const kSettingsSkelMeshIgnoreBPrefix = @"SettingsImportSkelMeshIgonrePrefix";
 
-NSString *const kSettingsExportPath = @"com.VenoMKO.Real-Editor.SettingsExportPath";
-NSString *const kSettingsImportPath = @"com.VenoMKO.Real-Editor.SettingsImportPath";
-NSString *const kSettingsLookForDepends = @"com.VenoMKO.Real-Editor.LookForDepends";
-NSString *const kSettingsProjectDir = @"com.VenoMKO.Real-Editor.ProjectDir";
+NSString *const kSettingsExportPath = @"SettingsExportPath";
+NSString *const kSettingsImportPath = @"SettingsImportPath";
+NSString *const kSettingsLookForDepends = @"LookForDepends";
+NSString *const kSettingsProjectDir = @"ProjectDir";
 
-NSString *const kSettingsCheckForUpdates = @"com.VenoMKO.Real-Editor.CheckForUpdates";
+NSString *const kSettingsCheckForUpdates = @"CheckForUpdates";
 
-NSString *const kSettingsLogging = @"com.VenoMKO.Real-Editor.Logging";
-NSString *const kSettingsRetention = @"com.VenoMKO.Real-Editor.Retention";
+NSString *const kSettingsLogging = @"Logging";
+NSString *const kSettingsRetention = @"Retention";
 
 NSString *const kClass = @"Class";
 NSString *const kComponent = @"Component";
@@ -100,7 +109,16 @@ NSDictionary *Defaults()
            kSettingsLevelExportInterp : @(YES),
            kSettingsLevelExportTrees : @(YES),
            kSettingsLevelExportOther : @(NO),
-           kSettingsLevelExportAddIndex : @(YES)
+           kSettingsLevelExportBlockingVolumes : @(NO),
+           kSettingsLevelExportAero : @(NO),
+           kSettingsLevelExportMaterials : @(NO),
+           kSettingsLevelExportTextures : @(NO),
+           kSettingsLevelExportLODs : @(NO),
+           kSettingsLevelExportAnimations : @(NO),
+           kSettingsLevelExportWeightMapResample : @(NO),
+           kSettingsLevelExportTerrainResample : @(NO),
+           kSettingsLevelExportAddIndex : @(YES),
+           kSettingsLevelExportActorsPerFile : @(350)
            };
 }
 

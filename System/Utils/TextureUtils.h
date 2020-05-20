@@ -23,3 +23,5 @@ void DecompressAlphaDXT5(Byte *targetRGBA, NSData *bytes, int sourceOffset, int 
 void DecompressColor(Byte *targetRGBA, NSData *bytes, int srcOffset, BOOL dxtFlag);
 int Unpack565(Byte *packed, int pidx, Byte *color, int cidx, BOOL dxtFlag);
 NSMutableData *DDSHeader(EPixelFormat fmt, NSSize size,int mipmaps);
+
+void WriteImageRef(CGImageRef img, NSString *path);

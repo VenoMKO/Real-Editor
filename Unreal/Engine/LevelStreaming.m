@@ -7,12 +7,13 @@
 //
 
 #import "LevelStreaming.h"
+#import "UPackage.h"
 
-@implementation LevelStreaminDistance
+@implementation LevelStreamingDistance
 
 - (NSString *)packageName
 {
-  return [self propertyValue:@"PackageName"];
+  return [self.package nameForIndex:[[self propertyValue:@"PackageName"] intValue]];
 }
 
 - (int)zoneX
@@ -44,7 +45,7 @@
 
 @end
 
-@implementation KismetStreamingDistance
+@implementation LevelStreamingKismet
 
 @end
 

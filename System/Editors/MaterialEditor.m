@@ -10,10 +10,10 @@
 #import "UPackage.h"
 #import "FString.h"
 
-const CGFloat AttrFontSizeTitle = 11;
-const CGFloat AttrFontSize = 8;
+const CGFloat AttrFontSizeTitle = 6;
+const CGFloat AttrFontSize = 4;
 const CGFloat CanvasPadding = 100;
-const CGFloat ExpressionWidth = 130;
+const CGFloat ExpressionWidth = 70;
 const CGFloat ExpressionHeight = 50;
 
 @interface MaterialEditor ()
@@ -39,8 +39,8 @@ const CGFloat ExpressionHeight = 50;
 {
   [super viewDidLoad];
   self.scrollView.allowsMagnification = YES;
-  self.scrollView.maxMagnification = 1.5;
-  self.scrollView.minMagnification = .25;
+  self.scrollView.maxMagnification = 2;
+  self.scrollView.minMagnification = .5;
   self.scrollView.magnification = self.scrollView.minMagnification;
   [self.object properties];
   self.canvas.expressionToViewMap = [NSMutableDictionary new];
@@ -267,7 +267,7 @@ const CGFloat ExpressionHeight = 50;
   
   if ([expression propertyForName:@"ALessThanB"])
   {
-    [self drawLineFromElement:expression name:@"AGreaterThanB" index:index labelColor:color];index++;
+    [self drawLineFromElement:expression name:@"ALessThanB" index:index labelColor:color];index++;
   }
   
   if ([expression propertyForName:@"Input"])

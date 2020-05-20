@@ -54,8 +54,8 @@
   [panel beginSheetModalForWindow:self.view.window completionHandler:^(NSInteger result) {
     if (result == NSModalResponseOK)
     {
-      [self writeCGImage:[self.object heightMap] to:panel.URL.path];
-      [self writeCGImage:[self.object visibilityMap] to:[panel.URL.path.stringByDeletingPathExtension stringByAppendingString:@"_vis"]];
+      [self writeCGImage:[self.object heightMap] to:[panel.URL.path.stringByDeletingPathExtension stringByAppendingFormat:@"_TerrainHeightMap"]];
+      [self writeCGImage:[self.object visibilityMap] to:[panel.URL.path.stringByDeletingPathExtension stringByAppendingString:@"_TerrainVisibilityMap"]];
       [self.object.info writeToFile:[panel.URL.path stringByAppendingPathExtension:@"txt"] atomically:YES encoding:NSUTF8StringEncoding error:nil];
       [[NSUserDefaults standardUserDefaults] setObject:[panel.URL path] forKey:[kSettingsExportPath stringByAppendingFormat:@".%@",self.object.objectClass]];
     }
@@ -68,19 +68,7 @@
   {
     path = [[path stringByDeletingPathExtension] stringByAppendingPathExtension:@"png"];
   }
-  CFURLRef url = (__bridge CFURLRef)[NSURL fileURLWithPath:path];
-  CGImageDestinationRef destination = CGImageDestinationCreateWithURL(url, kUTTypePNG, 1, NULL);
-  if (!destination)
-  {
-    return;
-  }
-  CGImageDestinationAddImage(destination, self.imageView.image, nil);
-  if (!CGImageDestinationFinalize(destination))
-  {
-    CFRelease(destination);
-    return;
-  }
-  CFRelease(destination);
+  WriteImageRef(image, path);
 }
 
 - (NSString*)exportName

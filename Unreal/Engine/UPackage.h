@@ -50,6 +50,9 @@ NSArray *enumerateDirectory(NSURL *aUrl, int *validItems);
 @property (nonatomic, assign) int       importsOffset;
 @property (nonatomic, assign) int       dependsOffset;
 
+@property (retain) NSMutableDictionary *netIndexLookup;
+
++ (id)package:(NSString *)name;
 + (id)readFromURL:(NSURL *)url;
 + (id)readFromPath:(NSString *)path;
 + (id)readFrom:(FIStream *)stream;
@@ -60,10 +63,12 @@ NSArray *enumerateDirectory(NSURL *aUrl, int *validItems);
 - (UObject *)externalObjectForPath:(NSString *)objectPath;
 - (FObjectExport *)createExportObject:(NSString *)objectName class:(NSString *)objectClass;
 - (void)addNewExportObject:(FObject *)object forParent:(FObject *)parent;
+- (void)addDependentPackage:(UPackage *)package;
 
 - (NSString *)nameForIndex:(NSInteger)index;
 - (int)indexForName:(NSString *)name;
 
+- (id)objectForName:(NSString *)name;
 - (id)objectForIndex:(NSInteger)index;
 - (id)objectForNetIndex:(int)index name:(NSString *)name;
 - (int)indexForObject:(id)object;

@@ -23,6 +23,8 @@
 #import "Terrain.h"
 #import "SpeedTreeActor.h"
 #import "PrefabInstance.h"
+#import "LevelStreaming.h"
+#import "TextureUtils.h"
 
 #define DEBUG_EXPORT_BOUNDS 0
 #define DEBUG_EXPORT_CLASS 0
@@ -79,6 +81,17 @@ const double ScaleFactor = 1.0;
 @property BOOL                            exportOtherActors;
 @property BOOL                            exportAddObjectIndex;
 @property BOOL                            exportSpeedTrees;
+@property BOOL                            exportMaterials;
+@property BOOL                            exportTextures;
+@property BOOL                            exportBlockingVolumes;
+@property BOOL                            exportAeroSets;
+@property BOOL                            exportAnimations;
+@property BOOL                            exportLODs;
+@property BOOL                            exportResampleTerrain;
+@property BOOL                            exportResampleWeightMaps;
+@property int                             exportActorsPerFile;
+
+@property (strong) IBOutlet NSWindow      *exportPanel;
 
 @end
 
@@ -293,7 +306,7 @@ const double ScaleFactor = 1.0;
   }];
 }
 
-- (void)exportT3D:(NSString *)path
+- (void)exportT3D:(NSString *)path level:(Level *)level
 {
   NSString *dataDirPath = [path stringByDeletingLastPathComponent];
   [[NSFileManager defaultManager] createDirectoryAtPath:dataDirPath withIntermediateDirectories:YES attributes:nil error:NULL];
@@ -303,7 +316,7 @@ const double ScaleFactor = 1.0;
   T3DAddLine(result, padding, T3DBeginObject(@"Map", nil, nil)); padding++;
   T3DAddLine(result, padding, T3DBeginObject(@"Level", nil, nil)); padding++;
   
-  NSArray *actors = [[[self.object actors] nsarray] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(Actor *actor, NSDictionary<NSString *,id> *bindings) {
+  NSArray *actors = [[[level actors] nsarray] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(Actor *actor, NSDictionary<NSString *,id> *bindings) {
     if ([actor isKindOfClass:[StaticMeshActor class]])
     {
       if (!self.exportStaticMeshes)
@@ -356,145 +369,150 @@ const double ScaleFactor = 1.0;
   double step = 100. / (float)actors.count;
   double progress = 0;
   NSMutableString *actorsList = [@"Actors:\n" mutableCopy];
+  int fileIdx = 0;
+  int actorCount = 0;
+  int totalActorCount = 0;
   for (Actor *actor in actors)
   {
-    progress += step;
-    if (cancelExport)
+    @autoreleasepool
     {
-      return;
-    }
-    [actor properties];
-    NSString *name = [actor displayName];
-    int idx = -1;
-    if (!self.exportAddObjectIndex)
-    {
-      if (!indicies[name])
+      [actor properties];
+      if (self.exportActorsPerFile > 0 && actorCount >= self.exportActorsPerFile)
       {
-        indicies[name] = @(1);
-        idx = 0;
+        padding--;
+        T3DAddLine(result, padding, T3DEndObject(@"Level"));
+        padding--;
+        T3DAddLine(result, padding, T3DEndObject(@"Map"));
+        T3DAddLine(result, padding, T3DBeginObject(@"FolderList", nil, nil));
+        padding++;
+        T3DAddLine(result, padding, @"Folder=\"%@\"",level.package.name);
+        padding--;
+        T3DAddLine(result, padding, T3DEndObject(@"FolderList"));
+        NSString *t3dpath = [path.stringByDeletingPathExtension stringByAppendingFormat:@"_%d.t3d", ++fileIdx];
+        DLog(@"Saving %@", t3dpath);
+        [result writeToFile:t3dpath atomically:YES encoding:NSUTF8StringEncoding error:NULL];
+        result = [NSMutableString new];
+        padding = 0;
+        actorCount = 0;
+        T3DAddLine(result, padding, T3DBeginObject(@"Map", nil, nil)); padding++;
+        T3DAddLine(result, padding, T3DBeginObject(@"Level", nil, nil)); padding++;
+      }
+      progress += step;
+      if (cancelExport)
+      {
+        return;
+      }
+      NSString *name = [actor displayName];
+      int idx = -1;
+      if (!self.exportAddObjectIndex)
+      {
+        if (!indicies[name])
+        {
+          indicies[name] = @(1);
+          idx = 0;
+        }
+        else
+        {
+          idx = [indicies[name] intValue];
+          indicies[name] = @(idx+1);
+        }
       }
       else
       {
-        idx = [indicies[name] intValue];
-        indicies[name] = @(idx+1);
+        idx = [actor.package indexForObject:actor];
       }
-    }
-    else
-    {
-      idx = [actor.package indexForObject:actor];
-    }
-#if DEBUG_EXPORT_BOUNDS
-    if (!CheckBounds(actor))
-    {
-      continue;
-    }
-#endif
-#if DEBUG_EXPORT_CLASS
-    if (!CheckClass(actor))
-    {
-      continue;
-    }
-#endif
-    dispatch_async(dispatch_get_main_queue(), ^{
-      self.exportProgressValue = progress;
-      self.exportProgressDescription = [NSString stringWithFormat:@"Exporting: %@", name];
-    });
-    if ([actor isKindOfClass:[StaticMeshActor class]] ||
-        [actor isKindOfClass:[InterpActor class]])
-    {
-      if (![actor exportToT3D:result padding:padding index:idx])
+  #if DEBUG_EXPORT_BOUNDS
+      if (!CheckBounds(actor))
       {
         continue;
       }
-      [actorsList appendFormat:@"[%d]%@(%@)\n", [actor.package indexForObject:actor], [actor displayName], [actor objectClass]];
-      StaticMesh *mesh = (StaticMesh*)[(StaticMeshActor*)actor mesh];
-      
-      if (mesh)
+  #endif
+  #if DEBUG_EXPORT_CLASS
+      if (!CheckClass(actor))
       {
-        if (mesh.exportObject.exportFlags | EF_ForcedExport)
+        continue;
+      }
+  #endif
+      dispatch_async(dispatch_get_main_queue(), ^{
+        self.exportProgressValue = progress;
+        self.exportProgressDescription = [NSString stringWithFormat:@"Exporting: %@/%@", [actor.objectPath stringByReplacingOccurrencesOfString:@"." withString:@"/"].stringByDeletingLastPathComponent, name];
+      });
+      if ([actor isKindOfClass:[StaticMeshActor class]] ||
+          [actor isKindOfClass:[InterpActor class]] ||
+          [actor isKindOfClass:[SkeletalMeshActor class]])
+      {
+        StaticMesh *mesh = (StaticMesh*)[(StaticMeshActor*)actor mesh];
+        NSString *contentPath = nil;
+        
+        [mesh properties];
+        
+        NSString *materials = @"";
+        if (self.exportMaterials)
         {
-          mesh = (id)[mesh.package resolveForcedExport:mesh.exportObject];
-          if (cancelExport) return;
+          for (MaterialInstance *m in mesh.materials)
+          {
+            NSString *mPath = [self exportMaterial:m includeingTextures:self.exportTextures to:dataDirPath];
+            materials = [materials stringByAppendingFormat:@"%@\n", mPath];
+          }
         }
-        else if (mesh.importObject)
+        
+        if (![self resolveObject:&mesh path:&contentPath])
         {
-          mesh = (id)[mesh.package resolveImport:mesh.importObject];
-          if (cancelExport) return;
-        }
-        if (!mesh || !mesh.lodInfo.count)
-        {
-          DLog(@"Failed to find mesh: %@", actor);
           continue;
         }
-        if (cancelExport) return;
         
-        NSString *targetPath = nil;
-        NSString *fbxPath = nil;
+        NSString *t3DContentPath = [@"/Game/S1Data/" stringByAppendingString:contentPath];
+        
+        if (![(MeshActor *)actor exportToT3D:result padding:padding index:idx contentPath:t3DContentPath])
         {
-          NSArray *targetPathComps = [[mesh objectPath] componentsSeparatedByString:@"."];
-          //targetPathComps = [targetPathComps subarrayWithRange:NSMakeRange(1, targetPathComps.count - 1)];
-          NSString *meshTypeDir = [mesh isKindOfClass:[StaticMesh class]] ? @"StaticMeshes/S1Data" : @"SkeletalMeshes/S1Data";
-          targetPath = [[dataDirPath stringByAppendingPathComponent:meshTypeDir] stringByAppendingPathComponent:[targetPathComps componentsJoinedByString:@"/"]];
-          fbxPath = [targetPath stringByAppendingPathExtension:@"fbx"];
+          continue;
         }
         
-        [actorsList appendFormat:@"\tMesh: %@:%@\n", mesh.package.stream.url.path, [mesh.objectPath stringByReplacingOccurrencesOfString:@"." withString:@"/"]];
+        NSString *meshTypeDir = [mesh isKindOfClass:[StaticMesh class]] ? @"StaticMeshes/S1Data" : @"SkeletalMeshes/S1Data";
+        NSString *fbxPath = [[[dataDirPath stringByAppendingPathComponent:meshTypeDir] stringByAppendingPathComponent:contentPath] stringByAppendingPathExtension:@"fbx"];
+        
         if (![[NSFileManager defaultManager] fileExistsAtPath:fbxPath])
         {
-          [[NSFileManager defaultManager] createDirectoryAtPath:[targetPath stringByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:NULL];
-          dispatch_async(dispatch_get_main_queue(), ^{
-            self.exportProgressDescription = [NSString stringWithFormat:@"Exporting: %@", [fbxPath lastPathComponent]];
-          });
+          NSDictionary *fbxOptions = @{@"path" : fbxPath, @"lodIdx" : @(0), @"type" : @(0)};
+          [[NSFileManager defaultManager] createDirectoryAtPath:[fbxPath stringByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:NULL];
           if ([mesh isKindOfClass:[StaticMesh class]])
           {
-            //TODO: UCX_name collisions
-            [[FBXUtils new] exportStaticMesh:mesh options:@{@"path" : fbxPath, @"lodIdx" : @(0), @"type" : @(0)}];
+            [[FBXUtils new] exportStaticMesh:mesh options:fbxOptions];
           }
-          else if ([mesh isKindOfClass:[SkeletalMesh class]])
+          else
           {
-            [[FBXUtils new] exportSkeletalMesh:(SkeletalMesh*)mesh options:@{@"path" : fbxPath, @"lodIdx" : @(0), @"type" : @(0)}];
+            [[FBXUtils new] exportSkeletalMesh:(SkeletalMesh*)mesh options:fbxOptions];
           }
         }
-      }
-    }
-    else if ([actor isKindOfClass:[SpeedTreeActor class]])
-    {
-      if (![actor exportToT3D:result padding:padding index:idx])
-      {
-        continue;
-      }
-      [actorsList appendFormat:@"[%d]%@(%@)\n", [actor.package indexForObject:actor], [actor displayName], [actor objectClass]];
-      
-      SpeedTree *tree = [[(SpeedTreeActor *)actor component] speedTree];
-      
-      if (tree)
-      {
-        if (tree.exportObject.exportFlags | EF_ForcedExport)
+        NSString *actorOutput = [NSString stringWithFormat:@"[%d]%@(%@)\n\tMesh: %@", [actor.package indexForObject:actor], [mesh objectName], [actor objectClass], contentPath];
+        if (materials.length)
         {
-          tree = (id)[tree.package resolveForcedExport:tree.exportObject];
-          if (cancelExport) return;
+          actorOutput = [actorOutput stringByAppendingFormat:@"\n\tMaterials:\n\t\t%@",[materials stringByReplacingOccurrencesOfString:@"\n" withString:@"\n\t\t"]];
         }
-        else if (tree.importObject)
+        [actorsList appendFormat:@"%@\n", actorOutput];
+      }
+      else if ([actor isKindOfClass:[SpeedTreeActor class]])
+      {
+        SpeedTree *tree = [[(SpeedTreeActor *)actor component] speedTree];
+        NSString *contentPath = nil;
+        
+        if (![self resolveObject:&tree path:&contentPath])
         {
-          tree = (id)[tree.package resolveImport:tree.importObject];
-          if (cancelExport) return;
+          continue;
         }
         
-        NSString *targetPath = nil;
-        NSString *sptPath = nil;
+        NSString *t3DContentPath = [@"/Game/S1Data/" stringByAppendingString:contentPath];
+        if (![(SpeedTreeActor*)actor exportToT3D:result padding:padding index:idx contentPath:t3DContentPath])
         {
-          NSArray *targetPathComps = [[tree objectPath] componentsSeparatedByString:@"."];
-          //targetPathComps = [targetPathComps subarrayWithRange:NSMakeRange(1, targetPathComps.count - 1)];
-          targetPath = [[dataDirPath stringByAppendingPathComponent:@"SpeedTree/S1Data"] stringByAppendingPathComponent:[targetPathComps componentsJoinedByString:@"/"]];
-          sptPath = [targetPath stringByAppendingPathExtension:@"spt"];
+          continue;
         }
+        [actorsList appendFormat:@"[%d]%@(%@)\n", [actor.package indexForObject:actor], [actor displayName], [actor objectClass]];
+        
+        NSString *sptPath = [[[dataDirPath stringByAppendingPathComponent:@"SpeedTree/S1Data"] stringByAppendingPathComponent:contentPath] stringByAppendingPathExtension:@"spt"];
+        
         if (![[NSFileManager defaultManager] fileExistsAtPath:sptPath])
         {
-          [[NSFileManager defaultManager] createDirectoryAtPath:[targetPath stringByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:NULL];
-          dispatch_async(dispatch_get_main_queue(), ^{
-            self.exportProgressDescription = [NSString stringWithFormat:@"Exporting: %@", [sptPath lastPathComponent]];
-          });
-          
+          [[NSFileManager defaultManager] createDirectoryAtPath:[sptPath stringByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:NULL];
           NSData *data = [tree exportWithOptions:nil];
           if (data.length)
           {
@@ -502,17 +520,85 @@ const double ScaleFactor = 1.0;
           }
         }
       }
-    }
-    else
-    {
-      if ([actor exportToT3D:result padding:padding index:idx])
+      else if ([actor isKindOfClass:[Terrain class]])
       {
+        NSString *terrainPath = [dataDirPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_Terrain", actor.package.name]];
+        [[NSFileManager defaultManager] createDirectoryAtPath:terrainPath withIntermediateDirectories:YES attributes:nil error:NULL];
+        CGImageRef img = [(Terrain *)actor renderResampledHeightMap:self.exportResampleTerrain];
+        WriteImageRef(img, [terrainPath stringByAppendingPathComponent:@"HeightMap"]);
+        CGImageRelease(img);
+        img = [(Terrain *)actor renderResampledVisibilityMap:self.exportResampleTerrain];
+        WriteImageRef(img, [terrainPath stringByAppendingPathComponent:@"VisibilityMap"]);
+        CGImageRelease(img);
+        {
+          GLKVector3 v = actor.absolutePostion;
+          NSString *info = [NSString stringWithFormat:@"Position: %f %f %f\n", v.x, v.y, v.z];
+          v = actor.absoluteDrawScale3D;
+          v = GLKVector3MultiplyScalar(v, actor.absoluteDrawScale);
+          if (self.exportResampleTerrain)
+          {
+            v.x /= [(Terrain*)actor resampleScaleX];
+            v.y /= [(Terrain*)actor resampleScaleY];
+          }
+          info = [info stringByAppendingFormat:@"Scale %f %f %f\n", v.x, v.y, v.z];
+          if (self.exportResampleTerrain)
+          {
+            info = [info stringByAppendingFormat:@"Resample Scale %f %f\n", [(Terrain*)actor resampleScaleX], [(Terrain*)actor resampleScaleY]];
+          }
+          [info writeToFile:[terrainPath stringByAppendingPathComponent:@"Info.txt"] atomically:YES encoding:NSUTF8StringEncoding error:NULL];
+        }
+        NSArray *weightMaps = [(Terrain*)actor renderResampledWeightMaps:self.exportResampleWeightMaps && !self.exportResampleTerrain];
+        NSString *terrainLayersPath = [terrainPath stringByAppendingPathComponent:@"Layers"];
+        [[NSFileManager defaultManager] createDirectoryAtPath:terrainLayersPath withIntermediateDirectories:YES attributes:nil error:NULL];
+        NSArray *layers = [(Terrain *)actor layers];
+        weightMaps = [weightMaps subarrayWithRange:NSMakeRange(0, layers.count)];
+        NSMutableString *layerInfo = [NSMutableString new];
+        int layersCount = (int)layers.count;
+        for (NSDictionary *layer in layers)
+        {
+          int layerIdx = [layer[@"index"] intValue];
+          NSImage *map = nil;
+          if (layerIdx < 0)
+          {
+            map = weightMaps[layersCount + layerIdx];
+            layersCount--;
+          }
+          else
+          {
+            map = weightMaps[(layersCount - 1) - layerIdx];
+          }
+          NSData *pngData = [[map unscaledBitmapImageRep] representationUsingType:NSBitmapImageFileTypePNG properties:@{}];
+          [pngData writeToFile:[terrainLayersPath stringByAppendingFormat:@"/[%@]%@.png", layer[@"index"], layer[@"name"]] atomically:YES];
+          [layerInfo appendFormat:@"%d %@\n", layerIdx, layer[@"name"]];
+          [layerInfo appendFormat:@"\tMapping Scale: %@\n", layer[@"scale"]];
+          [layerInfo appendFormat:@"\tMaterial: %@\n", layer[@"material"]];
+          
+          if (self.exportMaterials && layer[@"material"])
+          {
+            [self exportMaterial:layer[@"material"] includeingTextures:self.exportTextures to:dataDirPath];
+          }
+          
+        }
+        [layerInfo writeToFile:[terrainLayersPath stringByAppendingPathComponent:@"Setup.txt"] atomically:YES encoding:NSUTF8StringEncoding error:nil];
         [actorsList appendFormat:@"[%d]%@(%@)\n", [actor.package indexForObject:actor], [actor objectName], [actor objectClass]];
       }
+      else
+      {
+        if (![actor exportToT3D:result padding:padding index:idx])
+        {
+          continue;
+        }
+        [actorsList appendFormat:@"[%d]%@(%@)\n", [actor.package indexForObject:actor], [actor objectName], [actor objectClass]];
+      }
+      actorCount++;
+      totalActorCount++;
     }
   }
   
-  [actorsList writeToFile:[[path stringByDeletingLastPathComponent] stringByAppendingFormat:@"/%@_actors_list.txt", self.object.package.name] atomically:YES encoding:NSUTF8StringEncoding error:nil];
+  if (totalActorCount)
+  {
+    [actorsList writeToFile:[[path stringByDeletingLastPathComponent] stringByAppendingFormat:@"/%@_Actors.txt", level.package.name] atomically:YES encoding:NSUTF8StringEncoding error:nil];
+  }
   
   padding--;
   T3DAddLine(result, padding, T3DEndObject(@"Level"));
@@ -520,17 +606,114 @@ const double ScaleFactor = 1.0;
   T3DAddLine(result, padding, T3DEndObject(@"Map"));
   T3DAddLine(result, padding, T3DBeginObject(@"FolderList", nil, nil));
   padding++;
-  T3DAddLine(result, padding, @"Folder=\"%@\"",self.object.package.name);
+  T3DAddLine(result, padding, @"Folder=\"%@\"",level.package.name);
   padding--;
   T3DAddLine(result, padding, T3DEndObject(@"FolderList"));
   [result deleteCharactersInRange:NSMakeRange(0, 1)];
   if (cancelExport) return;
-  [result writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:NULL];
-  dispatch_async(dispatch_get_main_queue(), ^{
-    self.exportProgressValue = 100;
-    self.exportProgressDescription = @"Finished!";
-    self.exportProgressCancelTitle = @"Done";
-  });
+  if (fileIdx)
+  {
+    path = [path.stringByDeletingPathExtension stringByAppendingFormat:@"_%d.t3d", fileIdx];
+  }
+  DLog(@"Saving %@", path);
+  if (actorCount)
+  {
+    [result writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:NULL];
+  }
+}
+
+// FIXME: Already resolved objects may produce incorrect contentPath with the first path component dropped
+- (BOOL)resolveObject:(UObject **)object path:(NSString **)path
+{
+  UObject *obj = *object;
+  if (!obj)
+  {
+    return NO;
+  }
+  
+  if (obj.exportObject.exportFlags | EF_ForcedExport)
+  {
+    UObject *resolved = [obj.package resolveForcedExport:obj.exportObject];
+    if (resolved)
+    {
+      obj = resolved;
+    }
+    else
+    {
+      DThrow(@"Failed to resolve %@", *object);
+    }
+  }
+  
+  [obj properties];
+  
+  NSString *contentPath = [obj objectNetPath];
+  if (!contentPath)
+  {
+    NSArray *pathComponents = [[*object objectPath] componentsSeparatedByString:@"."];
+    contentPath = [[pathComponents subarrayWithRange:NSMakeRange(1, pathComponents.count-1)] componentsJoinedByString:@"/"];
+  }
+  else
+  {
+    NSArray *pathComponents = [contentPath componentsSeparatedByString:@"."];
+    NSString *objectPath = [[pathComponents subarrayWithRange:NSMakeRange(1, pathComponents.count - 1)] componentsJoinedByString:@"/"];
+    pathComponents = [[*object objectPath] componentsSeparatedByString:@"."];
+    NSString *packageName = pathComponents[1];
+    contentPath = [packageName stringByAppendingPathComponent:objectPath];
+  }
+  
+  *object = obj;
+  *path = contentPath;
+  
+  return YES;
+}
+
+- (NSString *)exportMaterial:(UObject *)material includeingTextures:(BOOL)textures to:(NSString *)dataDir
+{
+  if ([material isKindOfClass:[MaterialInstance class]] || [material isKindOfClass:[MaterialInstanceConstant class]])
+  {
+    MaterialInstance *mat = (MaterialInstance *)material;
+    NSString *contentPath = nil;
+    if (![self resolveObject:&mat path:&contentPath])
+    {
+      return nil;
+    }
+    
+    NSString *result = [(MaterialInstance *)material exportIncluding:textures to:dataDir];
+    NSString *expPath = [[dataDir stringByAppendingPathComponent:@"Materials/S1Data"] stringByAppendingFormat:@"/%@.txt", contentPath];
+    if (![[NSFileManager defaultManager] fileExistsAtPath:expPath])
+    {
+      [[NSFileManager defaultManager] createDirectoryAtPath:expPath.stringByDeletingLastPathComponent withIntermediateDirectories:YES attributes:nil error:NULL];
+      [result writeToFile:[[dataDir stringByAppendingPathComponent:@"Materials/S1Data"] stringByAppendingFormat:@"/%@.txt", contentPath] atomically:YES encoding:NSUTF8StringEncoding error:NULL];
+    }
+    return contentPath;
+  }
+  return nil;
+}
+
+- (NSArray *)exportMaterialTextures:(UObject *)material path:(NSString *)path
+{
+  NSMutableArray *textures = [NSMutableArray new];
+  NSArray *textureIds = [(UObject*)material propertyValue:@"ReferencedTextures"];
+  for (NSNumber *texId in textureIds)
+  {
+    Texture2D *texture = [material.package objectForIndex:[texId intValue]];
+    NSString *contentPath = nil;
+    if (![self resolveObject:&texture path:&contentPath])
+    {
+      continue;
+    }
+    
+    NSString *texturePath = [[[path stringByAppendingPathComponent:@"Textures/S1Data"] stringByAppendingPathComponent:contentPath] stringByAppendingPathExtension:@"tga"];
+    
+    if (![[NSFileManager defaultManager] fileExistsAtPath:texturePath])
+    {
+      [[NSFileManager defaultManager] createDirectoryAtPath:[texturePath stringByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:NULL];
+      [texture exportWithOptions:@{@"path" : texturePath, @"mode" : @(Texture2DExportOptionsTGA)}];
+      [textures addObject:[contentPath stringByAppendingPathExtension:@"tga"]];
+    }
+    
+  }
+  return textures;
 }
 
 - (IBAction)endExportPanel:(id)sender
@@ -631,69 +814,133 @@ const double ScaleFactor = 1.0;
   self.exportTerrain = [d boolForKey:kSettingsLevelExportTerrain];
   self.exportSpeedTrees = [d boolForKey:kSettingsLevelExportTrees];
   self.exportAddObjectIndex = [d boolForKey:kSettingsLevelExportAddIndex];
+  self.exportLODs = [d boolForKey:kSettingsLevelExportLODs];
+  self.exportBlockingVolumes = [d boolForKey:kSettingsLevelExportBlockingVolumes];
+  self.exportAeroSets = [d boolForKey:kSettingsLevelExportAero];
+  self.exportTextures = [d boolForKey:kSettingsLevelExportTextures];
+  self.exportMaterials = [d boolForKey:kSettingsLevelExportMaterials];
+  self.exportAnimations = [d boolForKey:kSettingsLevelExportAnimations];
+  self.exportResampleTerrain = [d boolForKey:kSettingsLevelExportTerrainResample];
+  self.exportResampleWeightMaps = [d boolForKey:kSettingsLevelExportWeightMapResample];
+  self.exportActorsPerFile = CLAMP((int)[d integerForKey:kSettingsLevelExportActorsPerFile], 0, 99999);
   
-  NSSavePanel *panel = [NSSavePanel savePanel];
+  NSOpenPanel *panel = [NSOpenPanel openPanel];
   panel.canCreateDirectories = YES;
-  panel.nameFieldStringValue = self.exportName;
-  panel.accessoryView = self.exportOptionsView;
+  panel.canChooseFiles = NO;
+  panel.canChooseDirectories = YES;
   panel.prompt = @"Export";
-  NSString *path = [d objectForKey:[kSettingsExportPath stringByAppendingFormat:@".%@",self.object.objectClass]];
+  NSString *path = [d objectForKey:[kSettingsExportPath stringByAppendingFormat:@".%@", self.object.objectClass]];
   if (path)
+  {
     panel.directoryURL = [NSURL fileURLWithPath:path];
+  }
   
-  __weak id wself = self;
   [panel beginSheetModalForWindow:self.view.window completionHandler:^(NSInteger result) {
-    [d setObject:[panel.URL.path stringByDeletingLastPathComponent] forKey:[kSettingsExportPath stringByAppendingFormat:@".%@",self.object.objectClass]];
-    if (result == NSModalResponseOK && wself)
+    if (result == NSModalResponseOK)
     {
-      __strong LevelEditor *sself = wself;
-      [d setBool:sself.exportOtherActors forKey:kSettingsLevelExportOther];
-      [d setBool:sself.exportStaticMeshes forKey:kSettingsLevelExportStaticMeshes];
-      [d setBool:sself.exportSkeletalMeshes forKey:kSettingsLevelExportSkeletalMeshes];
-      [d setBool:sself.exportLights forKey:kSettingsLevelExportLights];
-      [d setBool:sself.exportInterpActors forKey:kSettingsLevelExportInterp];
-      [d setBool:sself.exportTerrain forKey:kSettingsLevelExportTerrain];
-      [d setBool:sself.exportSpeedTrees forKey:kSettingsLevelExportTrees];
-      [d setBool:sself.exportAddObjectIndex forKey:kSettingsLevelExportAddIndex];
-      [d synchronize];
-      [sself doExport:[panel.URL path]];
+      [self showExportOptions:panel.URL];
     }
   }];
 }
 
+- (void)showExportOptions:(NSURL*)url
+{
+  [self.view.window beginSheet:self.exportPanel completionHandler:^(NSModalResponse returnCode) {
+    if (returnCode == NSModalResponseOK)
+    {
+      [self doExport:url.path];
+    }
+  }];
+}
+
+- (IBAction)onExportOptionsOk:(id)sender
+{
+  [self.view.window endSheet:self.exportPanel returnCode:NSModalResponseOK];
+}
+
+- (IBAction)onExportOptionsCancel:(id)sender
+{
+  [self.view.window endSheet:self.exportPanel returnCode:NSModalResponseCancel];
+}
+
 - (void)doExport:(NSString *)path
 {
+  NSUserDefaults *d = [NSUserDefaults standardUserDefaults];
+  [d setObject:path forKey:[kSettingsExportPath stringByAppendingFormat:@".%@",self.object.objectClass]];
+  [d setBool:self.exportOtherActors forKey:kSettingsLevelExportOther];
+  [d setBool:self.exportStaticMeshes forKey:kSettingsLevelExportStaticMeshes];
+  [d setBool:self.exportSkeletalMeshes forKey:kSettingsLevelExportSkeletalMeshes];
+  [d setBool:self.exportLights forKey:kSettingsLevelExportLights];
+  [d setBool:self.exportInterpActors forKey:kSettingsLevelExportInterp];
+  [d setBool:self.exportTerrain forKey:kSettingsLevelExportTerrain];
+  [d setBool:self.exportSpeedTrees forKey:kSettingsLevelExportTrees];
+  [d setBool:self.exportAddObjectIndex forKey:kSettingsLevelExportAddIndex];
+  [d setBool:self.exportLODs forKey:kSettingsLevelExportLODs];
+  [d setBool:self.exportBlockingVolumes forKey:kSettingsLevelExportBlockingVolumes];
+  [d setBool:self.exportAeroSets forKey:kSettingsLevelExportAero];
+  [d setBool:self.exportTextures forKey:kSettingsLevelExportTextures];
+  [d setBool:self.exportMaterials forKey:kSettingsLevelExportMaterials];
+  [d setBool:self.exportAnimations forKey:kSettingsLevelExportAnimations];
+  [d setBool:self.exportResampleTerrain forKey:kSettingsLevelExportTerrainResample];
+  [d setBool:self.exportResampleWeightMaps forKey:kSettingsLevelExportWeightMapResample];
+  [d setInteger:CLAMP(self.exportActorsPerFile, 0, 999999) forKey:kSettingsLevelExportActorsPerFile];
+  [d synchronize];
   cancelExport = NO;
   self.exportProgressCancelTitle = @"Cancel";
   self.exportProgressValue = 0.;
   [self.view.window beginSheet:self.exportProgressPanel completionHandler:nil];
-  [self performSelectorInBackground:@selector(exportT3D:) withObject:path];
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+    NSArray *streamingLevels = self.object.worldInfo.streamingLevels;
+    
+    if (!streamingLevels.count)
+    {
+      [self exportT3D:[path stringByAppendingFormat:@"/%@_PersistentLevel.t3d", self.object.package.name] level:self.object];
+    }
+    else
+    {
+      for (NSNumber *objIdx in streamingLevels)
+      {
+        LevelStreamingDistance *streamingLevel = [self.object.package objectForIndex:[objIdx intValue]];
+        if (![streamingLevel respondsToSelector:@selector(streamingPackageName)])
+        {
+          DThrow(@"Unimplemented streaming level %@", streamingLevel);
+          continue;
+        }
+        NSString *packageName = [streamingLevel streamingPackageName];
+        UPackage *p = [UPackage package:packageName];
+        if (p)
+        {
+          [self.object.package addDependentPackage:p];
+          Level *l = [p objectForName:@"PersistentLevel"];
+          if (!l)
+          {
+            DThrow(@"Failed to find level in the package %@", p.name);
+          }
+          else
+          {
+            [self exportT3D:[path stringByAppendingFormat:@"/%@_PersistentLevel.t3d", p.name] level:l];
+          }
+        }
+        else
+        {
+          DThrow(@"Failed to find package %@", packageName);
+        }
+      }
+    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+      self.exportProgressValue = 100;
+      self.exportProgressDescription = @"Finished!";
+      self.exportProgressCancelTitle = @"Done";
+    });
+  });
 }
 
 - (void)exportTerrain:(Terrain *)terrain path:(NSString *)path
 {
   CGImageRef heightMap = [terrain heightMap];
-  CFURLRef url = (__bridge CFURLRef)[NSURL fileURLWithPath:[path stringByAppendingFormat:@"_Terrain_%d.png",[terrain.package indexForObject:terrain]]];
-  CGImageDestinationRef destination = CGImageDestinationCreateWithURL(url, kUTTypePNG, 1, NULL);
-  if (!destination)
-  {
-    CGImageRelease(heightMap);
-    return;
-  }
-
-  CGImageDestinationAddImage(destination, heightMap, nil);
-
-  if (!CGImageDestinationFinalize(destination))
-  {
-    CFRelease(destination);
-    CGImageRelease(heightMap);
-    return;
-  }
-
-  CFRelease(destination);
+  WriteImageRef(heightMap, [path stringByAppendingFormat:@"_TerrainHeightMap_%d.png",[terrain.package indexForObject:terrain]]);
   CGImageRelease(heightMap);
-  
-  [terrain.info writeToURL:[NSURL fileURLWithPath:[path stringByAppendingFormat:@"_Terrain_%d.txt",[terrain.package indexForObject:terrain]]]
+  [terrain.info writeToURL:[NSURL fileURLWithPath:[path stringByAppendingFormat:@"_TerrainInfo_%d.txt",[terrain.package indexForObject:terrain]]]
                 atomically:YES
                   encoding:NSUTF8StringEncoding
                      error:NULL];
