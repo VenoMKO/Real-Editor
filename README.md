@@ -1,5 +1,8 @@
 # Real-Editor
-This is a tool to view/edit 'Tera Online' game packages (gpk, gmp, upk, u). Runs on macOS 10.11+.
+This is a tool to view/edit 'Tera Online' game packages (gpk, gmp, upk, u). Runs on macOS 10.14+.
+
+![ScreenShot1](gitresources/ATW_screenshot_1.png)
+![ScreenShot2](gitresources/ATW_screenshot_2.png)
 
 3rd-party
 -
