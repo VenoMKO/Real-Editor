@@ -136,12 +136,13 @@
                                                   @"swizzle" : @(_exportSwizzleY)}];
       }
       
+      [[NSUserDefaults standardUserDefaults] setObject:[panel.URL path] forKey:[kSettingsExportPath stringByAppendingFormat:@".%@",self.object.objectClass]];
+      [[NSUserDefaults standardUserDefaults] setObject:@(self.saveMode) forKey:kSettingsExportMode];
+      
       if (!export)
         return;
       NSString *path = [[panel.URL.path stringByDeletingPathExtension] stringByAppendingPathExtension:@"dds"];
       [export writeToURL:[NSURL fileURLWithPath:path] atomically:YES];
-      [[NSUserDefaults standardUserDefaults] setObject:[panel.URL path] forKey:[kSettingsExportPath stringByAppendingFormat:@".%@",self.object.objectClass]];
-      [[NSUserDefaults standardUserDefaults] setObject:@(self.saveMode) forKey:kSettingsExportMode];
     }
   }];
 }

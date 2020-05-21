@@ -11,7 +11,7 @@
 #import "T3DUtils.h"
 
 #define USE_INVSQR_FALL_OFF 0
-#define LIGHT_INTENSITY_NULTIPLIER 0.25
+#define LIGHT_INTENSITY_MULTIPLIER 1.
 
 @implementation LightActor
 
@@ -42,7 +42,7 @@
       T3DAddLine(result, padding, @"LightGuid=%@", [[[NSUUID UUID] UUIDString] stringByReplacingOccurrencesOfString:@"-" withString:@""]);
       T3DAddLine(result, padding, @"AttenuationRadius=%.06f", [(PointLightComponent*)self.lightComponent radius]);
       T3DAddLine(result, padding, @"SourceRadius=%.06f", [(PointLightComponent*)self.lightComponent radius]);
-      T3DAddLine(result, padding, @"Intensity=%.06f", self.lightComponent.brightness * LIGHT_INTENSITY_NULTIPLIER);
+      T3DAddLine(result, padding, @"Intensity=%.06f", self.lightComponent.brightness * LIGHT_INTENSITY_MULTIPLIER);
       FColor *c = [self.lightComponent lightColor];
       T3DAddLine(result, padding, @"LightColor=(B=%d,G=%d,R=%d,A=%d)", c.b, c.g, c.r, 255);
       //T3DAddLine(result, padding, @"IndirectLightingIntensity=%.06f", 1.);
@@ -97,7 +97,7 @@
         T3DAddLine(result, padding, @"InnerConeAngle=%.06f", ((SpotLightComponent*)self.lightComponent).innerConeAngle);
       }
       T3DAddLine(result, padding, @"OuterConeAngle=%.06f", ((SpotLightComponent*)self.lightComponent).outerConeAngle);
-      T3DAddLine(result, padding, @"Intensity=%.06f", self.lightComponent.brightness * LIGHT_INTENSITY_NULTIPLIER);
+      T3DAddLine(result, padding, @"Intensity=%.06f", self.lightComponent.brightness * LIGHT_INTENSITY_MULTIPLIER);
       T3DAddLine(result, padding, @"AttenuationRadius=%.06f", self.lightComponent.radius);
       T3DAddLine(result, padding, @"SourceRadius=%.06f", self.lightComponent.radius);
       T3DAddLine(result, padding, @"bUseInverseSquaredFalloff=%@", USE_INVSQR_FALL_OFF ? @"True" : @"False");

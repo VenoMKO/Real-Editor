@@ -123,6 +123,31 @@ const CGFloat ExpressionHeight = 50;
   [self.canvas.superview.superview setNeedsLayout:YES];
 }
 
+- (IBAction)saveGraph:(id)sender
+{
+  NSSavePanel *panel = [NSSavePanel savePanel];
+  panel.allowedFileTypes = @[@"jpg"];
+  panel.prompt = @"Export";
+  panel.nameFieldStringValue = [NSString stringWithFormat:@"%@_%@_%@", self.object.objectName, self.object.lightingModel, self.object.blendMode];
+  NSString *path = [[NSUserDefaults standardUserDefaults] objectForKey:[kSettingsExportPath stringByAppendingFormat:@".%@",self.object.objectClass]];
+  if (path)
+    panel.directoryURL = [NSURL fileURLWithPath:path];
+  
+  [panel beginSheetModalForWindow:self.view.window completionHandler:^(NSInteger result) {
+    if (result == NSModalResponseOK)
+    {
+      CGFloat mag = self.scrollView.magnification;
+      self.scrollView.magnification = self.scrollView.maxMagnification;
+      NSBitmapImageRep *rep = [self.canvas bitmapImageRepForCachingDisplayInRect:self.canvas.bounds];
+      [self.canvas cacheDisplayInRect:self.canvas.bounds toBitmapImageRep:rep];
+      NSData *data = [rep representationUsingType:NSBitmapImageFileTypeJPEG properties:@{}];
+      self.scrollView.magnification = mag;
+      [[NSUserDefaults standardUserDefaults] setObject:[panel.URL path] forKey:[kSettingsExportPath stringByAppendingFormat:@".%@",self.object.objectClass]];
+      [data writeToURL:panel.URL atomically:YES];
+    }
+  }];
+}
+
 @end
 
 @implementation ExpressionView
@@ -130,6 +155,9 @@ const CGFloat ExpressionHeight = 50;
 - (void)drawRect:(NSRect)dirtyRect
 {
   [[NSColor grayColor] setStroke];
+  [[NSColor controlBackgroundColor] setFill];
+  
+  NSRectFillUsingOperation(dirtyRect, NSCompositingOperationSourceOver);
   
   for (UObject *expression in self.expressions)
   {

@@ -20,6 +20,8 @@
 - (Texture2D *)emissiveMap;
 - (SCNMaterial *)sceneMaterial;
 - (NSColor *)diffuseColor;
+- (NSString *)lightingModel;
+- (NSString *)blendMode;
 @end
 
 @interface MaterialInstance : Material

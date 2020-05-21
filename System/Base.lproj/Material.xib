@@ -83,17 +83,35 @@
                     </constraints>
                     <buttonCell key="cell" type="smallSquare" title="Export RAW" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="yAb-WI-Jj9">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="controlContent" size="11"/>
+                        <font key="font" metaFont="message" size="11"/>
                     </buttonCell>
                     <connections>
                         <action selector="exportRaw:" target="-2" id="HrD-v1-WLU"/>
                         <binding destination="-2" name="enabled" keyPath="self.object.exportObject.serialSize" id="KXT-M3-mex"/>
                     </connections>
                 </button>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="sdm-IK-Xis">
+                    <rect key="frame" x="-1" y="-2" width="69" height="23"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="BGW-7h-qnf"/>
+                    </constraints>
+                    <buttonCell key="cell" type="smallSquare" title="Save graph" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="rgK-Cc-mHF">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="message" size="11"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="saveGraph:" target="-2" id="VJC-3O-oa0"/>
+                        <binding destination="-2" name="enabled" keyPath="self.object.exportObject.serialSize" id="T2U-Cg-4M8"/>
+                    </connections>
+                </button>
             </subviews>
             <constraints>
                 <constraint firstItem="aSQ-id-pgN" firstAttribute="top" secondItem="Xiv-vM-MhN" secondAttribute="top" constant="-1" id="RAb-jj-jsi"/>
+                <constraint firstItem="sdm-IK-Xis" firstAttribute="top" secondItem="aSQ-id-pgN" secondAttribute="bottom" constant="-1" id="hPS-Ui-QIL"/>
+                <constraint firstItem="sdm-IK-Xis" firstAttribute="width" secondItem="aSQ-id-pgN" secondAttribute="width" id="loS-JP-Ofn"/>
                 <constraint firstItem="aSQ-id-pgN" firstAttribute="leading" secondItem="Xiv-vM-MhN" secondAttribute="leading" constant="-1" id="ozg-EY-nTh"/>
+                <constraint firstItem="sdm-IK-Xis" firstAttribute="leading" secondItem="Xiv-vM-MhN" secondAttribute="leading" constant="-1" id="sOl-ck-qFq"/>
+                <constraint firstAttribute="bottom" secondItem="sdm-IK-Xis" secondAttribute="bottom" constant="-1" id="xUL-4f-qBS"/>
             </constraints>
             <point key="canvasLocation" x="330" y="655"/>
         </customView>

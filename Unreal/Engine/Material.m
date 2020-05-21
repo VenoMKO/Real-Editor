@@ -404,6 +404,35 @@ static void GetWarpModesFromTexture(Texture2D *tex, SCNWrapMode *wrapX, SCNWrapM
   return [tag.value boolValue];
 }
 
+- (NSString *)lightingModel
+{
+  NSNumber *modelId = [self propertyValue:@"LightingModel"];
+  if (modelId)
+  {
+    NSString *model = [[self.package nameForIndex:modelId.intValue] componentsSeparatedByString:@"_"].lastObject;
+    if (model.length)
+    {
+      return model;
+    }
+    
+  }
+  return @"DefaultLit";
+}
+
+- (NSString *)blendMode
+{
+  NSNumber *modeId = [self propertyValue:@"BlendMode"];
+  if (modeId)
+  {
+    NSString *mode = [[self.package nameForIndex:modeId.intValue] componentsSeparatedByString:@"_"].lastObject;
+    if (mode.length)
+    {
+      return mode;
+    }
+  }
+  return @"Opaque";
+}
+
 @end
 
 @implementation MaterialInstance
