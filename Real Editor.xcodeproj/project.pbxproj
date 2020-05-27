@@ -353,6 +353,7 @@
 		F1CA74CF1E12AB6D00D1A507 /* Structs.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Structs.plist; sourceTree = "<group>"; };
 		F1CCD66D2469752300310EE0 /* LevelStreaming.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LevelStreaming.h; sourceTree = "<group>"; };
 		F1CCD66E2469752300310EE0 /* LevelStreaming.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LevelStreaming.m; sourceTree = "<group>"; };
+		F1D711F8247B968E00FD48D1 /* libSpeedTreeRT.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSpeedTreeRT.a; path = ../../../../../usr/local/lib/libSpeedTreeRT.a; sourceTree = "<group>"; };
 		F1D96AF21D5F9F7100071E45 /* Real Editor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Real Editor.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F1D96B081D5FA02900071E45 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		F1D96B091D5FA02900071E45 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -423,6 +424,7 @@
 		F1170ECE1D60714100262974 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F1D711F8247B968E00FD48D1 /* libSpeedTreeRT.a */,
 				F18479F1244DDFB1005BE56E /* libfbxsdk.dylib */,
 				F13DD2271E09324700632F07 /* libz.1.2.8.tbd */,
 				F12B17371DD75A2300226E73 /* libz.tbd */,

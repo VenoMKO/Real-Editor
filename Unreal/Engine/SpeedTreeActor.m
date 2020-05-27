@@ -39,10 +39,7 @@
     T3DAddLine(result, padding, T3DBeginObject(@"Object", @"StaticMeshComponent0", nil));
     {
       padding++;
-      NSMutableArray *targetPathComps = [[[[self.component speedTree] objectPath] componentsSeparatedByString:@"."] mutableCopy];
-      [targetPathComps removeObjectAtIndex:0];
-      NSString *targetPath = [targetPathComps componentsJoinedByString:@"/"];
-      T3DAddLine(result, padding, @"StaticMesh=StaticMesh'\"%@\"'", [@"/Game/S1Data/" stringByAppendingString:targetPath]);
+      T3DAddLine(result, padding, @"StaticMesh=StaticMesh'\"%@\"'", contentPath);
       
       GLKVector3 pos = [self absolutePostion];
       T3DAddLine(result, padding, @"RelativeLocation=(X=%.6f,Y=%.6f,Z=%.6f)", pos.x, pos.y, pos.z);

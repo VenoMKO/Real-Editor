@@ -239,7 +239,7 @@ const BOOL MenuItemDebugVisible = DEBUG;
 #endif
 }
 
-- (IBAction)_debugSelectObjectAtIndex:(id)sender
+- (IBAction)selectObjectAtIndex:(id)sender
 {
 #ifdef DEBUG
   NSAlert *alert = [[NSAlert alloc] init];
