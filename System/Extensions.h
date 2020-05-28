@@ -51,6 +51,21 @@ typedef struct _FCompressedChunk FCompressedChunk;
 -(NSBitmapImageRep *)unscaledBitmapImageRep;
 @end
 
+@interface NSData (Extensions)
+
+- (NSInteger)read:(uint8_t *)buffer maxLength:(NSUInteger)len;
+- (void *)readBytes:(int)length error:(BOOL *)error;
+- (float)readFloat:(BOOL *)error;
+- (float)readHalfFloat:(BOOL *)error;
+- (int)readInt:(BOOL *)error;
+- (long)readLong:(BOOL *)error;
+- (short)readShort:(BOOL *)error;
+- (Byte)readByte:(BOOL *)error;
+- (NSData *)readData:(int)length;
+- (NSString *)readString:(BOOL *)error;
+@property (nonatomic) NSUInteger offset;
+@end
+
 @interface NSMutableData (Extensions)
 
 - (void)writeInt:(int)value;

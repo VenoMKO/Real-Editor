@@ -10,7 +10,11 @@
 #import "FStream.h"
 #import "FReadable.h"
 #import "minilzo.h"
+#import "MeshUtils.h"
 #import <zlib.h>
+#import <stdlib.h>
+
+#import <objc/runtime.h>
 
 #define HEAP_ALLOC(var,size) \
 lzo_align_t __LZO_MMODEL var [ ((size) + (sizeof(lzo_align_t) - 1)) / sizeof(lzo_align_t) ]
@@ -193,6 +197,182 @@ static HEAP_ALLOC(wrkmem, LZO1X_1_MEM_COMPRESS);
   
   [NSGraphicsContext restoreGraphicsState];
   return rep;
+}
+
+@end
+
+NSString const *DataOffsetKey = @"DataOffsetKey";
+
+@implementation NSData (Extensions)
+
+- (void)setOffset:(NSUInteger)offset
+{
+  objc_setAssociatedObject(self, &DataOffsetKey, @(offset), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (NSUInteger)offset
+{
+  return [(NSNumber *)objc_getAssociatedObject(self, &DataOffsetKey) unsignedIntegerValue];
+}
+
+- (NSInteger)read:(uint8_t *)buffer maxLength:(NSUInteger)len
+{
+  [self getBytes:(void *)buffer range:NSMakeRange(self.offset, len)];
+  self.offset += len;
+  return len;
+}
+
+- (float)readFloat:(BOOL *)error
+{
+  float v;
+  NSInteger rLength;
+  rLength = [self read:(uint8_t *)&v maxLength:sizeof(v)];
+  if (rLength != sizeof(v) && error)
+  {
+    *error = YES;
+    return 0;
+  }
+  return v;
+}
+
+- (float)readHalfFloat:(BOOL *)error
+{
+  short v = [self readShort:error];
+  if (error && *error)
+    return 0;
+  return half2float(v);
+}
+
+- (int)readInt:(BOOL *)error
+{
+  int v;
+  NSInteger rLength;
+  rLength = [self read:(uint8_t *)&v maxLength:sizeof(v)];
+  if (rLength != sizeof(v) && error)
+  {
+    *error = YES;
+    v = 0;
+  }
+  return v;
+}
+
+- (long)readLong:(BOOL *)error
+{
+  long v;
+  NSInteger rLength;
+  rLength = [self read:(uint8_t *)&v maxLength:sizeof(v)];
+  if (rLength != sizeof(v) && error)
+  {
+    *error = YES;
+    v = 0;
+  }
+  return v;
+}
+
+- (short)readShort:(BOOL *)error
+{
+  short v;
+  NSInteger rLength;
+  rLength = [self read:(uint8_t *)&v maxLength:sizeof(v)];
+  if (rLength != sizeof(v) && error)
+  {
+    *error = YES;
+    v = 0;
+  }
+  return v;
+}
+
+- (Byte)readByte:(BOOL *)error
+{
+  Byte v;
+  NSInteger rLength;
+  rLength = [self read:(uint8_t *)&v maxLength:sizeof(v)];
+  if (rLength != sizeof(v) && error)
+  {
+    *error = YES;
+    v = 0;
+  }
+  return v;
+}
+
+- (void *)readBytes:(int)length error:(BOOL *)error
+{
+  void *ptr = malloc(length);
+  int rLength = (int)[self read:(uint8_t *)ptr maxLength:length];
+  if (rLength != length)
+  {
+    if (error)
+      *error = YES;
+    free(ptr);
+    DThrow(kErrorUnexpectedEnd);
+    return NULL;
+  }
+  return ptr;
+}
+
+- (NSData *)readData:(int)length
+{
+  void *ptr = malloc(length);
+  int rLength = (int)[self read:(uint8_t *)ptr maxLength:length];
+  if (rLength != length)
+  {
+    free(ptr);
+    DThrow(kErrorUnexpectedEnd);
+    return nil;
+  }
+  
+  NSData *d = [NSData dataWithBytes:ptr length:rLength];
+  free(ptr);
+  return d;
+}
+
+- (NSString *)readString:(BOOL *)error
+{
+  int l = [self readInt:error];
+  if (error && *error)
+  {
+    DThrow(kErrorUnexpectedEnd);
+    return nil;
+  }
+  char *ptr = (char *)malloc(l + 1);
+  int rLength = (int)[self read:(uint8_t *)ptr maxLength:l];
+  if (rLength != l)
+  {
+    if (error)
+    {
+      *error = YES;
+    }
+    free(ptr);
+    DThrow(kErrorUnexpectedEnd);
+    return nil;
+  }
+  ptr[l] = '\0';
+  
+  NSString *result = [NSString stringWithCString:ptr encoding:NSUTF8StringEncoding];
+  if (!result)
+  {
+    wchar_t *wstr = calloc(l, 2);
+    size_t nl = mbstowcs(wstr, ptr, l);
+    if (nl && wstr)
+    {
+      result = [[NSString alloc] initWithBytes:(const void *)wstr length:nl encoding:NSUTF32LittleEndianStringEncoding];
+      free(ptr);
+      free(wstr);
+      return result;
+    }
+  }
+  free(ptr);
+  return result;
+}
+
+- (void)setPosition:(NSUInteger)position
+{
+  self.offset = position;
+}
+
+- (NSUInteger)position
+{
+  return self.offset;
 }
 
 @end
