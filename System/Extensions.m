@@ -351,7 +351,8 @@ NSString const *DataOffsetKey = @"DataOffsetKey";
   NSString *result = [NSString stringWithCString:ptr encoding:NSUTF8StringEncoding];
   if (!result)
   {
-    wchar_t *wstr = calloc(l, 2);
+    // Not sure if this is correct, but it works
+    wchar_t *wstr = calloc(l + 1, 4);
     size_t nl = mbstowcs(wstr, ptr, l);
     if (nl && wstr)
     {
@@ -488,6 +489,12 @@ NSString const *DataOffsetKey = @"DataOffsetKey";
 {
   int32_t a = *(int32_t *)&value;
   [self appendBytes:&a length:4];
+}
+
+- (void)writeString:(NSString *)value
+{
+  [self writeInt:(int)value.length];
+  [self appendData:[value dataUsingEncoding:NSUTF8StringEncoding]];
 }
 
 @end

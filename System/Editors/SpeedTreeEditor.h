@@ -9,5 +9,5 @@
 #import "UObjectEditor.h"
 #import "SpeedTree.h"
 @interface SpeedTreeEditor : UObjectEditor
-@property SpeedTree *object;
+@property (weak) SpeedTree *object;
 @end

@@ -73,6 +73,7 @@ typedef struct _FCompressedChunk FCompressedChunk;
 - (void)writeByte:(Byte)value;
 - (void)writeShort:(short)value;
 - (void)writeFloat:(float)value;
+- (void)writeString:(NSString *)value;
 - (NSData *)zlibInflate;
 - (NSData *)zlibDeflate;
 

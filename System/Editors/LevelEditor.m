@@ -494,6 +494,15 @@ const double ScaleFactor = 1.0;
       else if ([actor isKindOfClass:[SpeedTreeActor class]])
       {
         SpeedTree *tree = [[(SpeedTreeActor *)actor component] speedTree];
+        NSString *materials = @"";
+        if (self.exportMaterials)
+        {
+          for (MaterialInstance *m in tree.materials)
+          {
+            NSString *mPath = [self exportMaterial:m includeingTextures:self.exportTextures to:dataDirPath];
+            materials = [materials stringByAppendingFormat:@"%@\n", mPath];
+          }
+        }
         NSString *contentPath = nil;
         
         if (![self resolveObject:&tree path:&contentPath])
@@ -501,6 +510,7 @@ const double ScaleFactor = 1.0;
           continue;
         }
         
+        NSString *actorOutput = [NSString stringWithFormat:@"[%d]%@(%@)\n\tTree: %@", [actor.package indexForObject:actor], [tree objectName], [actor objectClass], contentPath];
         NSString *t3DContentPath = [@"/Game/S1Data/" stringByAppendingString:contentPath];
         if (![(SpeedTreeActor*)actor exportToT3D:result padding:padding index:idx contentPath:t3DContentPath])
         {
@@ -513,12 +523,17 @@ const double ScaleFactor = 1.0;
         if (![[NSFileManager defaultManager] fileExistsAtPath:sptPath])
         {
           [[NSFileManager defaultManager] createDirectoryAtPath:[sptPath stringByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:NULL];
-          NSData *data = [tree exportWithOptions:nil];
+          NSData *data = [tree exportWithOptions:@{@"expMaterials" : @(self.exportMaterials)}];
           if (data.length)
           {
             [data writeToFile:sptPath atomically:YES];
           }
         }
+        if (materials.length)
+        {
+          actorOutput = [actorOutput stringByAppendingFormat:@"\n\tMaterials:\n\t\t%@",[materials stringByReplacingOccurrencesOfString:@"\n" withString:@"\n\t\t"]];
+        }
+        [actorsList appendFormat:@"%@\n", actorOutput];
       }
       else if ([actor isKindOfClass:[Terrain class]])
       {

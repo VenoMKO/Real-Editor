@@ -10,4 +10,12 @@
 
 @interface SpeedTree : UObject
 @property NSData *sptData;
+
+- (NSData *)materialMappedSpt;
+
+- (UObject *)branchMaterial;
+- (UObject *)frondMaterial;
+- (UObject *)leafMaterial;
+
+- (NSArray *)materials;
 @end

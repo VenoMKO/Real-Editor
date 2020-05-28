@@ -13,6 +13,7 @@
 @end
 
 @implementation SpeedTreeEditor
+@dynamic object;
 
 - (NSString *)exportName
 {
