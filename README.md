@@ -1,3 +1,5 @@
+Outdated. Working on a Windows version with 64-bit client support.
+
 # Real-Editor
 This is a tool to view/edit 'Tera Online' game packages (gpk, gmp, upk, u). Runs on macOS 10.14+.
 
