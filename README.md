@@ -1,4 +1,4 @@
-Outdated. Working on a Windows version with 64-bit client support.
+Outdated. Windows 64-bit client here: [RealEditor](https://github.com/VenoMKO/RealEditor)
 
 # Real-Editor
 This is a tool to view/edit 'Tera Online' game packages (gpk, gmp, upk, u). Runs on macOS 10.14+.
